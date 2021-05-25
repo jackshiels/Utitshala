@@ -21,7 +21,6 @@ namespace Utitshala.Services
         public static IMessageClient messageClient;
         private static List<string[]> options;
         private static string currentLine;
-        private static string[] imageUrl;
 
         /// <summary>
         /// Receives dialogue and initiates responses.
@@ -49,6 +48,8 @@ namespace Utitshala.Services
 
             // Set variables
             sequence.SetVariable("currentStickerUrl", "");
+            sequence.SetVariable("currentImageUrl", "");
+            sequence.SetVariable("currentImageCaption", "");
 
             // Check for an option choice before execution
             if (options.Count() != 0)
@@ -68,19 +69,29 @@ namespace Utitshala.Services
             // Send the opening message
             while (sequence.StartNextLine().HasValue)
             {
+                // Get the current line
                 currentLine = sequence.ExecuteCurrentLine().BuildString();
-                if (imageUrl != null)
+                if (sequence.GetVariable("currentImageUrl").ToString() != "")
                 {
-                    messageClient.SendImageMessage(imageUrl[0], imageUrl[1], e);
-                    imageUrl = null;
+                    // Send the message
+                    messageClient.SendImageMessage(sequence.GetVariable("currentImageUrl").ToString(), 
+                        sequence.GetVariable("currentImageCaption").ToString(), e);
+
+                    // Zero the vars
+                    sequence.SetVariable("currentImageUrl", "");
+                    sequence.SetVariable("currentImageCaption", "");
                 }
                 else if (sequence.GetVariable("currentStickerUrl").ToString() != "")
                 {
+                    // Send the message
                     messageClient.SendStickerMessage(sequence.GetVariable("currentStickerUrl").ToString(), e);
+
+                    // Zero the var
                     sequence.SetVariable("currentStickerUrl", "");
                 }
                 else if (e.Message.Text != null)
                 {
+                    // Send the message
                     messageClient.SendTextMessage(currentLine, e);
                 }
             }
@@ -122,7 +133,8 @@ namespace Utitshala.Services
             var arg2 = sequence.Resolve(arguments[1]);
 
             // Add the image URL to the send slot
-            imageUrl = new string[] { arg1.ToString(), arg2.ToString() };
+            sequence.SetVariable("currentImageUrl", arg1.ToString());
+            sequence.SetVariable("currentImageCaption", arg2.ToString());
         }
 
         /// <summary>

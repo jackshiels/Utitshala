@@ -13,9 +13,19 @@ Choose Option1 or Option2.
 
 +hello3
 You picked option 1!
-+
++> next hello5
 > sticker "https://github.com/TelegramBots/book/raw/master/src/docs/sticker-fred.webp"
 
 +hello4
 You picked option 2!
 +
+
++hello5
+I hope you enjoyed that sticker...
++> next hello6
+> image "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/20090529_Great_Wall_8185.jpg/1920px-20090529_Great_Wall_8185.jpg" "what a great wall!"
+
++hello6
+I hope you enjoyed that sticker...
++
+> image "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Adonis_blue_%28Polyommatus_bellargus%29_male_underside_2.jpg/1920px-Adonis_blue_%28Polyommatus_bellargus%29_male_underside_2.jpg" "what a great butterfly!"
