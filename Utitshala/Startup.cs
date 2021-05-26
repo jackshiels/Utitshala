@@ -5,6 +5,7 @@ using Telegram.Bot.Types;
 using Owin;
 using Utitshala.Services;
 using System.Configuration;
+using System.Collections.Generic;
 
 [assembly: OwinStartupAttribute(typeof(Utitshala.Startup))]
 namespace Utitshala
@@ -22,6 +23,7 @@ namespace Utitshala
             // Create and start the Telegram bot client
             ChatEngine.messageClient = new TelegramMessageEngine(
                 new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));
+            ChatEngine.options = new List<string[]>();
         }
     }
 }

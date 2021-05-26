@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
@@ -18,9 +19,11 @@ namespace Utitshala.Services
     /// </summary>
     public static class ChatEngine
     {
+        #region Variables
         public static IMessageClient messageClient;
-        private static List<string[]> options;
-        private static string currentLine;
+        // Holds in memory chat sequences
+        public static List<string[]> options;
+        #endregion
 
         /// <summary>
         /// Receives dialogue and initiates responses.
@@ -29,12 +32,6 @@ namespace Utitshala.Services
         /// <param name="e">The Telegram message arguments.</param>
         public static void Bot_OnMessage(object sender, MessageEventArgs e)
         {
-            // Initialise the options List<string[]>
-            if (options == null)
-            {
-                options = new List<string[]>();
-            }
-
             // Initialise Spin
             var sequence = new Sequence(new DictionaryBackend(), new FileDocumentLoader());
             sequence.RegisterStandardLibrary();
@@ -45,26 +42,21 @@ namespace Utitshala.Services
             sequence.AddCommand("opt", ChatEngine.OptionTraversal);
             sequence.AddCommand("image", ChatEngine.ImageMessageHandler);
             sequence.AddCommand("sticker", ChatEngine.StickerMessageHandler);
+            sequence.AddCommand("wait", ChatEngine.WaitTimer);
 
             // Set variables
             sequence.SetVariable("currentStickerUrl", "");
             sequence.SetVariable("currentImageUrl", "");
             sequence.SetVariable("currentImageCaption", "");
 
-            // Check for an option choice before execution
-            if (options.Count() != 0)
-            {
-                foreach (var opt in options)
-                {
-                    if (e.Message.Text == opt[0])
-                    {
-                        // Set the next line and break
-                        sequence.SetNextLine(opt[1]);
-                        options = null;
-                        break;
-                    }
-                }
-            }
+            // The current ID of this chat, tracked for functions
+            sequence.SetVariable("currentChatId", e.Message.Chat.Id.ToString());
+
+            // Set options, if applicable
+            OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
+
+            // Set the line to send
+            string currentLine;
 
             // Send the opening message
             while (sequence.StartNextLine().HasValue)
@@ -98,6 +90,35 @@ namespace Utitshala.Services
         }
 
         /// <summary>
+        /// Sets the current option line for a specific chat ID.
+        /// </summary>
+        /// <param name="sequence">The sequence to act on.</param>
+        /// <param name="chatId">The ID of the chat to check options for.</param>
+        public static void OptionInitiator(Sequence sequence, string chatId, string messageText)
+        {
+            // Check for an option choice before execution
+            if (options.Where(c => c[0] == chatId).Count() != 0)
+            {
+                foreach (var opt in options.Where(c => c[0] == chatId))
+                {
+                    // Check to see if the input message is the same as the option identifier
+                    if (messageText == opt[1])
+                    {
+                        // Set the next line and break
+                        sequence.SetNextLine(opt[2]);
+                        break;
+                    }
+                }
+                // Clean the options from this list once used
+                foreach (var opt in options.Where(c => c[0] == chatId).ToList())
+                {
+                    options.Remove(opt);
+                }
+            }
+        }
+
+        #region Spin Functions
+        /// <summary>
         /// Handles text input options by logging choices in the
         /// current options list.
         /// </summary>
@@ -114,7 +135,7 @@ namespace Utitshala.Services
             var arg2 = sequence.Resolve(arguments[1]);
 
             // Add options to the options list
-            options.Add(new string[] { arg1.ToString(), arg2.ToString() });
+            options.Add(new string[] { sequence.GetVariable("currentChatId").ToString(), arg1.ToString(), arg2.ToString() });
         }
 
         /// <summary>
@@ -154,5 +175,24 @@ namespace Utitshala.Services
             // Add the sticker URL to the send slot
             sequence.SetVariable("currentStickerUrl", arg1.ToString());
         }
+
+        /// <summary>
+        /// Sets a timer that delays output.
+        /// </summary>
+        /// <param name="sequence">The sequence this function is added to.</param>
+        /// <param name="arguments">The timer count in milliseconds.</param>
+        [SequenceCommand("wait")]
+        public static void WaitTimer(Sequence sequence, object[] arguments)
+        {
+            // Register the function
+            ArgumentUtils.Count("wait", arguments, 1);
+
+            // Derive the argument
+            var arg1 = sequence.Resolve(arguments[0]);
+
+            // Act
+            Thread.Sleep(Convert.ToInt32(arg1));
+        }
+        #endregion
     }
 }
