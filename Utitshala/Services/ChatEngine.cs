@@ -43,17 +43,22 @@ namespace Utitshala.Services
             sequence.AddCommand("image", ChatEngine.ImageMessageHandler);
             sequence.AddCommand("sticker", ChatEngine.StickerMessageHandler);
             sequence.AddCommand("wait", ChatEngine.WaitTimer);
+            sequence.AddCommand("input", ChatEngine.ReceiveInput);
 
             // Set variables
             sequence.SetVariable("currentStickerUrl", "");
             sequence.SetVariable("currentImageUrl", "");
             sequence.SetVariable("currentImageCaption", "");
+            sequence.SetVariable("currentInputRegex", "");
 
             // The current ID of this chat, tracked for functions
             sequence.SetVariable("currentChatId", e.Message.Chat.Id.ToString());
 
             // Set options, if applicable
             OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
+
+            // Grab input if applicable
+
 
             // Set the line to send
             string currentLine;
@@ -115,6 +120,16 @@ namespace Utitshala.Services
                     options.Remove(opt);
                 }
             }
+        }
+
+        /// <summary>
+        /// Save the requested input from a chat.
+        /// </summary>
+        /// <param name="sequence"></param>
+        /// <param name="chatId"></param>
+        public static void InputSaver(Sequence sequence, string chatId)
+        {
+
         }
 
         #region Spin Functions
@@ -192,6 +207,24 @@ namespace Utitshala.Services
 
             // Act
             Thread.Sleep(Convert.ToInt32(arg1));
+        }
+
+        /// <summary>
+        /// Sets an input flag for the next input.
+        /// </summary>
+        /// <param name="sequence">The sequence this function is added to.</param>
+        /// <param name="arguments">The RegEx to apply to this input.</param>
+        [SequenceCommand("input")]
+        public static void ReceiveInput(Sequence sequence, object[] arguments)
+        {
+            // Register the function
+            ArgumentUtils.Count("input", arguments, 1);
+
+            // Derive the argument
+            var arg1 = sequence.Resolve(arguments[0]);
+
+            // Act
+            sequence.SetVariable("currentInputRegex", arg1.ToString());
         }
         #endregion
     }
