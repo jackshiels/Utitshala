@@ -1,4 +1,4 @@
-# Example Document
+# Onboarding use case
 > begin hello1
 
 +hello1
@@ -6,25 +6,14 @@ Hello, world! This is a quick example of a dialogue system.
 +> next hello2
 
 +hello2
-Choose Option1 or Option2.
+You need to register to start learning. If you want to register, please enter your full name.
 +
-> opt Option1 hello3
-> opt Option2 hello4
+> input register "^[a-z ,.'-]+$" "FailRegister" "SucceedRegister"
 
-+hello3
-You picked option 1!
-+> next hello5
-> sticker "https://github.com/TelegramBots/book/raw/master/src/docs/sticker-fred.webp"
++FailRegister
+Please enter a valid name.
++> next hello2
 
-+hello4
-You picked option 2!
++SucceedRegister
+Congratulations, you are now registered!
 +
-
-+hello5
-I hope you enjoyed that sticker...
-+> next hello6
-
-+hello6
-lol
-+
-> image "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Adonis_blue_%28Polyommatus_bellargus%29_male_underside_2.jpg/1920px-Adonis_blue_%28Polyommatus_bellargus%29_male_underside_2.jpg" "what a great butterfly!"

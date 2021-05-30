@@ -20,6 +20,11 @@ namespace Utitshala.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Student> Students { get; set; }
+        public DbSet<StudentRecord> StudentRecords { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<LearningDesign> LearningDesigns { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

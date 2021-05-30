@@ -11,6 +11,7 @@ using Spin.Attributes;
 using Spin.Utility;
 using Telegram.Bot.Types.Enums;
 using static Utitshala.Services.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace Utitshala.Services
 {
@@ -23,6 +24,7 @@ namespace Utitshala.Services
         public static IMessageClient messageClient;
         // Holds in memory chat sequences
         public static List<string[]> options;
+        public static List<string[]> inputRegister;
         #endregion
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace Utitshala.Services
             OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
 
             // Grab input if applicable
-
+            InputSaver(sequence, e.Message.Text, e.Message.Chat.Id.ToString());
 
             // Set the line to send
             string currentLine;
@@ -125,11 +127,39 @@ namespace Utitshala.Services
         /// <summary>
         /// Save the requested input from a chat.
         /// </summary>
-        /// <param name="sequence"></param>
-        /// <param name="chatId"></param>
-        public static void InputSaver(Sequence sequence, string chatId)
+        /// <param name="sequence">The sequence to act upon.</param>
+        /// <param name="chatId">The ID of the current chat.</param>
+        public static void InputSaver(Sequence sequence, string input, string chatId)
         {
-
+            if (inputRegister.Where(c => c[0] == chatId).Count() != 0)
+            {
+                foreach (var read in inputRegister.Where(c => c[0] == chatId))
+                {
+                    // Perform a regex check
+                    Regex reg = new Regex(read[1]);
+                    if (reg.IsMatch(input))
+                    {
+                        // Act on the input, depending on its descriptor
+                        switch (read[1])
+                        {
+                            case "register":
+                                // Do registration here
+                                sequence.SetNextLine(read[3]);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // If failed regex, tell the fail condition to be met
+                        sequence.SetNextLine(read[2]);
+                    }
+                }
+                // Clean the inputs from this list once used
+                foreach (var read in inputRegister.Where(c => c[0] == chatId).ToList())
+                {
+                    inputRegister.Remove(read);
+                }
+            }
         }
 
         #region Spin Functions
@@ -218,13 +248,14 @@ namespace Utitshala.Services
         public static void ReceiveInput(Sequence sequence, object[] arguments)
         {
             // Register the function
-            ArgumentUtils.Count("input", arguments, 1);
+            ArgumentUtils.Count("input", arguments, 2);
 
             // Derive the argument
             var arg1 = sequence.Resolve(arguments[0]);
+            var arg2 = sequence.Resolve(arguments[1]);
 
             // Act
-            sequence.SetVariable("currentInputRegex", arg1.ToString());
+            inputRegister.Add(new string[] { sequence.GetVariable("currentChatId").ToString(), arg1.ToString(), arg2.ToString() });
         }
         #endregion
     }

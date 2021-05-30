@@ -183,10 +183,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105301539384_InitialStudentModel.cs" />
+    <Compile Include="Migrations\202105301539384_InitialStudentModel.Designer.cs">
+      <DependentUpon>202105301539384_InitialStudentModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105301600208_LearningDesign.cs" />
+    <Compile Include="Migrations\202105301600208_LearningDesign.Designer.cs">
+      <DependentUpon>202105301600208_LearningDesign.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105301603211_FirstIterationLive.cs" />
+    <Compile Include="Migrations\202105301603211_FirstIterationLive.Designer.cs">
+      <DependentUpon>202105301603211_FirstIterationLive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LearningDesign.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\StudentRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChatEngine.cs" />
     <Compile Include="Services\Interfaces.cs" />
@@ -266,6 +283,17 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202105301539384_InitialStudentModel.resx">
+      <DependentUpon>202105301539384_InitialStudentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105301600208_LearningDesign.resx">
+      <DependentUpon>202105301600208_LearningDesign.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105301603211_FirstIterationLive.resx">
+      <DependentUpon>202105301603211_FirstIterationLive.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
