@@ -24,6 +24,7 @@ namespace Utitshala
             ChatEngine.messageClient = new TelegramMessageEngine(
                 new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));
             ChatEngine.options = new List<string[]>();
+            ChatEngine.inputRegister = new List<string[]>();
         }
     }
 }

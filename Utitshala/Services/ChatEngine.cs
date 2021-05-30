@@ -11,6 +11,7 @@ using Spin.Attributes;
 using Spin.Utility;
 using Telegram.Bot.Types.Enums;
 using static Utitshala.Services.Interfaces;
+using static Utitshala.Controllers.InputRegister;
 using System.Text.RegularExpressions;
 
 namespace Utitshala.Services
@@ -136,7 +137,13 @@ namespace Utitshala.Services
                 foreach (var read in inputRegister.Where(c => c[0] == chatId))
                 {
                     // Perform a regex check
-                    Regex reg = new Regex(read[1]);
+                    Regex reg = new Regex("");
+                    switch (read[2])
+                    {
+                        case "textspaced":
+                            reg = new Regex(@"^[a-z ,.'-]+$");
+                            break;
+                    }
                     if (reg.IsMatch(input))
                     {
                         // Act on the input, depending on its descriptor
@@ -144,14 +151,15 @@ namespace Utitshala.Services
                         {
                             case "register":
                                 // Do registration here
-                                sequence.SetNextLine(read[3]);
+                                Utitshala.Controllers.InputRegister.RegisterStudent(input, chatId);
+                                sequence.SetNextLine(read[4]);
                                 break;
                         }
                     }
                     else
                     {
                         // If failed regex, tell the fail condition to be met
-                        sequence.SetNextLine(read[2]);
+                        sequence.SetNextLine(read[3]);
                     }
                 }
                 // Clean the inputs from this list once used
@@ -248,14 +256,17 @@ namespace Utitshala.Services
         public static void ReceiveInput(Sequence sequence, object[] arguments)
         {
             // Register the function
-            ArgumentUtils.Count("input", arguments, 2);
+            ArgumentUtils.Count("input", arguments, 4);
 
             // Derive the argument
             var arg1 = sequence.Resolve(arguments[0]);
             var arg2 = sequence.Resolve(arguments[1]);
+            var arg3 = sequence.Resolve(arguments[2]);
+            var arg4 = sequence.Resolve(arguments[3]);
 
             // Act
-            inputRegister.Add(new string[] { sequence.GetVariable("currentChatId").ToString(), arg1.ToString(), arg2.ToString() });
+            inputRegister.Add(new string[] { sequence.GetVariable("currentChatId").ToString(), 
+                arg1.ToString(), arg2.ToString(), arg3.ToString(), arg4.ToString() });
         }
         #endregion
     }
