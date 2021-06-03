@@ -34,6 +34,24 @@ namespace Utitshala.Controllers
         }
 
         /// <summary>
+        /// Returns a boolean indicating if a student is part of a class.
+        /// </summary>
+        /// <param name="userId">The user ID to check.</param>
+        /// <returns>A boolean indicating presence.</returns>
+        public static bool CheckClassPresence(string userId)
+        {
+            bool exists = false;
+
+            // Check the database for the existence of a student with this ID
+            if (_context.Students.FirstOrDefault(c => c.ServiceUserID == userId).ClassroomID != null)
+            {
+                exists = true;
+            }
+
+            return exists;
+        }
+
+        /// <summary>
         /// Registers a new student on the database.
         /// </summary>
         /// <param name="userId">The unique identifier from their chat.</param>

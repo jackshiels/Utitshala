@@ -28,6 +28,7 @@ namespace Utitshala.Services
         // Holds in memory chat sequences
         public static List<string[]> options;
         public static List<string[]> inputRegister;
+        public static List<string[]> userStateRegister;
         #endregion
 
         /// <summary>
@@ -41,15 +42,34 @@ namespace Utitshala.Services
             var sequence = new Sequence(new DictionaryBackend(), new FileDocumentLoader());
             sequence.RegisterStandardLibrary();
 
+            // Get user ID
+            string userId = e.Message.From.Id.ToString();
+
             // Get the path of the introductory dialogue document and load, if a new user
             string path;
             if (!DatabaseController.CheckRegistration(e.Message.From.Id.ToString()))
             {
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
+                if (userStateRegister.Where(c => c[0] == e.Message.From.Id.ToString()).Count() == 0)
+                {
+                    userStateRegister.Add(new string[] { e.Message.From.Id.ToString(), "registering" });
+                }
+            }
+            else if (!DatabaseController.CheckClassPresence(userId))
+            {
+                path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Classroom.spd";
+                if (userStateRegister.Where(c => c[0] == e.Message.From.Id.ToString()).Count() == 0)
+                {
+                    userStateRegister.Add(new string[] { e.Message.From.Id.ToString(), "classroom" });
+                }
             }
             else
             {
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
+                if (userStateRegister.Where(c => c[0] == e.Message.From.Id.ToString()).Count() == 0)
+                {
+                    userStateRegister.Add(new string[] { e.Message.From.Id.ToString(), "default" });
+                }
             }
             sequence.LoadAndStartDocument(path);
 
