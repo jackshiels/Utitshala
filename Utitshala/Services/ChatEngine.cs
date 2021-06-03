@@ -13,6 +13,7 @@ using Telegram.Bot.Types.Enums;
 using static Utitshala.Services.Interfaces;
 using static Utitshala.Controllers.InputRegister;
 using System.Text.RegularExpressions;
+using Utitshala.Controllers;
 
 namespace Utitshala.Services
 {
@@ -40,13 +41,14 @@ namespace Utitshala.Services
             sequence.RegisterStandardLibrary();
 
             // Get the path of the introductory dialogue document and load
-            string path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\DialogueTest.spd";
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
             sequence.LoadAndStartDocument(path);
             sequence.AddCommand("opt", ChatEngine.OptionTraversal);
             sequence.AddCommand("image", ChatEngine.ImageMessageHandler);
             sequence.AddCommand("sticker", ChatEngine.StickerMessageHandler);
             sequence.AddCommand("wait", ChatEngine.WaitTimer);
             sequence.AddCommand("input", ChatEngine.ReceiveInput);
+            sequence.AddCommand("execute", ChatEngine.ExecuteFunction);
 
             // Set variables
             sequence.SetVariable("currentStickerUrl", "");
@@ -55,7 +57,7 @@ namespace Utitshala.Services
             sequence.SetVariable("currentInputRegex", "");
 
             // The current ID of this chat, tracked for functions
-            sequence.SetVariable("currentChatId", e.Message.Chat.Id.ToString());
+            sequence.SetVariable("currentUserId", e.Message.From.Id);
 
             // Set options, if applicable
             OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
@@ -97,6 +99,7 @@ namespace Utitshala.Services
             }
         }
 
+        #region Helper Functions
         /// <summary>
         /// Sets the current option line for a specific chat ID.
         /// </summary>
@@ -130,18 +133,30 @@ namespace Utitshala.Services
         /// </summary>
         /// <param name="sequence">The sequence to act upon.</param>
         /// <param name="chatId">The ID of the current chat.</param>
-        public static void InputSaver(Sequence sequence, string input, string chatId)
+        public static void InputSaver(Sequence sequence, string input, string userId)
         {
-            if (inputRegister.Where(c => c[0] == chatId).Count() != 0)
+            if (inputRegister.Where(c => c[0] == userId).Count() != 0)
             {
-                foreach (var read in inputRegister.Where(c => c[0] == chatId))
+                foreach (var read in inputRegister.Where(c => c[0] == userId))
                 {
                     // Perform a regex check
                     Regex reg = new Regex("");
                     switch (read[2])
                     {
                         case "textspaced":
-                            reg = new Regex(@"^[a-z ,.'-]+$");
+                            reg = new Regex(@"^[a-z A-Z,.'-]+$");
+                            break;
+                        case "textnonspaced":
+                            reg = new Regex(@"^[A-Za-z]+$");
+                            break;
+                        case "anynumber":
+                            reg = new Regex(@"^([-+]?[0-9]+[-,])*[+-]?[0-9]+$");
+                            break;
+                        case "positivenumber":
+                            reg = new Regex(@"^[+]?\d+([.]\d+)?$");
+                            break;
+                        case "emailaddress":
+                            reg = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
                             break;
                     }
                     if (reg.IsMatch(input))
@@ -151,7 +166,24 @@ namespace Utitshala.Services
                         {
                             case "register":
                                 // Do registration here
-                                Utitshala.Controllers.InputRegister.RegisterStudent(input, chatId);
+                                InputRegister.RegisterStudent(input, userId);
+                                sequence.SetNextLine(read[4]);
+                                break;
+                            case "chooselanguage":
+                                // Do registration here
+                                InputRegister.ChooseLanguage(input, userId);
+                                sequence.SetNextLine(read[4]);
+                                break;
+                            case "viewprofile":
+                                InputRegister.ViewProfile(input, userId);
+                                sequence.SetNextLine(read[4]);
+                                break;
+                            case "viewrecord":
+                                InputRegister.ViewRecord(input, userId);
+                                sequence.SetNextLine(read[4]);
+                                break;
+                            case "editprofile":
+                                InputRegister.EditProfile(input, userId);
                                 sequence.SetNextLine(read[4]);
                                 break;
                         }
@@ -163,14 +195,15 @@ namespace Utitshala.Services
                     }
                 }
                 // Clean the inputs from this list once used
-                foreach (var read in inputRegister.Where(c => c[0] == chatId).ToList())
+                foreach (var read in inputRegister.Where(c => c[0] == userId).ToList())
                 {
                     inputRegister.Remove(read);
                 }
             }
         }
+        #endregion
 
-        #region Spin Functions
+        #region Embedded Sequence Functions
         /// <summary>
         /// Handles text input options by logging choices in the
         /// current options list.
@@ -188,7 +221,7 @@ namespace Utitshala.Services
             var arg2 = sequence.Resolve(arguments[1]);
 
             // Add options to the options list
-            options.Add(new string[] { sequence.GetVariable("currentChatId").ToString(), arg1.ToString(), arg2.ToString() });
+            options.Add(new string[] { sequence.GetVariable("currentUserId").ToString(), arg1.ToString(), arg2.ToString() });
         }
 
         /// <summary>
@@ -258,15 +291,37 @@ namespace Utitshala.Services
             // Register the function
             ArgumentUtils.Count("input", arguments, 4);
 
-            // Derive the argument
+            // Derive the arguments
             var arg1 = sequence.Resolve(arguments[0]);
             var arg2 = sequence.Resolve(arguments[1]);
             var arg3 = sequence.Resolve(arguments[2]);
             var arg4 = sequence.Resolve(arguments[3]);
 
             // Act
-            inputRegister.Add(new string[] { sequence.GetVariable("currentChatId").ToString(), 
+            inputRegister.Add(new string[] { sequence.GetVariable("currentUserId").ToString(), 
                 arg1.ToString(), arg2.ToString(), arg3.ToString(), arg4.ToString() });
+        }
+
+        /// <summary>
+        /// Executes a specific function, based on a sequence command.
+        /// </summary>
+        /// <param name="sequence">The sequence this function is added to.</param>
+        /// <param name="arguments">The name of the function to execute.</param>
+        [SequenceCommand("execute")]
+        public static void ExecuteFunction(Sequence sequence, object[] arguments)
+        {
+            // Register the function
+            ArgumentUtils.Count("input", arguments, 1);
+
+            // Derive the argument
+            var arg1 = sequence.Resolve(arguments[0]);
+
+            // Act upon the function, based on name (extend this)
+            switch (arg1.ToString()) {
+                case "abc":
+                    Console.WriteLine("Executed successfully");
+                    break;
+            }
         }
         #endregion
     }
