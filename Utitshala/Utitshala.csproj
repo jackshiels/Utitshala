@@ -178,6 +178,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InputRegister.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -195,6 +196,14 @@
     <Compile Include="Migrations\202105301603211_FirstIterationLive.cs" />
     <Compile Include="Migrations\202105301603211_FirstIterationLive.Designer.cs">
       <DependentUpon>202105301603211_FirstIterationLive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106031248388_ServiceIDStudent.cs" />
+    <Compile Include="Migrations\202106031248388_ServiceIDStudent.Designer.cs">
+      <DependentUpon>202106031248388_ServiceIDStudent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106031249435_StudentServiceIDString.cs" />
+    <Compile Include="Migrations\202106031249435_StudentServiceIDString.Designer.cs">
+      <DependentUpon>202106031249435_StudentServiceIDString.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -223,6 +232,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Dialogues\Register.spd" />
+    <Content Include="Dialogues\Default.spd" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -294,6 +304,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105301603211_FirstIterationLive.resx">
       <DependentUpon>202105301603211_FirstIterationLive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106031248388_ServiceIDStudent.resx">
+      <DependentUpon>202106031248388_ServiceIDStudent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106031249435_StudentServiceIDString.resx">
+      <DependentUpon>202106031249435_StudentServiceIDString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

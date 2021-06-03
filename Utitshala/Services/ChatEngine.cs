@@ -9,7 +9,6 @@ using Telegram.Bot.Types;
 using Spin;
 using Spin.Attributes;
 using Spin.Utility;
-using Telegram.Bot.Types.Enums;
 using static Utitshala.Services.Interfaces;
 using static Utitshala.Controllers.InputRegister;
 using System.Text.RegularExpressions;
@@ -23,6 +22,8 @@ namespace Utitshala.Services
     public static class ChatEngine
     {
         #region Variables
+        /* The message client to be used. An interface, meaning it can
+         * be extended for other services (e.g., WhatsApp, FB Messenger, etc.) */
         public static IMessageClient messageClient;
         // Holds in memory chat sequences
         public static List<string[]> options;
@@ -40,9 +41,19 @@ namespace Utitshala.Services
             var sequence = new Sequence(new DictionaryBackend(), new FileDocumentLoader());
             sequence.RegisterStandardLibrary();
 
-            // Get the path of the introductory dialogue document and load
-            string path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
+            // Get the path of the introductory dialogue document and load, if a new user
+            string path;
+            if (!DatabaseController.CheckRegistration(e.Message.From.Id.ToString()))
+            {
+                path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
+            }
+            else
+            {
+                path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
+            }
             sequence.LoadAndStartDocument(path);
+
+            // Add functional elements
             sequence.AddCommand("opt", ChatEngine.OptionTraversal);
             sequence.AddCommand("image", ChatEngine.ImageMessageHandler);
             sequence.AddCommand("sticker", ChatEngine.StickerMessageHandler);

@@ -17,7 +17,7 @@ namespace Utitshala.Models
     {
         [Key]
         public int ID { get; set; }
-        public int TelegramUserID { get; set; }
+        public string ServiceUserID { get; set; }
         [ForeignKey("StudentRecord")]
         public int StudentRecordID { get; set; }
         public string Name { get; set; }

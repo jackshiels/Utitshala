@@ -1,0 +1,20 @@
+# Registration use case
+> begin hello1
+
++hello1
+Hello, world! This is a quick example of a dialogue system.
++> next hello2
+
++hello2
+You need to register to start learning. If you want to register, please enter your full name.
++
+> execute abc
+> input register textspaced "FailRegister" "SucceedRegister"
+
++FailRegister
+Please enter a valid name.
++> next hello2
+
++SucceedRegister
+Congratulations, you are now registered!
++
