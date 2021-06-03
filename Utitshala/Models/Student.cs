@@ -19,11 +19,14 @@ namespace Utitshala.Models
         public int ID { get; set; }
         public string ServiceUserID { get; set; }
         [ForeignKey("StudentRecord")]
-        public int StudentRecordID { get; set; }
+        public int? StudentRecordID { get; set; }
+        [ForeignKey("Classroom")]
+        public int? ClassroomID { get; set; }
         public string Name { get; set; }
         public Language Language { get; set; }
 
         // Virtuals
         public virtual StudentRecord StudentRecord { get; set; }
+        public virtual Classroom Classroom { get; set; }
     }
 }

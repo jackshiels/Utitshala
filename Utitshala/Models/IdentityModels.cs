@@ -24,6 +24,7 @@ namespace Utitshala.Models
         public DbSet<StudentRecord> StudentRecords { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<LearningDesign> LearningDesigns { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

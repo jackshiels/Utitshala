@@ -205,9 +205,18 @@
     <Compile Include="Migrations\202106031249435_StudentServiceIDString.Designer.cs">
       <DependentUpon>202106031249435_StudentServiceIDString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106031343258_NullableStudentRecordID.cs" />
+    <Compile Include="Migrations\202106031343258_NullableStudentRecordID.Designer.cs">
+      <DependentUpon>202106031343258_NullableStudentRecordID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106031405180_Classrooms.cs" />
+    <Compile Include="Migrations\202106031405180_Classrooms.Designer.cs">
+      <DependentUpon>202106031405180_Classrooms.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
+    <Compile Include="Models\Classroom.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LearningDesign.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -310,6 +319,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106031249435_StudentServiceIDString.resx">
       <DependentUpon>202106031249435_StudentServiceIDString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106031343258_NullableStudentRecordID.resx">
+      <DependentUpon>202106031343258_NullableStudentRecordID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106031405180_Classrooms.resx">
+      <DependentUpon>202106031405180_Classrooms.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

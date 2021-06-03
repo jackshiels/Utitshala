@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -16,5 +17,11 @@ namespace Utitshala.Models
         public string Name { get; set; }
         public DateTime DateCreated { get; set; }
         public int StorageID { get; set; }
+        public bool Public { get; set; }
+        [ForeignKey("Classroom")]
+        public int? ClassroomID { get; set; }
+
+        // Virtual
+        public virtual Classroom Classroom { get; set; }
     }
 }

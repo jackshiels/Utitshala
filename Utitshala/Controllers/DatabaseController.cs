@@ -51,7 +51,8 @@ namespace Utitshala.Controllers
                     Student studentToAdd = new Student()
                     {
                         ServiceUserID = userId,
-                        Name = name
+                        Name = name,
+                        Language = Language.English
                     };
                     _context.Students.Add(studentToAdd);
                     _context.SaveChanges();
