@@ -116,12 +116,12 @@ namespace Utitshala.Services
         /// </summary>
         /// <param name="sequence">The sequence to act on.</param>
         /// <param name="chatId">The ID of the chat to check options for.</param>
-        public static void OptionInitiator(Sequence sequence, string chatId, string messageText)
+        public static void OptionInitiator(Sequence sequence, string userId, string messageText)
         {
             // Check for an option choice before execution
-            if (options.Where(c => c[0] == chatId).Count() != 0)
+            if (options.Where(c => c[0] == userId).Count() != 0)
             {
-                foreach (var opt in options.Where(c => c[0] == chatId))
+                foreach (var opt in options.Where(c => c[0] == userId))
                 {
                     // Check to see if the input message is the same as the option identifier
                     if (messageText == opt[1])
@@ -132,7 +132,7 @@ namespace Utitshala.Services
                     }
                 }
                 // Clean the options from this list once used
-                foreach (var opt in options.Where(c => c[0] == chatId).ToList())
+                foreach (var opt in options.Where(c => c[0] == userId).ToList())
                 {
                     options.Remove(opt);
                 }
@@ -177,24 +177,24 @@ namespace Utitshala.Services
                         {
                             case "register":
                                 // Do registration here
-                                InputRegister.RegisterStudent(input, userId);
+                                InputRegister.RegisterStudent(userId, input);
                                 sequence.SetNextLine(read[4]);
                                 break;
                             case "chooselanguage":
                                 // Do registration here
-                                InputRegister.ChooseLanguage(input, userId);
+                                InputRegister.ChooseLanguage(userId, input);
                                 sequence.SetNextLine(read[4]);
                                 break;
                             case "viewprofile":
-                                InputRegister.ViewProfile(input, userId);
+                                InputRegister.ViewProfile(userId, input);
                                 sequence.SetNextLine(read[4]);
                                 break;
                             case "viewrecord":
-                                InputRegister.ViewRecord(input, userId);
+                                InputRegister.ViewRecord(userId, input);
                                 sequence.SetNextLine(read[4]);
                                 break;
                             case "editprofile":
-                                InputRegister.EditProfile(input, userId);
+                                InputRegister.EditProfile(userId, input);
                                 sequence.SetNextLine(read[4]);
                                 break;
                         }

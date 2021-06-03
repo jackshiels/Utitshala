@@ -15,11 +15,12 @@ namespace Utitshala.Controllers
         /// <summary>
         /// Registers a student, based on a chat/service ID.
         /// </summary>
-        /// <param name="name">The student's name.</param>
         /// <param name="serviceId">The service ID used to identify the student.</param>
-        public static void RegisterStudent(string name, string serviceId)
+        /// <param name="name">The student's name.</param>
+        public static void RegisterStudent(string serviceId, string name)
         {
-            // Something
+            // Execute the database CRUD
+            DatabaseController.RegisterStudent(serviceId, name);
         }
 
         /// <summary>

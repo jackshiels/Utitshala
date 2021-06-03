@@ -32,5 +32,41 @@ namespace Utitshala.Controllers
 
             return exists;
         }
+
+        /// <summary>
+        /// Registers a new student on the database.
+        /// </summary>
+        /// <param name="userId">The unique identifier from their chat.</param>
+        /// <param name="name">The name of the student.</param>
+        /// <returns></returns>
+        public static bool RegisterStudent(string userId, string name)
+        {
+            bool success = false;
+
+            // Create the student
+            try
+            {
+                if (userId != "" && name != "")
+                {
+                    Student studentToAdd = new Student()
+                    {
+                        ServiceUserID = userId,
+                        Name = name
+                    };
+                    _context.Students.Add(studentToAdd);
+                    _context.SaveChanges();
+
+                    // Mark successful
+                    success = true;
+                }
+            }
+            // Write to console on failure
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            return success;
+        }
     }
 }
