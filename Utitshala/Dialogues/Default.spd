@@ -2,15 +2,35 @@
 > begin hello1
 
 +hello1
-You have been recognised on the system! Congratulations.
+Welcome to Utitshala!
 +
-> opt Option1 hello2
-> opt Option2 hello3
+> execute classcheck "noclasspresence" "getlessons"
 
-+hello2
-You selected option 1
++classpresence
+Here are a list of lessons you can choose:
 +
+> execute getlessons "none" "none"
+> next chooselesson
 
-+hello3
-You selected option 2
++noclasspresence
+You haven't joined a class yet. Please enter your class ID (your teacher will give you this):
 +
+> input classregister positivenumber "failedtojoin" "joinedsuccessfully"
+
++failedtojoin
+That is not a valid class number. Please enter again!
++
+> next classpresence
+
++joinedsuccessfully
+You have been registered with the class!
++
+> next getlessons
+
++chooselesson
++> input openlesson positivenumber "failedtoselectlesson" "none"
+
++failedtoselectlesson
+Not a valid lesson. Please try again!
++
+>next chooselesson

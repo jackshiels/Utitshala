@@ -66,9 +66,11 @@ namespace Utitshala.Services
             sequence.SetVariable("currentImageUrl", "");
             sequence.SetVariable("currentImageCaption", "");
             sequence.SetVariable("currentInputRegex", "");
+            sequence.SetVariable("currentUserId", userId);
 
             // The current ID of this chat, tracked for functions
             sequence.SetVariable("currentUserId", e.Message.From.Id);
+            sequence.SetVariable("currentChat", e);
 
             // Set options, if applicable
             OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
@@ -180,6 +182,18 @@ namespace Utitshala.Services
                                 InputRegister.RegisterStudent(userId, input);
                                 userStateRegister.Add(new string[] { userId, "registered" });
                                 sequence.SetNextLine(read[4]);
+                                break;
+                            case "classregister":
+                                bool result = DatabaseController.RegisterWithClass(userId, input);
+                                // Go A or B, depending on success
+                                if (result)
+                                {
+                                    sequence.SetNextLine(read[4]);
+                                }
+                                else
+                                {
+                                    sequence.SetNextLine(read[3]);
+                                }
                                 break;
                             case "chooselanguage":
                                 // Do registration here
@@ -323,15 +337,42 @@ namespace Utitshala.Services
         public static void ExecuteFunction(Sequence sequence, object[] arguments)
         {
             // Register the function
-            ArgumentUtils.Count("input", arguments, 1);
+            ArgumentUtils.Count("input", arguments, 3);
 
             // Derive the argument
             var arg1 = sequence.Resolve(arguments[0]);
+            var arg2 = sequence.Resolve(arguments[1]);
+            var arg3 = sequence.Resolve(arguments[2]);
 
             // Act upon the function, based on name (extend this)
+            string user;
             switch (arg1.ToString()) {
-                case "abc":
-                    Console.WriteLine("Executed successfully");
+                case "classcheck":
+                    // Get the user ID from this sequence and check its presence
+                    user = sequence.GetVariable("currentUserId").ToString();
+                    bool result = DatabaseController.CheckClassPresence(user);
+                    // Go to an output based on the result
+                    if (result)
+                    {
+                        sequence.SetNextLine(arg3.ToString());
+                    }
+                    else
+                    {
+                        sequence.SetNextLine(arg2.ToString());
+                    }
+                    break;
+                case "getlessons":
+                    // Get the user ID from this sequence and check its lessons
+                    user = sequence.GetVariable("currentUserId").ToString();
+                    List<string[]> results = DatabaseController.GetLessons(user);
+                    // Construct a message and send
+                    string toSend = "";
+                    foreach (var ent in results)
+                    {
+                        toSend += ent[0] + ": " + ent[1] + "\n";
+                    }
+                    toSend += "Enter the number of the lesson you want to run!";
+                    messageClient.SendTextMessage(toSend, sequence.GetVariable("currentChat"));
                     break;
             }
         }

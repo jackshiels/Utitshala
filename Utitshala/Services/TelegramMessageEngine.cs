@@ -32,12 +32,12 @@ namespace Utitshala.Services
         /// </summary>
         /// <param name="audioUrl">The URL of the audio file.</param>
         /// <param name="chat">The chat to send to.</param>
-        public async void SendAudioMessage(string audioUrl, object chat)
+        public void SendAudioMessage(string audioUrl, object chat)
         {
             // Convert the chat to MessageEventArgs
             MessageEventArgs e = (MessageEventArgs)chat;
             // Send
-            await botClient.SendAudioAsync(
+            botClient.SendAudioAsync(
                 chatId: e.Message.Chat,
                 audioUrl);
         }
@@ -48,12 +48,12 @@ namespace Utitshala.Services
         /// <param name="imageUrl">The URL of the image file.</param>
         /// <param name="caption">The caption to include with the image.</param>
         /// <param name="chat">The chat to send to.</param>
-        public async void SendImageMessage(string imageUrl, string caption, object chat)
+        public void SendImageMessage(string imageUrl, string caption, object chat)
         {
             // Convert the chat to MessageEventArgs
             MessageEventArgs e = (MessageEventArgs)chat;
             // Send
-            await botClient.SendPhotoAsync(
+            botClient.SendPhotoAsync(
                   chatId: e.Message.Chat,
                   photo: imageUrl,
                   caption: caption,
@@ -65,12 +65,12 @@ namespace Utitshala.Services
         /// </summary>
         /// <param name="stickerUrl">The URL of the sticker.</param>
         /// <param name="chat">The chat to send to.</param>
-        public async void SendStickerMessage(string stickerUrl, object chat)
+        public void SendStickerMessage(string stickerUrl, object chat)
         {
             // Convert the chat to MessageEventArgs
             MessageEventArgs e = (MessageEventArgs)chat;
             // Send
-            await botClient.SendStickerAsync(
+            botClient.SendStickerAsync(
                   chatId: e.Message.Chat,
                   sticker: stickerUrl);
         }
@@ -80,14 +80,19 @@ namespace Utitshala.Services
         /// </summary>
         /// <param name="message">The text message to send.</param>
         /// <param name="chat">The chat to send to.</param>
-        public async void SendTextMessage(string message, object chat)
+        public void SendTextMessage(string message, object chat)
         {
             // Convert the chat to MessageEventArgs
             MessageEventArgs e = (MessageEventArgs)chat;
-            // Send
-            await botClient.SendTextMessageAsync(
+            // Send if not null/ empty
+            if (message != null 
+                && message != ""
+                && message != "\n")
+            {
+                botClient.SendTextMessageAsync(
                   chatId: e.Message.Chat,
                   text: message);
+            }
         }
 
         /// <summary>
@@ -96,12 +101,12 @@ namespace Utitshala.Services
         /// <param name="videoUrl">The URL of the video file.</param>
         /// <param name="thumbnailUrl">The URL of the video thumbnail.</param>
         /// <param name="chat">The chat to send to.</param>
-        public async void SendVideoMessage(string videoUrl, string thumbnailUrl, object chat)
+        public void SendVideoMessage(string videoUrl, string thumbnailUrl, object chat)
         {
             // Convert the chat to MessageEventArgs
             MessageEventArgs e = (MessageEventArgs)chat;
             // Send
-            await botClient.SendVideoAsync(
+            botClient.SendVideoAsync(
                    chatId: e.Message.Chat,
                    video: videoUrl,
                    thumb: thumbnailUrl,
