@@ -85,7 +85,7 @@ namespace Utitshala.Services
             while (sequence.StartNextLine().HasValue)
             {
                 // Get the current line
-                currentLine = sequence.ExecuteCurrentLine().BuildString();
+                currentLine = sequence.ExecuteCurrentLine().BuildString(true, false);
                 if (sequence.GetVariable("currentImageUrl").ToString() != "")
                 {
                     // Send the message
