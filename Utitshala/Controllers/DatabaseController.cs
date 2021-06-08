@@ -15,6 +15,7 @@ namespace Utitshala.Controllers
         public static ApplicationDbContext _context;
         #endregion
 
+        #region Utility Methods
         /// <summary>
         /// Returns a boolean indicating the presence of a specific user.
         /// </summary>
@@ -87,5 +88,17 @@ namespace Utitshala.Controllers
 
             return success;
         }
+        #endregion
+
+        #region GET Methods
+        /// <summary>
+        /// Returns a list of all students on the database.
+        /// </summary>
+        /// <returns>The list of students.</returns>
+        public static List<Student> GetAllStudents()
+        {
+            return _context.Students.ToList();
+        }
+        #endregion
     }
 }

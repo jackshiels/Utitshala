@@ -25,6 +25,14 @@ namespace Utitshala
             // Initiate the database
             DatabaseController._context = new ApplicationDbContext();
 
+            // Populate the state register
+            ChatEngine.userStateRegister = new List<string[]>();
+            List<Student> students = DatabaseController.GetAllStudents();
+            foreach(var student in students)
+            {
+                ChatEngine.userStateRegister.Add(new string[] { student.ServiceUserID, "registered" });
+            }
+
             // Create and start the Telegram bot client
             ChatEngine.messageClient = new TelegramMessageEngine(
                 new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));

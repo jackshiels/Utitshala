@@ -46,30 +46,10 @@ namespace Utitshala.Services
             string userId = e.Message.From.Id.ToString();
 
             // Get the path of the introductory dialogue document and load, if a new user
-            string path;
-            if (!DatabaseController.CheckRegistration(e.Message.From.Id.ToString()))
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
+            if (userStateRegister.Where(c => c[0] == userId).Count() == 0)
             {
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
-                if (userStateRegister.Where(c => c[0] == e.Message.From.Id.ToString()).Count() == 0)
-                {
-                    userStateRegister.Add(new string[] { e.Message.From.Id.ToString(), "registering" });
-                }
-            }
-            else if (!DatabaseController.CheckClassPresence(userId))
-            {
-                path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Classroom.spd";
-                if (userStateRegister.Where(c => c[0] == e.Message.From.Id.ToString()).Count() == 0)
-                {
-                    userStateRegister.Add(new string[] { e.Message.From.Id.ToString(), "classroom" });
-                }
-            }
-            else
-            {
-                path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
-                if (userStateRegister.Where(c => c[0] == e.Message.From.Id.ToString()).Count() == 0)
-                {
-                    userStateRegister.Add(new string[] { e.Message.From.Id.ToString(), "default" });
-                }
             }
             sequence.LoadAndStartDocument(path);
 
@@ -198,6 +178,7 @@ namespace Utitshala.Services
                             case "register":
                                 // Do registration here
                                 InputRegister.RegisterStudent(userId, input);
+                                userStateRegister.Add(new string[] { userId, "registered" });
                                 sequence.SetNextLine(read[4]);
                                 break;
                             case "chooselanguage":
