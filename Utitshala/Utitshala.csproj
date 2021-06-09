@@ -213,6 +213,10 @@
     <Compile Include="Migrations\202106031405180_Classrooms.Designer.cs">
       <DependentUpon>202106031405180_Classrooms.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106091038286_DateStudentJoined.cs" />
+    <Compile Include="Migrations\202106091038286_DateStudentJoined.Designer.cs">
+      <DependentUpon>202106091038286_DateStudentJoined.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -325,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106031405180_Classrooms.resx">
       <DependentUpon>202106031405180_Classrooms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106091038286_DateStudentJoined.resx">
+      <DependentUpon>202106091038286_DateStudentJoined.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

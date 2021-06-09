@@ -101,7 +101,8 @@ namespace Utitshala.Controllers
                     {
                         ServiceUserID = userId,
                         Name = name,
-                        Language = Language.English
+                        Language = Language.English,
+                        DateJoined = DateTime.Now
                     };
                     _context.Students.Add(studentToAdd);
                     _context.SaveChanges();
@@ -130,7 +131,6 @@ namespace Utitshala.Controllers
             return _context.Students.ToList();
         }
 
-
         /// <summary>
         /// Returns a string array containing Learning Design IDs and names.
         /// </summary>
@@ -151,6 +151,46 @@ namespace Utitshala.Controllers
                 lessonsStrings.Add(new string[] { lesson.ID.ToString(), lesson.Name });
             }
             return lessonsStrings;
+        }
+
+        /// <summary>
+        /// Constructs and returns a student profile in string form.
+        /// </summary>
+        /// <param name="userId">The ID of the student to base the profile on.</param>
+        /// <returns>A string containing profile details.</returns>
+        public static string GetStudentProfile(string userId)
+        {
+            string profile = "";
+
+            try
+            {
+                // Get the student
+                Student student = _context.Students
+                    .FirstOrDefault(c => c.ServiceUserID == userId);
+                Classroom classroom = _context.Classrooms
+                    .FirstOrDefault(c => c.ID == student.ClassroomID);
+                // Construct the string, based on classroom presence
+                if (classroom != null)
+                {
+                    profile += "Your Profile:\n" + "Name: " + student.Name + "\n"
+                    + "Date Joined: " + student.DateJoined.ToShortDateString() + "\n"
+                    + "Classroom: " + classroom.Name + "\n"
+                    + "Chat ID: " + student.ServiceUserID;
+                }
+                else
+                {
+                    profile += "Your Profile:\n" + "Name: " + student.Name + "\n"
+                    + "Date Joined: " + student.DateJoined.ToShortDateString() + "\n"
+                    + "Classroom: None\n"
+                    + "Chat ID: " + student.ServiceUserID;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            return profile;
         }
         #endregion
     }

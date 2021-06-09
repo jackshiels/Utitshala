@@ -374,6 +374,12 @@ namespace Utitshala.Services
                     toSend += "Enter the number of the lesson you want to run!";
                     messageClient.SendTextMessage(toSend, sequence.GetVariable("currentChat"));
                     break;
+                case "viewprofile":
+                    // Get the user ID from this sequence and check its profile
+                    user = sequence.GetVariable("currentUserId").ToString();
+                    string profile = DatabaseController.GetStudentProfile(user);
+                    messageClient.SendTextMessage(profile, sequence.GetVariable("currentChat"));
+                    break;
             }
         }
         #endregion

@@ -17,10 +17,29 @@ Please choose an option:
 > opt 3 "leaveclassroom"
 
 +getlessons
-Here are a list of lessons you can choose:
 +
 > execute getlessons "none" "none"
 > next chooselesson
+
++viewprofile
++
+> execute viewprofile "none" "none"
+> next viewprofileoptions
+
++viewprofileoptions
+1: Back
+2: Leave Classroom
++
+> opt 1 "mainmenu"
+> opt 2 "leaveclassroomcheck"
+
++leaveclassroomcheck
+Are you sure you want to leave your classroom?
+1: Yes
+2: No
++
+> opt 1 "leaveclassroom"
+> opt 2 "viewprofile"
 
 +noclasspresence
 You haven't joined a class yet. Please enter your class ID (your teacher will give you this):
@@ -33,9 +52,8 @@ That is not a valid class number. Please enter again!
 > next classpresence
 
 +joinedsuccessfully
-You have been registered with the class!
-+
-> next mainmenu
+You have joined a class!
++> next mainmenu
 
 +chooselesson
 +> input openlesson positivenumber "failedtoselectlesson" "none"

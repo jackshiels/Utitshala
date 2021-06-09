@@ -15,9 +15,5 @@ Please enter a valid name.
 +> next hello2
 
 +SucceedRegister
-Congratulations, you are now registered!
-+> next StartNextDialogue
-
-+StartNextDialogue
-Enter 'start' to begin!
+Congratulations, you are now registered! Enter 'start' to begin!
 +

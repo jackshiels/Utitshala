@@ -24,6 +24,7 @@ namespace Utitshala.Models
         public int? ClassroomID { get; set; }
         public string Name { get; set; }
         public Language Language { get; set; }
+        public DateTime DateJoined { get; set; }
 
         // Virtuals
         public virtual StudentRecord StudentRecord { get; set; }
