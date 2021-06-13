@@ -221,6 +221,27 @@ namespace Utitshala.Controllers
 
             return profile;
         }
+
+        /// <summary>
+        /// Gets the SPD file location for a learning design.
+        /// </summary>
+        /// <param name="ldId">The learning design ID.</param>
+        /// <returns>A string of the file name.</returns>
+        public static string GetLessonUrl(int ldId)
+        {
+            string url = "";
+            // Attempt to find the learning design URL
+            try
+            {
+                url = _context.LearningDesigns
+                    .FirstOrDefault(c => c.ID == ldId).StorageURL;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return url;
+        }
         #endregion
     }
 }

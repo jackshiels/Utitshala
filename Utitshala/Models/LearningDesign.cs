@@ -16,7 +16,7 @@ namespace Utitshala.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public DateTime DateCreated { get; set; }
-        public int StorageID { get; set; }
+        public string StorageURL { get; set; }
         public bool Public { get; set; }
         [ForeignKey("Classroom")]
         public int? ClassroomID { get; set; }
