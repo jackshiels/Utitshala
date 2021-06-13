@@ -165,96 +165,105 @@ namespace Utitshala.Services
             {
                 foreach (var read in inputRegister.Where(c => c[0] == userId))
                 {
-                    // Perform a regex check
-                    Regex reg = new Regex("");
-                    switch (read[2])
+                    // Back bavigation check
+                    if (input == "0"
+                        && read[5] != "")
                     {
-                        case "textspaced":
-                            reg = new Regex(@"^[a-z A-Z,.'-]+$");
-                            break;
-                        case "textnonspaced":
-                            reg = new Regex(@"^[A-Za-z]+$");
-                            break;
-                        case "anynumber":
-                            reg = new Regex(@"^([-+]?[0-9]+[-,])*[+-]?[0-9]+$");
-                            break;
-                        case "positivenumber":
-                            reg = new Regex(@"^[+]?\d+([.]\d+)?$");
-                            break;
-                        case "emailaddress":
-                            reg = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-                            break;
-                    }
-                    if (reg.IsMatch(input))
-                    {
-                        // Act on the input, depending on its descriptor
-                        switch (read[1])
-                        {
-                            case "register":
-                                // Do registration here
-                                InputRegister.RegisterStudent(userId, input);
-                                userStateRegister.Add(new string[] { userId, "registered" });
-                                sequence.SetNextLine(read[4]);
-                                break;
-                            case "classregister":
-                                bool result = DatabaseController.RegisterWithClass(userId, input);
-                                // Go A or B, depending on success
-                                if (result)
-                                {
-                                    sequence.SetNextLine(read[4]);
-                                }
-                                else
-                                {
-                                    sequence.SetNextLine(read[3]);
-                                }
-                                break;
-                            case "openlesson":
-                                // Get the learning design Url
-                                string resultUrl = DatabaseController.GetLessonUrl(Convert.ToInt32(input));
-                                // Add it to the state machine
-                                if (resultUrl != "")
-                                {
-                                    try
-                                    {
-                                        userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
-                                        userStateRegister.Add(new string[] { userId, "learning", resultUrl });
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine(ex.StackTrace);
-                                    }
-                                    // Set the true sequence output
-                                    sequence.SetNextLine(read[4]);
-                                }
-                                else
-                                {
-                                    // Set the false sequence output
-                                    sequence.SetNextLine(read[2]);
-                                }
-                                break;
-                            case "chooselanguage":
-                                // Do registration here
-                                InputRegister.ChooseLanguage(userId, input);
-                                sequence.SetNextLine(read[4]);
-                                break;
-                            case "viewprofile":
-                                InputRegister.ViewProfile(userId, input);
-                                sequence.SetNextLine(read[4]);
-                                break;
-                            case "viewrecord":
-                                InputRegister.ViewRecord(userId, input);
-                                sequence.SetNextLine(read[4]);
-                                break;
-                            case "editprofile":
-                                InputRegister.EditProfile(userId, input);
-                                sequence.SetNextLine(read[4]);
-                                break;
-                        }
+                        sequence.SetNextLine(read[5].ToString());
                     }
                     else
                     {
-                        // If failed regex, tell the fail condition to be met
-                        sequence.SetNextLine(read[3]);
+                        // Perform a regex check
+                        Regex reg = new Regex("");
+                        switch (read[2])
+                        {
+                            case "textspaced":
+                                reg = new Regex(@"^[a-z A-Z,.'-]+$");
+                                break;
+                            case "textnonspaced":
+                                reg = new Regex(@"^[A-Za-z]+$");
+                                break;
+                            case "anynumber":
+                                reg = new Regex(@"^([-+]?[0-9]+[-,])*[+-]?[0-9]+$");
+                                break;
+                            case "positivenumber":
+                                reg = new Regex(@"^[+]?\d+([.]\d+)?$");
+                                break;
+                            case "emailaddress":
+                                reg = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+                                break;
+                        }
+                        if (reg.IsMatch(input))
+                        {
+                            // Act on the input, depending on its descriptor
+                            switch (read[1])
+                            {
+                                case "register":
+                                    // Do registration here
+                                    InputRegister.RegisterStudent(userId, input);
+                                    userStateRegister.Add(new string[] { userId, "registered" });
+                                    sequence.SetNextLine(read[4]);
+                                    break;
+                                case "classregister":
+                                    bool result = DatabaseController.RegisterWithClass(userId, input);
+                                    // Go A or B, depending on success
+                                    if (result)
+                                    {
+                                        sequence.SetNextLine(read[4]);
+                                    }
+                                    else
+                                    {
+                                        sequence.SetNextLine(read[3]);
+                                    }
+                                    break;
+                                case "openlesson":
+                                    // Get the learning design Url
+                                    string resultUrl = DatabaseController.GetLessonUrl(Convert.ToInt32(input));
+                                    // Add it to the state machine
+                                    if (resultUrl != "")
+                                    {
+                                        try
+                                        {
+                                            userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
+                                            userStateRegister.Add(new string[] { userId, "learning", resultUrl });
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.StackTrace);
+                                        }
+                                        // Set the true sequence output
+                                        sequence.SetNextLine(read[4]);
+                                    }
+                                    else
+                                    {
+                                        // Set the false sequence output
+                                        sequence.SetNextLine(read[2]);
+                                    }
+                                    break;
+                                case "chooselanguage":
+                                    // Do registration here
+                                    InputRegister.ChooseLanguage(userId, input);
+                                    sequence.SetNextLine(read[4]);
+                                    break;
+                                case "viewprofile":
+                                    InputRegister.ViewProfile(userId, input);
+                                    sequence.SetNextLine(read[4]);
+                                    break;
+                                case "viewrecord":
+                                    InputRegister.ViewRecord(userId, input);
+                                    sequence.SetNextLine(read[4]);
+                                    break;
+                                case "editprofile":
+                                    InputRegister.EditProfile(userId, input);
+                                    sequence.SetNextLine(read[4]);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            // If failed regex, tell the fail condition to be met
+                            sequence.SetNextLine(read[3]);
+                        }
                     }
                 }
                 // Clean the inputs from this list once used
@@ -352,17 +361,18 @@ namespace Utitshala.Services
         public static void ReceiveInput(Sequence sequence, object[] arguments)
         {
             // Register the function
-            ArgumentUtils.Count("input", arguments, 4);
+            ArgumentUtils.Count("input", arguments, 5);
 
             // Derive the arguments
             var arg1 = sequence.Resolve(arguments[0]);
             var arg2 = sequence.Resolve(arguments[1]);
             var arg3 = sequence.Resolve(arguments[2]);
             var arg4 = sequence.Resolve(arguments[3]);
+            var arg5 = sequence.Resolve(arguments[4]);
 
             // Act
             inputRegister.Add(new string[] { sequence.GetVariable("currentUserId").ToString(), 
-                arg1.ToString(), arg2.ToString(), arg3.ToString(), arg4.ToString() });
+                arg1.ToString(), arg2.ToString(), arg3.ToString(), arg4.ToString(), arg5.ToString() });
         }
 
         /// <summary>
@@ -411,7 +421,7 @@ namespace Utitshala.Services
                 case "getlessons":
                     List<string[]> results = DatabaseController.GetLessons(user);
                     // Construct a message and send
-                    string toSend = "";
+                    string toSend = "0: Back\n";
                     foreach (var ent in results)
                     {
                         toSend += ent[0] + ": " + ent[1] + "\n";

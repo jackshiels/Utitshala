@@ -16,12 +16,15 @@ Please choose an option:
 
 +getlessons
 +
-> execute getlessons "none" "none"
+> execute getlessons "" ""
 > next chooselesson
+
++chooselesson
++> input openlesson positivenumber "failedtoselectlesson" "selectedlesson" "mainmenu"
 
 +viewprofile
 +
-> execute viewprofile "none" "none"
+> execute viewprofile "" ""
 > next viewprofileoptions
 
 +viewprofileoptions
@@ -42,13 +45,13 @@ Are you sure you want to leave your classroom?
 +leaveclassroom
 You have left your classroom.
 +
-> execute leaveclassroom "none" "noclasspresence"
+> execute leaveclassroom "" "noclasspresence"
 > next "noclasspresence"
 
 +noclasspresence
 You haven't joined a class yet. Please enter your class ID (your teacher will give you this):
 +
-> input classregister positivenumber "failedtojoin" "joinedsuccessfully"
+> input classregister positivenumber "failedtojoin" "joinedsuccessfully" ""
 
 +failedtojoin
 That is not a valid class number. Please enter again!
@@ -58,9 +61,6 @@ That is not a valid class number. Please enter again!
 +joinedsuccessfully
 You have joined a class!
 +> next mainmenu
-
-+chooselesson
-+> input openlesson positivenumber "failedtoselectlesson" "selectedlesson"
 
 +failedtoselectlesson
 Not a valid lesson. Please try again!
