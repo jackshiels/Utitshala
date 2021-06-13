@@ -180,7 +180,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InputRegister.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -220,6 +219,18 @@
     <Compile Include="Migrations\202106131050518_LearningDesignLocationColumn.cs" />
     <Compile Include="Migrations\202106131050518_LearningDesignLocationColumn.Designer.cs">
       <DependentUpon>202106131050518_LearningDesignLocationColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106131348493_SessionLearningDesignID.cs" />
+    <Compile Include="Migrations\202106131348493_SessionLearningDesignID.Designer.cs">
+      <DependentUpon>202106131348493_SessionLearningDesignID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106131356182_EditSessionsName.cs" />
+    <Compile Include="Migrations\202106131356182_EditSessionsName.Designer.cs">
+      <DependentUpon>202106131356182_EditSessionsName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106131416293_SessionCompletedColumn.cs" />
+    <Compile Include="Migrations\202106131416293_SessionCompletedColumn.Designer.cs">
+      <DependentUpon>202106131416293_SessionCompletedColumn.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -340,6 +351,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106131050518_LearningDesignLocationColumn.resx">
       <DependentUpon>202106131050518_LearningDesignLocationColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106131348493_SessionLearningDesignID.resx">
+      <DependentUpon>202106131348493_SessionLearningDesignID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106131356182_EditSessionsName.resx">
+      <DependentUpon>202106131356182_EditSessionsName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106131416293_SessionCompletedColumn.resx">
+      <DependentUpon>202106131416293_SessionCompletedColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

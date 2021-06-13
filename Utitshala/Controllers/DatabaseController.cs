@@ -102,7 +102,8 @@ namespace Utitshala.Controllers
                         ServiceUserID = userId,
                         Name = name,
                         Language = Language.English,
-                        DateJoined = DateTime.Now
+                        DateJoined = DateTime.Now,
+                        StudentRecord = new StudentRecord()
                     };
                     _context.Students.Add(studentToAdd);
                     _context.SaveChanges();
@@ -241,6 +242,75 @@ namespace Utitshala.Controllers
                 Console.WriteLine(ex.StackTrace);
             }
             return url;
+        }
+        #endregion
+
+        #region POST Methods
+        /// <summary>
+        /// Creates a session object in a student's record.
+        /// </summary>
+        /// <param name="userId">The service ID of the student to create a session for.</param>
+        /// <param name="learningDesignId">The ID of the learning design being learned.</param>
+        /// <returns>A boolean indicating success or failure in creating a session.</returns>
+        public static bool StartSession(string userId, int learningDesignId)
+        {
+            bool result = false;
+            // Create a session object and save
+            try
+            {
+                Session session = new Session()
+                {
+                    DateTimeStarted = DateTime.Now,
+                    LearningDesignID = learningDesignId,
+                    Abandoned = false,
+                };
+                // Get the student record by user service ID
+                StudentRecord record = _context.Students
+                    .FirstOrDefault(c => c.ServiceUserID == userId).StudentRecord;
+                record.Sessions.Add(session);
+                _context.SaveChanges();
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="learningDesignId"></param>
+        /// <returns></returns>
+        public static bool CloseSession(string userId, int learningDesignId)
+        {
+            bool result = false;
+            // Create a session object and save
+            try
+            {
+                // Mark the session with an end datetime
+                Session session = _context.Students
+                    .FirstOrDefault(c => c.ServiceUserID == userId)
+                    .StudentRecord
+                    .Sessions
+                    .FirstOrDefault(v => v.LearningDesignID == learningDesignId
+                    && v.Abandoned != true);
+                // Set abandoned at this time
+                session.DateTimeEnded = DateTime.Now;
+                session.Abandoned = true;
+                // Save changes
+                _context.Entry(session).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                // Mark successful
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return result;
         }
         #endregion
     }

@@ -10,7 +10,6 @@ using Spin;
 using Spin.Attributes;
 using Spin.Utility;
 using static Utitshala.Services.Interfaces;
-using static Utitshala.Controllers.InputRegister;
 using System.Text.RegularExpressions;
 using Utitshala.Controllers;
 
@@ -45,24 +44,33 @@ namespace Utitshala.Services
             // Get user ID
             string userId = e.Message.From.Id.ToString();
 
+            #region Select Dialogue File
             // Get the path of the introductory dialogue document and load, if a new user
             string path = "";
             if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "registered"
                 || e.Message.Text == "exit"
                 || e.Message.Text == "Exit")
             {
+                // Check for an active session and close if one exists
+                if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "learning")
+                {
+                    DatabaseController.CloseSession(userId, Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == userId)[2]));
+                }
+                // Set the path to default
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
             }
             else if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "learning")
             {
-                path = AppDomain.CurrentDomain.BaseDirectory + @"Lessons\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[2];
+                path = AppDomain.CurrentDomain.BaseDirectory + @"Lessons\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[3];
             }
             else if (userStateRegister.Where(c => c[0] == userId).Count() == 0)
             {
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
             }
             sequence.LoadAndStartDocument(path);
+            #endregion
 
+            #region Construct Sequence
             // Add functional elements
             sequence.AddCommand("opt", ChatEngine.OptionTraversal);
             sequence.AddCommand("image", ChatEngine.ImageMessageHandler);
@@ -81,13 +89,17 @@ namespace Utitshala.Services
             // The current ID of this chat, tracked for functions
             sequence.SetVariable("currentUserId", e.Message.From.Id);
             sequence.SetVariable("currentChat", e);
+            #endregion
 
+            #region Sequence Utilities
             // Set options, if applicable
             OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
 
             // Grab input if applicable
             InputSaver(sequence, e.Message.Text, e.Message.Chat.Id.ToString());
+            #endregion
 
+            #region Input Cycle
             // Set the line to send
             string currentLine;
 
@@ -123,6 +135,7 @@ namespace Utitshala.Services
                     messageClient.SendTextMessage(currentLine, e);
                 }
             }
+            #endregion
         }
 
         #region Helper Functions
@@ -200,7 +213,7 @@ namespace Utitshala.Services
                             {
                                 case "register":
                                     // Do registration here
-                                    InputRegister.RegisterStudent(userId, input);
+                                    DatabaseController.RegisterStudent(userId, input);
                                     userStateRegister.Add(new string[] { userId, "registered" });
                                     sequence.SetNextLine(read[4]);
                                     break;
@@ -224,8 +237,10 @@ namespace Utitshala.Services
                                     {
                                         try
                                         {
+                                            // Create a session in the database
+                                            DatabaseController.StartSession(userId, Convert.ToInt32(input));
                                             userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
-                                            userStateRegister.Add(new string[] { userId, "learning", resultUrl });
+                                            userStateRegister.Add(new string[] { userId, "learning", input, resultUrl });
                                         }
                                         catch (Exception ex)
                                         {
@@ -239,23 +254,6 @@ namespace Utitshala.Services
                                         // Set the false sequence output
                                         sequence.SetNextLine(read[2]);
                                     }
-                                    break;
-                                case "chooselanguage":
-                                    // Do registration here
-                                    InputRegister.ChooseLanguage(userId, input);
-                                    sequence.SetNextLine(read[4]);
-                                    break;
-                                case "viewprofile":
-                                    InputRegister.ViewProfile(userId, input);
-                                    sequence.SetNextLine(read[4]);
-                                    break;
-                                case "viewrecord":
-                                    InputRegister.ViewRecord(userId, input);
-                                    sequence.SetNextLine(read[4]);
-                                    break;
-                                case "editprofile":
-                                    InputRegister.EditProfile(userId, input);
-                                    sequence.SetNextLine(read[4]);
                                     break;
                             }
                         }

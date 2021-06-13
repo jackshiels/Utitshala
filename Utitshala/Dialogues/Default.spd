@@ -1,4 +1,4 @@
-# Default use case
+# BEGIN ---------------------------------------------------
 > begin greeting
 
 +greeting
@@ -6,47 +6,7 @@ Welcome to Utitshala!
 +
 > execute classcheck "noclasspresence" "mainmenu"
 
-+mainmenu
-Please choose an option:
-1: View my lessons
-2: View my profile
-+
-> opt 1 "getlessons"
-> opt 2 "viewprofile"
-
-+getlessons
-+
-> execute getlessons "" ""
-> next chooselesson
-
-+chooselesson
-+> input openlesson positivenumber "failedtoselectlesson" "selectedlesson" "mainmenu"
-
-+viewprofile
-+
-> execute viewprofile "" ""
-> next viewprofileoptions
-
-+viewprofileoptions
-1: Back
-2: Leave Classroom
-+
-> opt 1 "mainmenu"
-> opt 2 "leaveclassroomcheck"
-
-+leaveclassroomcheck
-Are you sure you want to leave your classroom?
-1: Yes
-2: No
-+
-> opt 1 "leaveclassroom"
-> opt 2 "viewprofile"
-
-+leaveclassroom
-You have left your classroom.
-+
-> execute leaveclassroom "" "noclasspresence"
-> next "noclasspresence"
+# CLASSROOM CHECK -----------------------------------------
 
 +noclasspresence
 You haven't joined a class yet. Please enter your class ID (your teacher will give you this):
@@ -62,6 +22,26 @@ That is not a valid class number. Please enter again!
 You have joined a class!
 +> next mainmenu
 
+# MAIN MENU, LESSONS, AND PROFILE --------------------------
+
++mainmenu
+Please choose an option:
+1: View my lessons
+2: View my profile
++
+> opt 1 "getlessons"
+> opt 2 "viewprofile"
+
+# CHOOSE LESSON
+
++getlessons
++
+> execute getlessons "" ""
+> next chooselesson
+
++chooselesson
++> input openlesson positivenumber "failedtoselectlesson" "selectedlesson" "mainmenu"
+
 +failedtoselectlesson
 Not a valid lesson. Please try again!
 +
@@ -69,4 +49,34 @@ Not a valid lesson. Please try again!
 
 +selectedlesson
 Lesson loaded! Enter start to begin. To leave your lesson, type exit.
++> execute createsession "" ""
+
+# VIEW PROFILE
+
++viewprofile
 +
+> execute viewprofile "" ""
+> next viewprofileoptions
+
++viewprofileoptions
+1: Back
+2: Leave Classroom
++
+> opt 1 "mainmenu"
+> opt 2 "leaveclassroomcheck"
+
+# LEAVE CLASSROOM
+
++leaveclassroomcheck
+Are you sure you want to leave your classroom?
+1: Yes
+2: No
++
+> opt 1 "leaveclassroom"
+> opt 2 "viewprofile"
+
++leaveclassroom
+You have left your classroom.
++
+> execute leaveclassroom "" "noclasspresence"
+> next "noclasspresence"
