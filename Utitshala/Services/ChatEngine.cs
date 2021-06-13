@@ -47,13 +47,15 @@ namespace Utitshala.Services
 
             // Get the path of the introductory dialogue document and load, if a new user
             string path = "";
-            if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "registered")
+            if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "registered"
+                || e.Message.Text == "exit"
+                || e.Message.Text == "Exit")
             {
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
             }
-            if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "learning")
+            else if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "learning")
             {
-                path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[2];
+                path = AppDomain.CurrentDomain.BaseDirectory + @"Lessons\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[2];
             }
             else if (userStateRegister.Where(c => c[0] == userId).Count() == 0)
             {
@@ -210,14 +212,24 @@ namespace Utitshala.Services
                                 // Get the learning design Url
                                 string resultUrl = DatabaseController.GetLessonUrl(Convert.ToInt32(input));
                                 // Add it to the state machine
-                                try
+                                if (resultUrl != "")
                                 {
-                                    userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
-                                    userStateRegister.Add(new string[] { userId, "learning", resultUrl });
+                                    try
+                                    {
+                                        userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
+                                        userStateRegister.Add(new string[] { userId, "learning", resultUrl });
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.StackTrace);
+                                    }
+                                    // Set the true sequence output
+                                    sequence.SetNextLine(read[4]);
                                 }
-                                catch (Exception ex)
+                                else
                                 {
-                                    Console.WriteLine(ex.StackTrace);
+                                    // Set the false sequence output
+                                    sequence.SetNextLine(read[2]);
                                 }
                                 break;
                             case "chooselanguage":

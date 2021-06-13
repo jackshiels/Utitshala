@@ -60,9 +60,13 @@ You have joined a class!
 +> next mainmenu
 
 +chooselesson
-+> input openlesson positivenumber "failedtoselectlesson" "none"
++> input openlesson positivenumber "failedtoselectlesson" "selectedlesson"
 
 +failedtoselectlesson
 Not a valid lesson. Please try again!
 +
 >next chooselesson
+
++selectedlesson
+Lesson loaded! Enter start to begin. To leave your lesson, type exit.
++
