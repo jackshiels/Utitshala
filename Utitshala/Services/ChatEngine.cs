@@ -86,6 +86,9 @@ namespace Utitshala.Services
             {
                 // Get the current line
                 currentLine = sequence.ExecuteCurrentLine().BuildString(true, false);
+                // Sleep so that any executed lines can complete their message
+                Thread.Sleep(100);
+                // Message the line based on media type
                 if (sequence.GetVariable("currentImageUrl").ToString() != "")
                 {
                     // Send the message
@@ -344,12 +347,13 @@ namespace Utitshala.Services
             var arg2 = sequence.Resolve(arguments[1]);
             var arg3 = sequence.Resolve(arguments[2]);
 
+            // Get the user ID from this sequence and check its presence
+            string user = sequence.GetVariable("currentUserId").ToString();
+
             // Act upon the function, based on name (extend this)
-            string user;
             switch (arg1.ToString()) {
                 case "classcheck":
                     // Get the user ID from this sequence and check its presence
-                    user = sequence.GetVariable("currentUserId").ToString();
                     bool result = DatabaseController.CheckClassPresence(user);
                     // Go to an output based on the result
                     if (result)
@@ -361,9 +365,16 @@ namespace Utitshala.Services
                         sequence.SetNextLine(arg2.ToString());
                     }
                     break;
+                case "leaveclassroom":
+                    // Remove the student from the classroom
+                    bool leaveResult = DatabaseController.LeaveClassroom(user);
+                    // If successful, set the next line
+                    if (leaveResult)
+                    {
+                        sequence.SetNextLine(arg3.ToString());
+                    }
+                    break;
                 case "getlessons":
-                    // Get the user ID from this sequence and check its lessons
-                    user = sequence.GetVariable("currentUserId").ToString();
                     List<string[]> results = DatabaseController.GetLessons(user);
                     // Construct a message and send
                     string toSend = "";
@@ -375,8 +386,6 @@ namespace Utitshala.Services
                     messageClient.SendTextMessage(toSend, sequence.GetVariable("currentChat"));
                     break;
                 case "viewprofile":
-                    // Get the user ID from this sequence and check its profile
-                    user = sequence.GetVariable("currentUserId").ToString();
                     string profile = DatabaseController.GetStudentProfile(user);
                     messageClient.SendTextMessage(profile, sequence.GetVariable("currentChat"));
                     break;

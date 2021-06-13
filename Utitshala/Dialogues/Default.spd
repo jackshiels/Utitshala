@@ -1,7 +1,7 @@
 # Default use case
-> begin hello1
+> begin greeting
 
-+hello1
++greeting
 Welcome to Utitshala!
 +
 > execute classcheck "noclasspresence" "mainmenu"
@@ -10,11 +10,9 @@ Welcome to Utitshala!
 Please choose an option:
 1: View my lessons
 2: View my profile
-3: Leave my classroom
 +
 > opt 1 "getlessons"
 > opt 2 "viewprofile"
-> opt 3 "leaveclassroom"
 
 +getlessons
 +
@@ -41,6 +39,12 @@ Are you sure you want to leave your classroom?
 > opt 1 "leaveclassroom"
 > opt 2 "viewprofile"
 
++leaveclassroom
+You have left your classroom.
++
+> execute leaveclassroom "none" "noclasspresence"
+> next "noclasspresence"
+
 +noclasspresence
 You haven't joined a class yet. Please enter your class ID (your teacher will give you this):
 +
@@ -49,7 +53,7 @@ You haven't joined a class yet. Please enter your class ID (your teacher will gi
 +failedtojoin
 That is not a valid class number. Please enter again!
 +
-> next classpresence
+> next "noclasspresence"
 
 +joinedsuccessfully
 You have joined a class!

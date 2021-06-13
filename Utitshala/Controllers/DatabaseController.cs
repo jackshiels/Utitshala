@@ -87,7 +87,7 @@ namespace Utitshala.Controllers
         /// </summary>
         /// <param name="userId">The unique identifier from their chat.</param>
         /// <param name="name">The name of the student.</param>
-        /// <returns></returns>
+        /// <returns>A boolean representing success or failure in registering.</returns>
         public static bool RegisterStudent(string userId, string name)
         {
             bool success = false;
@@ -118,6 +118,35 @@ namespace Utitshala.Controllers
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// Removes a student from their classroom.
+        /// </summary>
+        /// <param name="userId">The unique identifier from their chat.</param>
+        /// <returns>A boolean representing success in removing.</returns>
+        public static bool LeaveClassroom(string userId)
+        {
+            bool result = false;
+
+            // Attempt to remove the student
+            try
+            {
+                Student student = _context.Students
+                    .FirstOrDefault(c => c.ServiceUserID == userId);
+                student.ClassroomID = null;
+                _context.Entry(student).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+
+                // Mark true
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+
+            return result;
         }
         #endregion
 
