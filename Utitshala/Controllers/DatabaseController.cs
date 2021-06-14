@@ -259,7 +259,8 @@ namespace Utitshala.Controllers
             try
             {
                 // First, close all other sessions
-                List<Session> sessions = _context.Students
+                List<Session> sessions = new List<Session>();
+                sessions = _context.Students
                     .Include("StudentRecord")
                     .Include("Sessions")
                     .FirstOrDefault(c => c.ServiceUserID == userId)

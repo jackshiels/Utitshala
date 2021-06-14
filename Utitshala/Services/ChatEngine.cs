@@ -45,27 +45,38 @@ namespace Utitshala.Services
             string userId = e.Message.From.Id.ToString();
 
             #region Select Dialogue File
-            // Get the path of the introductory dialogue document and load, if a new user
+            // The dialogue path
             string path = "";
-            if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "registered"
-                || e.Message.Text == "exit"
-                || e.Message.Text == "Exit")
+            string[] userState = userStateRegister.FirstOrDefault(c => c[0] == userId);
+
+            // Exit clause
+            if (e.Message.Text.ToLower() == "exit")
             {
-                // Check for an active session and close if one exists
-                if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "learning")
+                if (userState != null && userState[1] == "learning")
                 {
-                    DatabaseController.CloseSession(userId, Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == userId)[2]));
+                    // Close the session
+                    DatabaseController.CloseSession(userId, Convert.ToInt32(userState[4]));
+                    path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
                 }
-                // Set the path to default
-                path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
             }
-            else if (userStateRegister.FirstOrDefault(c => c[0] == userId)[1] == "learning")
-            {
-                path = AppDomain.CurrentDomain.BaseDirectory + @"Lessons\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[3];
-            }
-            else if (userStateRegister.Where(c => c[0] == userId).Count() == 0)
+
+            // Get the path of the introductory dialogue document and load, if a new user
+            if (userState == null)
             {
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
+            }
+            else
+            {
+                switch (userStateRegister.FirstOrDefault(c => c[0] == userId)[1])
+                {
+                    case "registered":
+                        // Set the path to default
+                        path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
+                        break;
+                    case "learning":
+                        path = AppDomain.CurrentDomain.BaseDirectory + @"Lessons\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[3];
+                        break; 
+                }
             }
             sequence.LoadAndStartDocument(path);
             #endregion
