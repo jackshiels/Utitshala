@@ -263,7 +263,9 @@ namespace Utitshala.Controllers
                     .Include("StudentRecord")
                     .FirstOrDefault(c => c.ServiceUserID == userId);
                 // Iterate over the non-abandoned sessions and mark abandoned
-                foreach (var ses in student.StudentRecord.Sessions.ToList())
+                foreach (var ses in student.StudentRecord.Sessions
+                    .Where(c => c.Abandoned == false
+                    && c.DateTimeEnded == null).ToList())
                 {
                     ses.Abandoned = true;
                     ses.DateTimeEnded = DateTime.Now;
@@ -297,10 +299,10 @@ namespace Utitshala.Controllers
         /// <summary>
         /// Closes an open session.
         /// </summary>
-        /// <param name="userId">The service ID of the user to close a session for.</param>
         /// <param name="sessionId">The ID of the open session to close.</param>
+        /// <param name="completed">A boolean representing a fair completion.</param>
         /// <returns>A boolean representing success or failure in closing.</returns>
-        public static bool CloseSession(string userId, int sessionId)
+        public static bool CloseSession(int sessionId, bool completed)
         {
             bool result = false;
             // Create a session object and save
@@ -311,7 +313,15 @@ namespace Utitshala.Controllers
                     .FirstOrDefault(c => c.ID == sessionId);
                 // Set abandoned at this time
                 session.DateTimeEnded = DateTime.Now;
-                session.Abandoned = true;
+                // Was it completed correctly?
+                if (completed)
+                {
+                    session.Completed = true;
+                }
+                else
+                {
+                    session.Abandoned = true;
+                }
                 // Save changes
                 _context.Entry(session).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();

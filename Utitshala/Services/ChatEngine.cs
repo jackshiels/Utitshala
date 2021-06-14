@@ -55,8 +55,10 @@ namespace Utitshala.Services
                 if (userState != null && userState[1] == "learning")
                 {
                     // Close the session
-                    DatabaseController.CloseSession(userId, Convert.ToInt32(userState[4]));
+                    DatabaseController.CloseSession(Convert.ToInt32(userState[4]), false);
                     path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
+                    userStateRegister.Remove(userState);
+                    userStateRegister.Add(new string[] { userId, "registered" });
                 }
             }
 
@@ -443,10 +445,14 @@ namespace Utitshala.Services
                     messageClient.SendTextMessage(profile, sequence.GetVariable("currentChat"));
                     break;
                 case "closesession":
+                    string[] userState = userStateRegister.FirstOrDefault(c => c[0] == user);
                     // Close the session
-                    bool closeResult = DatabaseController.CloseSession(user, Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == user)));
+                    bool closeResult = DatabaseController.CloseSession(Convert.ToInt32(userState[4]), true);
                     if (closeResult)
                     {
+                        // Remove the current user state and replace with default
+                        userStateRegister.Remove(userState);
+                        userStateRegister.Add(new string[] { user, "registered" });
                         sequence.SetNextLine(arg3.ToString());
                     }
                     break;
