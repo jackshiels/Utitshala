@@ -14,6 +14,6 @@ namespace Utitshala.Models
     {
         [Key]
         public int ID { get; set; }
-        public List<Session> Sessions { get; set; }
+        public virtual List<Session> Sessions { get; set; }
     }
 }

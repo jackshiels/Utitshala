@@ -259,16 +259,11 @@ namespace Utitshala.Controllers
             try
             {
                 // First, close all other sessions
-                List<Session> sessions = new List<Session>();
-                sessions = _context.Students
+                Student student = _context.Students
                     .Include("StudentRecord")
-                    .Include("Sessions")
-                    .FirstOrDefault(c => c.ServiceUserID == userId)
-                    .StudentRecord.Sessions
-                    .Where(c => c.Abandoned == false
-                    && c.DateTimeEnded == null).ToList();
+                    .FirstOrDefault(c => c.ServiceUserID == userId);
                 // Iterate over the non-abandoned sessions and mark abandoned
-                foreach (var ses in sessions)
+                foreach (var ses in student.StudentRecord.Sessions.ToList())
                 {
                     ses.Abandoned = true;
                     ses.DateTimeEnded = DateTime.Now;

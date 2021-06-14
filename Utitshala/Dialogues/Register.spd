@@ -8,7 +8,7 @@ Hello! Welcome to Utitshala!
 +hello2
 You need to register to start learning. If you want to register, please enter your full name.
 +
-> input register textspaced "FailRegister" "SucceedRegister"
+> input register textspaced "FailRegister" "SucceedRegister" ""
 
 +FailRegister
 Please enter a valid name.

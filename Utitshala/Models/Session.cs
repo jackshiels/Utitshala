@@ -16,8 +16,8 @@ namespace Utitshala.Models
         public int ID { get; set; }
         [ForeignKey("LearningDesign")]
         public int LearningDesignID { get; set; }
-        public DateTime DateTimeStarted { get; set; }
-        public DateTime DateTimeEnded { get; set; }
+        public DateTime? DateTimeStarted { get; set; }
+        public DateTime? DateTimeEnded { get; set; }
         public bool Completed { get; set; }
         public bool Abandoned { get; set; }
 
