@@ -442,6 +442,14 @@ namespace Utitshala.Services
                     string profile = DatabaseController.GetStudentProfile(user);
                     messageClient.SendTextMessage(profile, sequence.GetVariable("currentChat"));
                     break;
+                case "closesession":
+                    // Close the session
+                    bool closeResult = DatabaseController.CloseSession(user, Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == user)));
+                    if (closeResult)
+                    {
+                        sequence.SetNextLine(arg3.ToString());
+                    }
+                    break;
             }
         }
         #endregion

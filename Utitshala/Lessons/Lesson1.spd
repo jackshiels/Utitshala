@@ -10,3 +10,24 @@ Welcome to your new lesson!
 Here is a cool image:
 +
 > image "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "Its a church"
+> next lastoption
+
++lastoption
+Choose yes to win
+1. Yes
+2. No
++
+> opt 1 "complete"
+> opt 2 "fail"
+
++complete
+Executing the session closer...
++> execute closesession "" "completed"
+
++completed
+Congrats! You're finished! Enter hello to do another lesson.
++
+
++fail
+You fail!
++
