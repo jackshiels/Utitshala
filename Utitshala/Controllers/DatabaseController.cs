@@ -251,13 +251,32 @@ namespace Utitshala.Controllers
         /// </summary>
         /// <param name="userId">The service ID of the student to create a session for.</param>
         /// <param name="learningDesignId">The ID of the learning design being learned.</param>
-        /// <returns>A boolean indicating success or failure in creating a session.</returns>
-        public static bool StartSession(string userId, int learningDesignId)
+        /// <returns>The ID of the session as an int.</returns>
+        public static int StartSession(string userId, int learningDesignId)
         {
-            bool result = false;
+            int result = -1;
             // Create a session object and save
             try
             {
+                // First, close all other sessions
+                List<Session> sessions = _context.Students
+                    .Include("StudentRecord")
+                    .Include("Sessions")
+                    .FirstOrDefault(c => c.ServiceUserID == userId)
+                    .StudentRecord.Sessions
+                    .Where(c => c.Abandoned == false
+                    && c.DateTimeEnded == null).ToList();
+                // Iterate over the non-abandoned sessions and mark abandoned
+                foreach (var ses in sessions)
+                {
+                    ses.Abandoned = true;
+                    ses.DateTimeEnded = DateTime.Now;
+                    _context.Entry(ses).State = System.Data.Entity.EntityState.Modified;
+                }
+                // Save
+                _context.SaveChanges();
+                _context = new ApplicationDbContext();
+                // Create the new session
                 Session session = new Session()
                 {
                     DateTimeStarted = DateTime.Now,
@@ -269,7 +288,8 @@ namespace Utitshala.Controllers
                     .FirstOrDefault(c => c.ServiceUserID == userId).StudentRecord;
                 record.Sessions.Add(session);
                 _context.SaveChanges();
-                result = true;
+                // Return the ID of the session
+                result = session.ID;
             }
             catch (Exception ex)
             {
@@ -279,24 +299,20 @@ namespace Utitshala.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Closes an open session.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="learningDesignId"></param>
-        /// <returns></returns>
-        public static bool CloseSession(string userId, int learningDesignId)
+        /// <param name="userId">The service ID of the user to close a session for.</param>
+        /// <param name="sessionId">The ID of the open session to close.</param>
+        /// <returns>A boolean representing success or failure in closing.</returns>
+        public static bool CloseSession(string userId, int sessionId)
         {
             bool result = false;
             // Create a session object and save
             try
             {
                 // Mark the session with an end datetime
-                Session session = _context.Students
-                    .FirstOrDefault(c => c.ServiceUserID == userId)
-                    .StudentRecord
-                    .Sessions
-                    .FirstOrDefault(v => v.LearningDesignID == learningDesignId
-                    && v.Abandoned != true);
+                Session session = _context.Sessions
+                    .FirstOrDefault(c => c.ID == sessionId);
                 // Set abandoned at this time
                 session.DateTimeEnded = DateTime.Now;
                 session.Abandoned = true;

@@ -238,9 +238,9 @@ namespace Utitshala.Services
                                         try
                                         {
                                             // Create a session in the database
-                                            DatabaseController.StartSession(userId, Convert.ToInt32(input));
+                                            int sessionId = DatabaseController.StartSession(userId, Convert.ToInt32(input));
                                             userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
-                                            userStateRegister.Add(new string[] { userId, "learning", input, resultUrl });
+                                            userStateRegister.Add(new string[] { userId, "learning", input, resultUrl, sessionId.ToString() });
                                         }
                                         catch (Exception ex)
                                         {
