@@ -162,6 +162,27 @@ namespace Utitshala.Controllers
         }
 
         /// <summary>
+        /// Marks sessions that have been abandoned as abandoned.
+        /// </summary>
+        public static void UpdateAbandonedSessions()
+        {
+            // Get the list of sessions
+            List<Session> sessions = _context.Sessions.ToList();
+            foreach (var session in sessions)
+            {
+                // If not abandoned or completed, mark as abandoned
+                if (session.Abandoned == false
+                    && session.DateTimeEnded == null)
+                {
+                    session.Abandoned = true;
+                    _context.Entry(session).State = System.Data.Entity.EntityState.Modified;
+                }
+            }
+            // Save changes
+            _context.SaveChanges();
+        }
+
+        /// <summary>
         /// Returns a string array containing Learning Design IDs and names.
         /// </summary>
         /// <param name="userId">The user to base this GET on.</param>
