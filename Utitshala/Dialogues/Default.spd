@@ -57,7 +57,7 @@ Lesson loaded! Enter start to begin. To leave your lesson, type exit.
 +getassessments
 +
 > execute getassessments "" ""
-> chooseassessment
+> next chooseassessment
 
 +chooseassessment
 +> input openassessment positivenumber "failedtoselectassessment" "selectedassessment" "mainmenu"

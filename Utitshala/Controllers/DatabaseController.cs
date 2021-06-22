@@ -225,7 +225,7 @@ namespace Utitshala.Controllers
                 {
                     LearningDesign lesson = _context
                         .LearningDesigns
-                        .Include("Assessments")
+                        .Include("Assessment")
                         .FirstOrDefault(c => c.ID == sesh.LearningDesignID);
                     if (lesson.Assessment != null)
                     {
@@ -240,10 +240,7 @@ namespace Utitshala.Controllers
             Classroom classroom = _context.Classrooms
                 .Include("Assessments")
                 .FirstOrDefault(c => c.ID == classroomId);
-            foreach (var assess in classroom.Assessments)
-            {
-                assessments.Add(assess);
-            }
+            assessments.AddRange(classroom.Assessments);
             // Convert the lessons into string[] { ID, Name } and return
             List<string[]> assessmentStrings = new List<string[]>();
             foreach (var assessment in assessments)

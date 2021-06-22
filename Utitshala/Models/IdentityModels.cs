@@ -27,7 +27,7 @@ namespace Utitshala.Models
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<LearningDesign> LearningDesigns { get; set; }
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("AzureConnection", throwIfV1Schema: false)
         {
         }
 
