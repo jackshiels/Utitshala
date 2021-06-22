@@ -205,6 +205,55 @@ namespace Utitshala.Controllers
         }
 
         /// <summary>
+        /// Returns a string array containing assessment IDs and names.
+        /// </summary>
+        /// <param name="userId">The user to base this GET on.</param>
+        /// <returns>The string[] containing assessment details.</returns>
+        public static List<string[]> GetAssessments(string userId)
+        {
+            // Get the user's sessions
+            List<Session> sessions = _context.Students
+                .Include("StudentRecord")
+                .FirstOrDefault(c => c.ServiceUserID == userId)
+                .StudentRecord
+                .Sessions;
+            // Get the available assessments, based on Learning Designs available and completed.
+            List<Assessment> assessments = new List<Assessment>();
+            foreach (var sesh in sessions)
+            {
+                if (sesh.Completed == true)
+                {
+                    LearningDesign lesson = _context
+                        .LearningDesigns
+                        .Include("Assessments")
+                        .FirstOrDefault(c => c.ID == sesh.LearningDesignID);
+                    if (lesson.Assessment != null)
+                    {
+                        assessments.Add(lesson.Assessment);
+                    }
+                }
+            }
+            // Get the available assessments, based on a direct link to the student's classroom
+            int classroomId = (int)_context.Students
+                .FirstOrDefault(c => c.ServiceUserID == userId)
+                .ClassroomID;
+            Classroom classroom = _context.Classrooms
+                .Include("Assessments")
+                .FirstOrDefault(c => c.ID == classroomId);
+            foreach (var assess in classroom.Assessments)
+            {
+                assessments.Add(assess);
+            }
+            // Convert the lessons into string[] { ID, Name } and return
+            List<string[]> assessmentStrings = new List<string[]>();
+            foreach (var assessment in assessments)
+            {
+                assessmentStrings.Add(new string[] { assessment.ID.ToString(), assessment.Name });
+            }
+            return assessmentStrings;
+        }
+
+        /// <summary>
         /// Constructs and returns a student profile in string form.
         /// </summary>
         /// <param name="userId">The ID of the student to base the profile on.</param>

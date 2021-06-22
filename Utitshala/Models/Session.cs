@@ -15,14 +15,16 @@ namespace Utitshala.Models
         [Key]
         public int ID { get; set; }
         [ForeignKey("LearningDesign")]
-        public int LearningDesignID { get; set; }
+        public int? LearningDesignID { get; set; }
+        [ForeignKey("Assessment")]
+        public int? AssessmentID { get; set; }
         public DateTime? DateTimeStarted { get; set; }
         public DateTime? DateTimeEnded { get; set; }
         public bool Completed { get; set; }
         public bool Abandoned { get; set; }
 
         // Virtuals
-        public virtual List<Assessment> Assessments { get; set; }
+        public Assessment Assessment { get; set; }
         public virtual LearningDesign LearningDesign { get; set; }
     }
 }

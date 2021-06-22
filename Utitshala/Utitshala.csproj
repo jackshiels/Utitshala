@@ -240,6 +240,18 @@
     <Compile Include="Migrations\202106141457020_DatetimeSessionNullable.Designer.cs">
       <DependentUpon>202106141457020_DatetimeSessionNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106181631501_SessionIDInAssessment.cs" />
+    <Compile Include="Migrations\202106181631501_SessionIDInAssessment.Designer.cs">
+      <DependentUpon>202106181631501_SessionIDInAssessment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106221602076_Sessionfix.cs" />
+    <Compile Include="Migrations\202106221602076_Sessionfix.Designer.cs">
+      <DependentUpon>202106221602076_Sessionfix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202106221608059_assessmentnameclassroomassessments.cs" />
+    <Compile Include="Migrations\202106221608059_assessmentnameclassroomassessments.Designer.cs">
+      <DependentUpon>202106221608059_assessmentnameclassroomassessments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -374,6 +386,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106141457020_DatetimeSessionNullable.resx">
       <DependentUpon>202106141457020_DatetimeSessionNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106181631501_SessionIDInAssessment.resx">
+      <DependentUpon>202106181631501_SessionIDInAssessment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106221602076_Sessionfix.resx">
+      <DependentUpon>202106221602076_Sessionfix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106221608059_assessmentnameclassroomassessments.resx">
+      <DependentUpon>202106221608059_assessmentnameclassroomassessments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

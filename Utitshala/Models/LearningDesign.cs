@@ -20,8 +20,11 @@ namespace Utitshala.Models
         public bool Public { get; set; }
         [ForeignKey("Classroom")]
         public int? ClassroomID { get; set; }
+        [ForeignKey("Assessment")]
+        public int? AssessmentID { get; set; }
 
         // Virtual
         public virtual Classroom Classroom { get; set; }
+        public virtual Assessment Assessment { get; set; }
     }
 }

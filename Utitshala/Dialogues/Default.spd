@@ -26,11 +26,13 @@ You have joined a class!
 
 +mainmenu
 Please choose an option:
-1: View my lessons
-2: View my profile
+1. View my lessons
+2. View my assessments
+3. View my profile
 +
 > opt 1 "getlessons"
-> opt 2 "viewprofile"
+> opt 2 "getassessments"
+> opt 3 "viewprofile"
 
 # CHOOSE LESSON
 
@@ -50,6 +52,24 @@ Not a valid lesson. Please try again!
 +selectedlesson
 Lesson loaded! Enter start to begin. To leave your lesson, type exit.
 +> execute createsession "" ""
+
+# CHOOSE ASSESSMENT
++getassessments
++
+> execute getassessments "" ""
+> chooseassessment
+
++chooseassessment
++> input openassessment positivenumber "failedtoselectassessment" "selectedassessment" "mainmenu"
+
++failedtoselectassessment
+Not a valid assessment. Please try again!
++
+>next chooseassessment
+
++selectedassessment
+Assessment loaded! Enter start to begin.
++
 
 # VIEW PROFILE
 

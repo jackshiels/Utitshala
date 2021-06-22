@@ -405,7 +405,7 @@ namespace Utitshala.Services
             // Get the user ID from this sequence and check its presence
             string user = sequence.GetVariable("currentUserId").ToString();
 
-            // Act upon the function, based on name (extend this)
+            // Act upon the function, based on name
             switch (arg1.ToString()) {
                 case "classcheck":
                     // Get the user ID from this sequence and check its presence
@@ -430,15 +430,26 @@ namespace Utitshala.Services
                     }
                     break;
                 case "getlessons":
-                    List<string[]> results = DatabaseController.GetLessons(user);
+                    List<string[]> resultsLessons = DatabaseController.GetLessons(user);
                     // Construct a message and send
-                    string toSend = "0: Back\n";
-                    foreach (var ent in results)
+                    string toSendLessons = "0: Back\n";
+                    foreach (var ent in resultsLessons)
                     {
-                        toSend += ent[0] + ": " + ent[1] + "\n";
+                        toSendLessons += ent[0] + ": " + ent[1] + "\n";
                     }
-                    toSend += "Enter the number of the lesson you want to run!";
-                    messageClient.SendTextMessage(toSend, sequence.GetVariable("currentChat"));
+                    toSendLessons += "Enter the number of the lesson you want to start.";
+                    messageClient.SendTextMessage(toSendLessons, sequence.GetVariable("currentChat"));
+                    break;
+                case "getassessments":
+                    List<string[]> resultsAssessments = DatabaseController.GetAssessments(user);
+                    // Construct a message and send
+                    string toSendAssessments = "0: Back\n";
+                    foreach (var ent in resultsAssessments)
+                    {
+                        toSendAssessments += ent[0] + ": " + ent[1] + "\n";
+                    }
+                    toSendAssessments += "Enter the number of the assessment you want to start.";
+                    messageClient.SendTextMessage(toSendAssessments, sequence.GetVariable("currentChat"));
                     break;
                 case "viewprofile":
                     string profile = DatabaseController.GetStudentProfile(user);

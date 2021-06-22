@@ -25,21 +25,22 @@ namespace Utitshala
             // Initiate the database
             DatabaseController._context = new ApplicationDbContext();
 
-            // Populate the state register with registered students
-            ChatEngine.userStateRegister = new List<string[]>();
-            List<Student> students = DatabaseController.GetAllStudents();
-            foreach(var student in students)
-            {
-                ChatEngine.userStateRegister.Add(new string[] { student.ServiceUserID, "registered" });
-            }
-            // Mark sessions not completed as abandoned
-            DatabaseController.UpdateAbandonedSessions();
-
             // Create and start the Telegram bot client
             ChatEngine.messageClient = new TelegramMessageEngine(
                 new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));
             ChatEngine.options = new List<string[]>();
             ChatEngine.inputRegister = new List<string[]>();
+            ChatEngine.userStateRegister = new List<string[]>();
+
+            // Populate the state register with registered students
+            List<Student> students = DatabaseController.GetAllStudents();
+            foreach(var student in students)
+            {
+                ChatEngine.userStateRegister.Add(new string[] { student.ServiceUserID, "registered" });
+            }
+
+            // Mark sessions not completed as abandoned
+            DatabaseController.UpdateAbandonedSessions();
         }
     }
 }
