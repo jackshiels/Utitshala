@@ -19,10 +19,5 @@ namespace Utitshala.Models
         public string StorageURL { get; set; }
         public int QuestionsCount { get; set; }
         public bool Public { get; set; }
-        [ForeignKey("Classroom")]
-        public int? ClassroomID { get; set; }
-
-        // Virtuals
-        public virtual Classroom Classroom { get; set; }
     }
 }

@@ -256,6 +256,10 @@
     <Compile Include="Migrations\202106230934232_AssessmentChangedToObject.Designer.cs">
       <DependentUpon>202106230934232_AssessmentChangedToObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106230947463_assessmentremoveclassroom.cs" />
+    <Compile Include="Migrations\202106230947463_assessmentremoveclassroom.Designer.cs">
+      <DependentUpon>202106230947463_assessmentremoveclassroom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -403,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106230934232_AssessmentChangedToObject.resx">
       <DependentUpon>202106230934232_AssessmentChangedToObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106230947463_assessmentremoveclassroom.resx">
+      <DependentUpon>202106230947463_assessmentremoveclassroom.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
