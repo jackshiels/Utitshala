@@ -4,7 +4,7 @@
 +greeting
 Welcome to Utitshala!
 +
-> execute classcheck "noclasspresence" "mainmenu"
+> execute classcheck "noclasspresence" "mainmenu" ""
 
 # CLASSROOM CHECK -----------------------------------------
 
@@ -38,7 +38,7 @@ Please choose an option:
 
 +getlessons
 +
-> execute getlessons "" ""
+> execute getlessons "" "" ""
 > next chooselesson
 
 +chooselesson
@@ -56,7 +56,7 @@ Lesson loaded! Enter start to begin. To leave your lesson, type exit.
 # CHOOSE ASSESSMENT
 +getassessments
 +
-> execute getassessments "" ""
+> execute getassessments "" "" ""
 > next chooseassessment
 
 +chooseassessment
@@ -75,7 +75,7 @@ Assessment loaded! Enter start to begin.
 
 +viewprofile
 +
-> execute viewprofile "" ""
+> execute viewprofile "" "" ""
 > next viewprofileoptions
 
 +viewprofileoptions
@@ -98,5 +98,5 @@ Are you sure you want to leave your classroom?
 +leaveclassroom
 You have left your classroom.
 +
-> execute leaveclassroom "" "noclasspresence"
+> execute leaveclassroom "" "noclasspresence" ""
 > next "noclasspresence"

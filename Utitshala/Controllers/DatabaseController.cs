@@ -227,7 +227,7 @@ namespace Utitshala.Controllers
                         .LearningDesigns
                         .Include("Assessment")
                         .FirstOrDefault(c => c.ID == sesh.LearningDesignID);
-                    if (lesson.Assessment != null)
+                    if (lesson != null && lesson.Assessment != null)
                     {
                         assessments.Add(lesson.Assessment);
                     }
@@ -331,6 +331,51 @@ namespace Utitshala.Controllers
             }
             return url;
         }
+
+        /// <summary>
+        /// Calculates if a quiz has been passed.
+        /// </summary>
+        /// <param name="userScore">The user's correct answer count.</param>
+        /// <param name="sessionId">The ID of the current user session.</param>
+        /// <param name="passMark">The percentage grade to pass.</param>
+        /// <returns>A tuple of the pass mark, and a decimal score.</returns>
+        public static Tuple<bool, decimal> CheckScore(decimal userScore, decimal sessionId, decimal passMark)
+        {
+            bool result = false;
+            decimal score = 0;
+            try
+            {
+                // Get the session
+                Session session = _context.Sessions
+                    .Include("Assessment")
+                    .FirstOrDefault(c => c.ID == sessionId);
+                // If assessment not null, calculate the score
+                if (session.Assessment != null)
+                {
+                    // Calculate the score if userScore != 0
+                    if (userScore != 0)
+                    {
+                        score = (userScore
+                        / session.Assessment.QuestionsCount) * 100;
+                        score = Decimal.Round(score, 1);
+                        if (score >= passMark) // If passed
+                        {
+                            result = true;
+                        }
+                    }
+                    // Save the score into the session
+                    session.Score = score;
+                    _context.Entry(session).State = System.Data.Entity.EntityState.Modified;
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            // Return values as a <bool, decimal> tuple
+            return new Tuple<bool, decimal>(result, score);
+        }
         #endregion
 
         #region POST Methods
@@ -418,6 +463,7 @@ namespace Utitshala.Controllers
                     DateTimeStarted = DateTime.Now,
                     AssessmentID = assessmentId,
                     Abandoned = false,
+                    Score = 0
                 };
                 // Get the student record by user service ID
                 StudentRecord record = _context.Students

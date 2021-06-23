@@ -22,7 +22,7 @@ Choose yes to win
 
 +complete
 Executing the session closer...
-+> execute closesession "" "completed"
++> execute closesession "" "completed" ""
 
 +completed
 Congrats! You're finished! Enter hello to do another lesson.

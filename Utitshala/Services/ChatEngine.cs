@@ -185,10 +185,11 @@ namespace Utitshala.Services
         }
 
         /// <summary>
-        /// Save the requested input from a chat.
+        /// Save the requested input from chat according to its classification.
         /// </summary>
-        /// <param name="sequence">The sequence to act upon.</param>
-        /// <param name="chatId">The ID of the current chat.</param>
+        /// <param name="sequence">The sequence the input is based on.</param>
+        /// <param name="input">The text input.</param>
+        /// <param name="userId">The user ID of the user conducting input.</param>
         public static void InputSaver(Sequence sequence, string input, string userId)
         {
             if (inputRegister.Where(c => c[0] == userId).Count() != 0)
@@ -283,7 +284,7 @@ namespace Utitshala.Services
                                             // Create a session in the database
                                             int sessionId = DatabaseController.StartSessionAssessment(userId, Convert.ToInt32(input));
                                             userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
-                                            userStateRegister.Add(new string[] { userId, "assessing", input, resultAssessmentUrl, sessionId.ToString() });
+                                            userStateRegister.Add(new string[] { userId, "assessing", input, resultAssessmentUrl, sessionId.ToString(), "0" });
                                         }
                                         catch (Exception ex)
                                         {
@@ -297,6 +298,19 @@ namespace Utitshala.Services
                                         // Set the false sequence output
                                         sequence.SetNextLine(read[2]);
                                     }
+                                    break;
+                                // Assessment inputs
+                                case "mcq":
+                                    // Check if the input is valid
+                                    if (input == read[3])
+                                    {
+                                        // Correct answer leads to the state register being updated
+                                        int score = Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == userId)[5]);
+                                        score += 1;
+                                        userStateRegister.FirstOrDefault(c => c[0] == userId)[5] = score.ToString();
+                                    }
+                                    // Set the next line
+                                    sequence.SetNextLine(read[4]);
                                     break;
                             }
                         }
@@ -425,21 +439,28 @@ namespace Utitshala.Services
         public static void ExecuteFunction(Sequence sequence, object[] arguments)
         {
             // Register the function
-            ArgumentUtils.Count("input", arguments, 3);
+            ArgumentUtils.Count("input", arguments, 4);
 
             // Derive the argument
             var arg1 = sequence.Resolve(arguments[0]);
             var arg2 = sequence.Resolve(arguments[1]);
             var arg3 = sequence.Resolve(arguments[2]);
+            var arg4 = sequence.Resolve(arguments[3]);
 
             // Get the user ID from this sequence and check its presence
-            string user = sequence.GetVariable("currentUserId").ToString();
+            string userId = sequence.GetVariable("currentUserId").ToString();
 
             // Act upon the function, based on name
             switch (arg1.ToString()) {
+                // PERSONAL ---------------------------------------------------------
+                case "viewprofile":
+                    string profile = DatabaseController.GetStudentProfile(userId);
+                    messageClient.SendTextMessage(profile, sequence.GetVariable("currentChat"));
+                    break;
+                // CLASSROOM --------------------------------------------------------
                 case "classcheck":
                     // Get the user ID from this sequence and check its presence
-                    bool result = DatabaseController.CheckClassPresence(user);
+                    bool result = DatabaseController.CheckClassPresence(userId);
                     // Go to an output based on the result
                     if (result)
                     {
@@ -452,15 +473,16 @@ namespace Utitshala.Services
                     break;
                 case "leaveclassroom":
                     // Remove the student from the classroom
-                    bool leaveResult = DatabaseController.LeaveClassroom(user);
+                    bool leaveResult = DatabaseController.LeaveClassroom(userId);
                     // If successful, set the next line
                     if (leaveResult)
                     {
                         sequence.SetNextLine(arg3.ToString());
                     }
                     break;
+                // LEARNING/WORKING --------------------------------------------------
                 case "getlessons":
-                    List<string[]> resultsLessons = DatabaseController.GetLessons(user);
+                    List<string[]> resultsLessons = DatabaseController.GetLessons(userId);
                     // Construct a message and send
                     string toSendLessons = "0: Back\n";
                     foreach (var ent in resultsLessons)
@@ -471,7 +493,7 @@ namespace Utitshala.Services
                     messageClient.SendTextMessage(toSendLessons, sequence.GetVariable("currentChat"));
                     break;
                 case "getassessments":
-                    List<string[]> resultsAssessments = DatabaseController.GetAssessments(user);
+                    List<string[]> resultsAssessments = DatabaseController.GetAssessments(userId);
                     // Construct a message and send
                     string toSendAssessments = "0: Back\n";
                     foreach (var ent in resultsAssessments)
@@ -481,19 +503,34 @@ namespace Utitshala.Services
                     toSendAssessments += "Enter the number of the assessment you want to start.";
                     messageClient.SendTextMessage(toSendAssessments, sequence.GetVariable("currentChat"));
                     break;
-                case "viewprofile":
-                    string profile = DatabaseController.GetStudentProfile(user);
-                    messageClient.SendTextMessage(profile, sequence.GetVariable("currentChat"));
-                    break;
                 case "closesession":
-                    string[] userState = userStateRegister.FirstOrDefault(c => c[0] == user);
+                    string[] userStateCloseSession = userStateRegister.FirstOrDefault(c => c[0] == userId);
                     // Close the session
-                    bool closeResult = DatabaseController.CloseSession(Convert.ToInt32(userState[4]), true);
+                    bool closeResult = DatabaseController.CloseSession(Convert.ToInt32(userStateCloseSession[4]), true);
                     if (closeResult)
                     {
                         // Remove the current user state and replace with default
-                        userStateRegister.Remove(userState);
-                        userStateRegister.Add(new string[] { user, "registered" });
+                        userStateRegister.Remove(userStateCloseSession);
+                        userStateRegister.Add(new string[] { userId, "registered" });
+                        sequence.SetNextLine(arg3.ToString());
+                    }
+                    break;
+                case "checkscore":
+                    string[] userStateScore = userStateRegister.FirstOrDefault(c => c[0] == userId);
+                    // Get the user's score
+                    int score = Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == userId)[5]);
+                    int sessionId = Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == userId)[4]);
+                    // Get the assessment's score
+                    Tuple<bool, decimal> results = DatabaseController.CheckScore(score, sessionId, Convert.ToDecimal(arg2));
+                    // Send the score to the user
+                    string message = "Your score is: "+ results.Item2.ToString() + "%";
+                    messageClient.SendTextMessage(message, sequence.GetVariable("currentChat"));
+                    if (results.Item1) // If passed
+                    {
+                        sequence.SetNextLine(arg4.ToString());
+                    }
+                    else // If failed
+                    {
                         sequence.SetNextLine(arg3.ToString());
                     }
                     break;

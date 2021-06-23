@@ -290,6 +290,7 @@
     <Content Include="Dialogues\Register.spd" />
     <Content Include="Dialogues\Default.spd" />
     <Content Include="LearningContent\Lessons\Lesson1.spd" />
+    <Content Include="LearningContent\Assessments\TestAssessment1.spd" />
     <None Include="Properties\PublishProfiles\Utitshala - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -339,7 +340,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="LearningContent\Assessments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
