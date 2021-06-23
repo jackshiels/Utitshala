@@ -266,6 +266,7 @@
     <Compile Include="Models\Classroom.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LearningDesign.cs" />
+    <Compile Include="Models\LearningSequence.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Student.cs" />
@@ -304,7 +305,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Stickers\UmiBaseSmall.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

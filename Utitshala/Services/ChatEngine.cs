@@ -12,6 +12,7 @@ using Spin.Utility;
 using static Utitshala.Services.Interfaces;
 using System.Text.RegularExpressions;
 using Utitshala.Controllers;
+using Utitshala.Models;
 
 namespace Utitshala.Services
 {
@@ -37,12 +38,18 @@ namespace Utitshala.Services
         /// <param name="e">The Telegram message arguments.</param>
         public static void Bot_OnMessage(object sender, MessageEventArgs e)
         {
+            #region Construct Sequence
             // Initialise Spin
-            var sequence = new Sequence(new DictionaryBackend(), new FileDocumentLoader());
+            var sequence = new LearningSequence(new DictionaryBackend(), new FileDocumentLoader());
             sequence.RegisterStandardLibrary();
 
             // Get user ID
             string userId = e.Message.From.Id.ToString();
+            
+            // The current chat and ID of this chat, tracked for functions
+            sequence.SetVariable("currentUserId", userId);
+            sequence.SetVariable("currentChat", e);
+            #endregion
 
             #region Select Dialogue File
             // The dialogue path
@@ -50,11 +57,7 @@ namespace Utitshala.Services
             string[] userState = userStateRegister.FirstOrDefault(c => c[0] == userId);
 
             // Exit clause
-            if (e.Message.Text == null)
-            {
-                e.Message.Text = "";
-            }
-            if (e.Message.Text.ToLower() == "exit")
+            if (e.Message.Text != null && e.Message.Text.ToLower() == "exit")
             {
                 if (userState != null && userState[1] == "learning"
                     || userState[1] == "assessing")
@@ -89,23 +92,6 @@ namespace Utitshala.Services
                 }
             }
             sequence.LoadAndStartDocument(path);
-            #endregion
-
-            #region Construct Sequence
-            // Add functional elements
-            sequence.AddCommand("opt", SequenceExtensions.OptionTraversal);
-            sequence.AddCommand("image", SequenceExtensions.ImageMessageHandler);
-            sequence.AddCommand("sticker", SequenceExtensions.StickerMessageHandler);
-            sequence.AddCommand("wait", SequenceExtensions.WaitTimer);
-            sequence.AddCommand("input", SequenceExtensions.ReceiveInput);
-            sequence.AddCommand("execute", SequenceExtensions.ExecuteFunction);
-
-            // Set variables
-            sequence.SetVariable("currentInputRegex", "");
-
-            // The current chat and ID of this chat, tracked for functions
-            sequence.SetVariable("currentUserId", userId);
-            sequence.SetVariable("currentChat", e);
             #endregion
 
             #region Sequence Utilities
@@ -311,8 +297,11 @@ namespace Utitshala.Services
                         }
                         else
                         {
-                            // If failed regex, tell the fail condition to be met
-                            sequence.SetNextLine(read[3]);
+                            // If failed regex, tell the fail condition to be met, but only if not an assessment
+                            if (read[1] != "mcq")
+                            {
+                                sequence.SetNextLine(read[3]);
+                            }
                         }
                     }
                 }

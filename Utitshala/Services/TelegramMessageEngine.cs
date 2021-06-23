@@ -63,7 +63,7 @@ namespace Utitshala.Services
         /// <summary>
         /// Sends a sticker message via Telegram.
         /// </summary>
-        /// <param name="stickerUrl">The URL of the sticker.</param>
+        /// <param name="stickerUrl">The URL/ File ID of the sticker.</param>
         /// <param name="chat">The chat to send to.</param>
         public void SendStickerMessage(string stickerUrl, object chat)
         {
