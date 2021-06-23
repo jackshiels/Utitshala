@@ -51,7 +51,7 @@ Not a valid lesson. Please try again!
 
 +selectedlesson
 Lesson loaded! Enter start to begin. To leave your lesson, type exit.
-+> execute createsession "" ""
++
 
 # CHOOSE ASSESSMENT
 +getassessments

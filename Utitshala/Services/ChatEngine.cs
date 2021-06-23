@@ -52,7 +52,8 @@ namespace Utitshala.Services
             // Exit clause
             if (e.Message.Text.ToLower() == "exit")
             {
-                if (userState != null && userState[1] == "learning")
+                if (userState != null && userState[1] == "learning"
+                    || userState[1] == "assessing")
                 {
                     // Close the session
                     DatabaseController.CloseSession(Convert.ToInt32(userState[4]), false);
@@ -76,8 +77,11 @@ namespace Utitshala.Services
                         path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
                         break;
                     case "learning":
-                        path = AppDomain.CurrentDomain.BaseDirectory + @"Lessons\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[3];
-                        break; 
+                        path = AppDomain.CurrentDomain.BaseDirectory + @"LearningContent\Lessons\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[3];
+                        break;
+                    case "assessing":
+                        path = AppDomain.CurrentDomain.BaseDirectory + @"LearningContent\Assessments\" + userStateRegister.FirstOrDefault(c => c[0] == userId)[3];
+                        break;
                 }
             }
             sequence.LoadAndStartDocument(path);
@@ -244,16 +248,42 @@ namespace Utitshala.Services
                                     break;
                                 case "openlesson":
                                     // Get the learning design Url
-                                    string resultUrl = DatabaseController.GetLessonUrl(Convert.ToInt32(input));
+                                    string resultLessonUrl = DatabaseController.GetLessonUrl(Convert.ToInt32(input));
                                     // Add it to the state machine
-                                    if (resultUrl != "")
+                                    if (resultLessonUrl != "")
                                     {
                                         try
                                         {
                                             // Create a session in the database
-                                            int sessionId = DatabaseController.StartSession(userId, Convert.ToInt32(input));
+                                            int sessionId = DatabaseController.StartSessionLearningDesign(userId, Convert.ToInt32(input));
                                             userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
-                                            userStateRegister.Add(new string[] { userId, "learning", input, resultUrl, sessionId.ToString() });
+                                            userStateRegister.Add(new string[] { userId, "learning", input, resultLessonUrl, sessionId.ToString() });
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex.StackTrace);
+                                        }
+                                        // Set the true sequence output
+                                        sequence.SetNextLine(read[4]);
+                                    }
+                                    else
+                                    {
+                                        // Set the false sequence output
+                                        sequence.SetNextLine(read[2]);
+                                    }
+                                    break;
+                                case "openassessment":
+                                    // Get the learning design Url
+                                    string resultAssessmentUrl = DatabaseController.GetAssessmentUrl(Convert.ToInt32(input));
+                                    // Add it to the state machine
+                                    if (resultAssessmentUrl != "")
+                                    {
+                                        try
+                                        {
+                                            // Create a session in the database
+                                            int sessionId = DatabaseController.StartSessionAssessment(userId, Convert.ToInt32(input));
+                                            userStateRegister.Remove(userStateRegister.FirstOrDefault(c => c[0] == userId));
+                                            userStateRegister.Add(new string[] { userId, "assessing", input, resultAssessmentUrl, sessionId.ToString() });
                                         }
                                         catch (Exception ex)
                                         {

@@ -310,16 +310,37 @@ namespace Utitshala.Controllers
             }
             return url;
         }
+
+        /// <summary>
+        /// Gets the SPD file location for an assessment.
+        /// </summary>
+        /// <param name="ldId">The assessment ID.</param>
+        /// <returns>A string of the file name.</returns>
+        public static string GetAssessmentUrl(int assessId)
+        {
+            string url = "";
+            // Attempt to find the learning design URL
+            try
+            {
+                url = _context.Assessments
+                    .FirstOrDefault(c => c.ID == assessId).StorageURL;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return url;
+        }
         #endregion
 
         #region POST Methods
         /// <summary>
-        /// Creates a session object in a student's record.
+        /// Creates a session object in a student's record, based on a learning design.
         /// </summary>
         /// <param name="userId">The service ID of the student to create a session for.</param>
         /// <param name="learningDesignId">The ID of the learning design being learned.</param>
         /// <returns>The ID of the session as an int.</returns>
-        public static int StartSession(string userId, int learningDesignId)
+        public static int StartSessionLearningDesign(string userId, int learningDesignId)
         {
             int result = -1;
             // Create a session object and save
@@ -346,6 +367,56 @@ namespace Utitshala.Controllers
                 {
                     DateTimeStarted = DateTime.Now,
                     LearningDesignID = learningDesignId,
+                    Abandoned = false,
+                };
+                // Get the student record by user service ID
+                StudentRecord record = _context.Students
+                    .FirstOrDefault(c => c.ServiceUserID == userId).StudentRecord;
+                record.Sessions.Add(session);
+                _context.SaveChanges();
+                // Return the ID of the session
+                result = session.ID;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a session object in a student's record, based on an assessment.
+        /// </summary>
+        /// <param name="userId">The service ID of the student to create a session for.</param>
+        /// <param name="learningDesignId">The ID of the assessment being conducted.</param>
+        /// <returns>The ID of the session as an int.</returns>
+        public static int StartSessionAssessment(string userId, int assessmentId)
+        {
+            int result = -1;
+            // Create a session object and save
+            try
+            {
+                // First, close all other sessions
+                Student student = _context.Students
+                    .Include("StudentRecord")
+                    .FirstOrDefault(c => c.ServiceUserID == userId);
+                // Iterate over the non-abandoned sessions and mark abandoned
+                foreach (var ses in student.StudentRecord.Sessions
+                    .Where(c => c.Abandoned == false
+                    && c.DateTimeEnded == null).ToList())
+                {
+                    ses.Abandoned = true;
+                    ses.DateTimeEnded = DateTime.Now;
+                    _context.Entry(ses).State = System.Data.Entity.EntityState.Modified;
+                }
+                // Save
+                _context.SaveChanges();
+                _context = new ApplicationDbContext();
+                // Create the new session
+                Session session = new Session()
+                {
+                    DateTimeStarted = DateTime.Now,
+                    AssessmentID = assessmentId,
                     Abandoned = false,
                 };
                 // Get the student record by user service ID
