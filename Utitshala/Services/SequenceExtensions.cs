@@ -170,7 +170,7 @@ namespace Utitshala.Services
                     {
                         toSendLessons += ent[0] + ": " + ent[1] + "\n";
                     }
-                    toSendLessons += "Enter the number of the lesson you want to start.";
+                    toSendLessons += "Enter the number of the Lesson you want to start.";
                     ChatEngine.messageClient.SendTextMessage(toSendLessons, sequence.GetVariable("currentChat"));
                     break;
                 case "getassessments":
@@ -181,8 +181,19 @@ namespace Utitshala.Services
                     {
                         toSendAssessments += ent[0] + ": " + ent[1] + "\n";
                     }
-                    toSendAssessments += "Enter the number of the assessment you want to start.";
+                    toSendAssessments += "Enter the number of the Assessment you want to start.";
                     ChatEngine.messageClient.SendTextMessage(toSendAssessments, sequence.GetVariable("currentChat"));
+                    break;
+                case "getassignments":
+                    List<string[]> resultsAssignments = DatabaseController.GetAssessments(userId);
+                    // Construct a message and send
+                    string toSendAssignments = "0: Back\n";
+                    foreach (var ent in resultsAssignments)
+                    {
+                        toSendAssignments += ent[0] + ": " + ent[1] + "\n";
+                    }
+                    toSendAssignments += "Enter the number of the Assignment you want to start.";
+                    ChatEngine.messageClient.SendTextMessage(toSendAssignments, sequence.GetVariable("currentChat"));
                     break;
                 case "closesession":
                     string[] userStateCloseSession = ChatEngine.userStateRegister.FirstOrDefault(c => c[0] == userId);

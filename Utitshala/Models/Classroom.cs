@@ -19,5 +19,6 @@ namespace Utitshala.Models
         public virtual List<Student> Students { get; set; }
         public virtual List<LearningDesign> LearningDesigns { get; set; }
         public virtual List<Assessment> Assessments { get; set; }
+        public virtual List<Assignment> Assignments { get; set; }
     }
 }

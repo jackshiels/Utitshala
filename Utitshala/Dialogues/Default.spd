@@ -27,12 +27,14 @@ You have joined a class!
 Welcome back! Please choose an option:
 1. View my Lessons
 2. View my Assessments
-3. View my Profile
+3. View my Assignments
+4. View my Profile
 +
 > sticker "CAACAgQAAxkBAAIEjmDTY7YD1yuERlY1hAEKau-pdpg9AAIFCAACrbqYUvbHEdz1D-y-HwQ"
 > opt 1 "getlessons"
 > opt 2 "getassessments"
-> opt 3 "viewprofile"
+> opt 3 "getassignments"
+> opt 4 "viewprofile"
 
 # CHOOSE LESSON
 
@@ -45,7 +47,7 @@ Welcome back! Please choose an option:
 +> input openlesson positivenumber "failedtoselectlesson" "selectedlesson" "mainmenu"
 
 +failedtoselectlesson
-Not a valid lesson. Please try again!
+Not a valid Lesson. Please try again!
 +
 >next chooselesson
 
@@ -54,6 +56,7 @@ Lesson loaded! Enter start to begin. To leave your lesson, type exit.
 +
 
 # CHOOSE ASSESSMENT
+
 +getassessments
 +
 > execute getassessments "" "" ""
@@ -63,12 +66,31 @@ Lesson loaded! Enter start to begin. To leave your lesson, type exit.
 +> input openassessment positivenumber "failedtoselectassessment" "selectedassessment" "mainmenu"
 
 +failedtoselectassessment
-Not a valid assessment. Please try again!
+Not a valid Assessment. Please try again!
 +
 >next chooseassessment
 
 +selectedassessment
 Assessment loaded! Enter start to begin.
++
+
+# CHOOSE ASSIGNMENT
+
++getassignments
++
+> execute getassignments "" "" ""
+> next chooseassignment
+
++chooseassignment
++> input openassignment positivenumber "failedtoselectassignment" "selectedassignment" "mainmenu"
+
++failedtoselectassignment
+Not a valid Assignment. Please try again!
++
+>next chooseassignment
+
++selectedassessment
+Enter your Assignment in the chat!
 +
 
 # VIEW PROFILE
