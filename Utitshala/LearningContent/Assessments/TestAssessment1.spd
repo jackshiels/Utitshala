@@ -30,6 +30,11 @@ Where is Dallas located?
 +
 > input mcq positivenumber 3 "end" ""
 
++question4
+What is the name of the biggest city in the UK?
++
+> input wordcheck textspaced London "end" ""
+
 +end
 +
 > execute checkscore 60 "failed" "passed"

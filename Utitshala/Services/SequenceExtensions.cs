@@ -48,8 +48,7 @@ namespace Utitshala.Services
             var arg2 = sequence.Resolve(arguments[1]);
 
             // Add the image URL to the send slot
-            sequence.SetVariable("currentImageUrl", arg1.ToString());
-            sequence.SetVariable("currentImageCaption", arg2.ToString());
+            ChatEngine.messageClient.SendImageMessage(arg1.ToString(), arg2.ToString(), sequence.GetVariable("currentChat"));
         }
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace Utitshala.Services
             var arg1 = sequence.Resolve(arguments[0]);
 
             // Add the sticker URL to the send slot
-            sequence.SetVariable("currentStickerUrl", arg1.ToString());
+            ChatEngine.messageClient.SendStickerMessage(arg1.ToString(), sequence.GetVariable("currentChat"));
         }
 
         /// <summary>

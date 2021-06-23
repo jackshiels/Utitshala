@@ -50,6 +50,10 @@ namespace Utitshala.Services
             string[] userState = userStateRegister.FirstOrDefault(c => c[0] == userId);
 
             // Exit clause
+            if (e.Message.Text == null)
+            {
+                e.Message.Text = "";
+            }
             if (e.Message.Text.ToLower() == "exit")
             {
                 if (userState != null && userState[1] == "learning"
@@ -97,14 +101,10 @@ namespace Utitshala.Services
             sequence.AddCommand("execute", SequenceExtensions.ExecuteFunction);
 
             // Set variables
-            sequence.SetVariable("currentStickerUrl", "");
-            sequence.SetVariable("currentImageUrl", "");
-            sequence.SetVariable("currentImageCaption", "");
             sequence.SetVariable("currentInputRegex", "");
-            sequence.SetVariable("currentUserId", userId);
 
-            // The current ID of this chat, tracked for functions
-            sequence.SetVariable("currentUserId", e.Message.From.Id);
+            // The current chat and ID of this chat, tracked for functions
+            sequence.SetVariable("currentUserId", userId);
             sequence.SetVariable("currentChat", e);
             #endregion
 
@@ -128,25 +128,7 @@ namespace Utitshala.Services
                 // Sleep so that any executed lines can complete their message
                 Thread.Sleep(100);
                 // Message the line based on media type
-                if (sequence.GetVariable("currentImageUrl").ToString() != "")
-                {
-                    // Send the message
-                    messageClient.SendImageMessage(sequence.GetVariable("currentImageUrl").ToString(), 
-                        sequence.GetVariable("currentImageCaption").ToString(), e);
-
-                    // Zero the vars
-                    sequence.SetVariable("currentImageUrl", "");
-                    sequence.SetVariable("currentImageCaption", "");
-                }
-                else if (sequence.GetVariable("currentStickerUrl").ToString() != "")
-                {
-                    // Send the message
-                    messageClient.SendStickerMessage(sequence.GetVariable("currentStickerUrl").ToString(), e);
-
-                    // Zero the var
-                    sequence.SetVariable("currentStickerUrl", "");
-                }
-                else if (e.Message.Text != null)
+                if (e.Message.Text != null)
                 {
                     // Send the message
                     messageClient.SendTextMessage(currentLine, e);
@@ -304,6 +286,18 @@ namespace Utitshala.Services
                                 case "mcq":
                                     // Check if the input is valid
                                     if (input == read[3])
+                                    {
+                                        // Correct answer leads to the state register being updated
+                                        int score = Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == userId)[5]);
+                                        score += 1;
+                                        userStateRegister.FirstOrDefault(c => c[0] == userId)[5] = score.ToString();
+                                    }
+                                    // Set the next line
+                                    sequence.SetNextLine(read[4]);
+                                    break;
+                                case "wordcheck":
+                                    // Check if the input is valid
+                                    if (input.ToLower() == read[3].ToLower())
                                     {
                                         // Correct answer leads to the state register being updated
                                         int score = Convert.ToInt32(userStateRegister.FirstOrDefault(c => c[0] == userId)[5]);

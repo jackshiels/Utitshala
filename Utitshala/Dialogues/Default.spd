@@ -2,7 +2,6 @@
 > begin greeting
 
 +greeting
-Welcome to Utitshala!
 +
 > execute classcheck "noclasspresence" "mainmenu" ""
 
@@ -25,11 +24,12 @@ You have joined a class!
 # MAIN MENU, LESSONS, AND PROFILE --------------------------
 
 +mainmenu
-Please choose an option:
-1. View my lessons
-2. View my assessments
-3. View my profile
+Welcome back! Please choose an option:
+1. View my Lessons
+2. View my Assessments
+3. View my Profile
 +
+> sticker "CAACAgQAAxkBAAIEjmDTY7YD1yuERlY1hAEKau-pdpg9AAIFCAACrbqYUvbHEdz1D-y-HwQ"
 > opt 1 "getlessons"
 > opt 2 "getassessments"
 > opt 3 "viewprofile"
