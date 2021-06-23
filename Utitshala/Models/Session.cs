@@ -20,6 +20,7 @@ namespace Utitshala.Models
         public int? AssessmentID { get; set; }
         public DateTime? DateTimeStarted { get; set; }
         public DateTime? DateTimeEnded { get; set; }
+        public decimal? Score { get; set; }
         public bool Completed { get; set; }
         public bool Abandoned { get; set; }
 

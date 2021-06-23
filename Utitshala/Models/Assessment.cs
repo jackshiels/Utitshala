@@ -8,15 +8,17 @@ using System.Web;
 namespace Utitshala.Models
 {
     /// <summary>
-    /// A record of a student assessment being taken.
+    /// An assessment that can be taken by a student.
     /// </summary>
     public class Assessment
     {
         [Key]
         public int ID { get; set; }
         public string Name { get; set; }
-        public decimal Score { get; set; }
-        public DateTime DateTimeAttempted { get; set; }
+        public DateTime DateCreated { get; set; }
+        public string StorageURL { get; set; }
+        public int QuestionsCount { get; set; }
+        public bool Public { get; set; }
         [ForeignKey("Classroom")]
         public int? ClassroomID { get; set; }
 
