@@ -504,6 +504,11 @@ namespace Utitshala.Controllers
                 }
                 else
                 {
+                    // Mark score as zero if abandoned
+                    if (session.AssessmentID != null)
+                    {
+                        session.Score = 0;
+                    }
                     session.Abandoned = true;
                 }
                 // Save changes

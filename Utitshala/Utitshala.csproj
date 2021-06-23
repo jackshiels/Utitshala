@@ -273,6 +273,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChatEngine.cs" />
     <Compile Include="Services\Interfaces.cs" />
+    <Compile Include="Services\SequenceExtensions.cs" />
     <Compile Include="Services\TelegramMessageEngine.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
