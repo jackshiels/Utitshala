@@ -25,6 +25,7 @@ You have joined a class!
 
 +mainmenu
 Welcome back! Please choose an option:
+
 1. View my Lessons
 2. View my Assessments
 3. View my Assignments
@@ -104,11 +105,14 @@ Enter your Assignment in the chat!
 > next viewprofileoptions
 
 +viewprofileoptions
-1: Back
-2: Leave Classroom
+1: Leave Classroom
+2: View my Student Record
+
+0: Back
 +
-> opt 1 "mainmenu"
-> opt 2 "leaveclassroomcheck"
+> opt 0 "mainmenu"
+> opt 1 "leaveclassroomcheck"
+> opt 2 "viewstudentrecord"
 
 # LEAVE CLASSROOM
 
@@ -125,3 +129,14 @@ You have left your classroom.
 +
 > execute leaveclassroom "" "noclasspresence" ""
 > next "noclasspresence"
+
+# VIEW STUDENT RECORD
+
++viewstudentrecord
++
+> execute viewstudentrecord "" "" ""
+> next studentrecord
+
++studentrecord
++
+> opt 0 "viewprofile"

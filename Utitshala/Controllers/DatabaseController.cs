@@ -270,7 +270,7 @@ namespace Utitshala.Controllers
                 // Construct the string, based on classroom presence
                 if (classroom != null)
                 {
-                    profile += "Your Profile:\n" + "Name: " + student.Name + "\n"
+                    profile += "Your Profile:\n\n" + "Name: " + student.Name + "\n"
                     + "Date Joined: " + student.DateJoined.ToShortDateString() + "\n"
                     + "Classroom: " + classroom.Name + "\n"
                     + "Chat ID: " + student.ServiceUserID;
@@ -289,6 +289,42 @@ namespace Utitshala.Controllers
             }
 
             return profile;
+        }
+
+        /// <summary>
+        /// Returns the student's record of lessons and assessments in a string.
+        /// </summary>
+        /// <param name="userId">The ID of the student to base the record on.</param>
+        /// <returns>A tuple of List<string> containing lessons and assessments, respectively.</string>.</returns>
+        public static Tuple<List<string>, List<string>> GetStudentRecord(string userId)
+        {
+            List<string> lessons = new List<string>();
+            // Get the lessons completed
+            List<Session> sessions = _context.Students
+                .Include("StudentRecord")
+                .FirstOrDefault(c => c.ServiceUserID == userId)
+                .StudentRecord
+                .Sessions.ToList();
+            foreach (var ses in sessions)
+            {
+                if (ses.Completed && ses.AssessmentID == null)
+                {
+                    lessons.Add(ses.LearningDesign.Name
+                        + "\nCompleted: " + ses.DateTimeEnded.Value.ToShortDateString() 
+                        + ", " + ses.DateTimeEnded.Value.ToShortTimeString());
+                }
+            }
+            List<string> assessments = new List<string>();
+            foreach (var ses in sessions)
+            {
+                if (ses.Completed && ses.AssessmentID != null)
+                {
+                    assessments.Add(_context.Assessments.FirstOrDefault(c => c.ID == ses.AssessmentID).Name
+                        + "\nCompleted: " + ses.DateTimeEnded.Value.ToShortDateString()
+                        + ", " + ses.DateTimeEnded.Value.ToShortTimeString());
+                }
+            }
+            return new Tuple<List<string>, List<string>>(lessons, assessments);
         }
 
         /// <summary>

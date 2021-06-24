@@ -67,6 +67,8 @@ namespace Utitshala.Services
                     path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Default.spd";
                     userStateRegister.Remove(userState);
                     userStateRegister.Add(new string[] { userId, "registered" });
+                    // Send a message to confirm
+                    messageClient.SendTextMessage("Exiting...", e);
                 }
             }
 
