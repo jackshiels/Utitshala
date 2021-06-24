@@ -241,11 +241,12 @@ namespace Utitshala.Controllers
                 .Include("Assessments")
                 .FirstOrDefault(c => c.ID == classroomId);
             assessments.AddRange(classroom.Assessments);
-            // Convert the lessons into string[] { ID, Name } and return
+            // Convert the lessons into string[] { ID, Name, Score (if exists) } and return
             List<string[]> assessmentStrings = new List<string[]>();
             foreach (var assessment in assessments)
             {
-                assessmentStrings.Add(new string[] { assessment.ID.ToString(), assessment.Name });
+                assessmentStrings.Add(new string[] { assessment.ID.ToString(), assessment.Name, 
+                    sessions.Where(c => c.AssessmentID == (int)assessment.ID).Max(c => c.Score).ToString() });
             }
             return assessmentStrings;
         }

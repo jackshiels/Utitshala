@@ -45,7 +45,7 @@ namespace Utitshala.Services
 
             // Get user ID
             string userId = e.Message.From.Id.ToString();
-            
+
             // The current chat and ID of this chat, tracked for functions
             sequence.SetVariable("currentUserId", userId);
             sequence.SetVariable("currentChat", e);

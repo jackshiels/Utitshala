@@ -40,6 +40,7 @@ Welcome back! Please choose an option:
 
 +getlessons
 +
+> sticker "CAACAgQAAxkBAAIE62DUe-26llDrQMpaPEoa2L-EAaG-AAJsBwACm9OhUpaLsiD1fIlOHwQ"
 > execute getlessons "" "" ""
 > next chooselesson
 
@@ -59,6 +60,7 @@ Lesson loaded! Enter start to begin. To leave your lesson, type exit.
 
 +getassessments
 +
+> sticker "CAACAgQAAxkBAAIE62DUe-26llDrQMpaPEoa2L-EAaG-AAJsBwACm9OhUpaLsiD1fIlOHwQ"
 > execute getassessments "" "" ""
 > next chooseassessment
 
@@ -78,6 +80,7 @@ Assessment loaded! Enter start to begin.
 
 +getassignments
 +
+> sticker "CAACAgQAAxkBAAIE62DUe-26llDrQMpaPEoa2L-EAaG-AAJsBwACm9OhUpaLsiD1fIlOHwQ"
 > execute getassignments "" "" ""
 > next chooseassignment
 
@@ -89,7 +92,7 @@ Not a valid Assignment. Please try again!
 +
 >next chooseassignment
 
-+selectedassessment
++selectedassignment
 Enter your Assignment in the chat!
 +
 

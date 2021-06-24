@@ -165,34 +165,41 @@ namespace Utitshala.Services
                 case "getlessons":
                     List<string[]> resultsLessons = DatabaseController.GetLessons(userId);
                     // Construct a message and send
-                    string toSendLessons = "0: Back\n";
+                    string toSendLessons = "0: Back\n\n";
                     foreach (var ent in resultsLessons)
                     {
                         toSendLessons += ent[0] + ": " + ent[1] + "\n";
                     }
-                    toSendLessons += "Enter the number of the Lesson you want to start.";
+                    toSendLessons += "\nEnter the number of the Lesson you want to start.";
                     ChatEngine.messageClient.SendTextMessage(toSendLessons, sequence.GetVariable("currentChat"));
                     break;
                 case "getassessments":
                     List<string[]> resultsAssessments = DatabaseController.GetAssessments(userId);
                     // Construct a message and send
-                    string toSendAssessments = "0: Back\n";
+                    string toSendAssessments = "0: Back\n\n";
                     foreach (var ent in resultsAssessments)
                     {
-                        toSendAssessments += ent[0] + ": " + ent[1] + "\n";
+                        if (ent[2] != "") 
+                        {
+                            toSendAssessments += ent[0] + ": " + ent[1] + ", Score: " + ent[2].Slice(0, -3) + "%" + "\n";
+                        }
+                        else
+                        {
+                            toSendAssessments += ent[0] + ": " + ent[1] + ", not attempted." + "\n";
+                        }
                     }
-                    toSendAssessments += "Enter the number of the Assessment you want to start.";
+                    toSendAssessments += "\nEnter the number of the Assessment you want to start.";
                     ChatEngine.messageClient.SendTextMessage(toSendAssessments, sequence.GetVariable("currentChat"));
                     break;
                 case "getassignments":
                     List<string[]> resultsAssignments = DatabaseController.GetAssessments(userId);
                     // Construct a message and send
-                    string toSendAssignments = "0: Back\n";
+                    string toSendAssignments = "0: Back\n\n";
                     foreach (var ent in resultsAssignments)
                     {
                         toSendAssignments += ent[0] + ": " + ent[1] + "\n";
                     }
-                    toSendAssignments += "Enter the number of the Assignment you want to start.";
+                    toSendAssignments += "\nEnter the number of the Assignment you want to start.";
                     ChatEngine.messageClient.SendTextMessage(toSendAssignments, sequence.GetVariable("currentChat"));
                     break;
                 case "closesession":
