@@ -7,7 +7,7 @@ using Utitshala.Models;
 namespace Utitshala.Controllers
 {
     /// <summary>
-    /// Handles I/O operations to the database.
+    /// Handles I/O operations into/ out of the database.
     /// </summary>
     public static class DatabaseController
     {
@@ -252,6 +252,34 @@ namespace Utitshala.Controllers
         }
 
         /// <summary>
+        /// Gets a list of assignments available to a student.
+        /// </summary>
+        /// <param name="userId">The user to base this GET on.</param>
+        /// <returns>A list<string[]> of assignment values in { ID, Name } form.</string></returns>
+        public static List<string[]> GetAssignments(string userId)
+        {
+            List<string[]> results = new List<string[]>();
+            // Ge the student to find the classroom ID
+            Student student = _context.Students
+                .FirstOrDefault(c => c.ServiceUserID == userId);
+            // Get all assignments not closed
+            List<Assignment> assignments = _context.Assignments
+                .Where(c => c.ClassroomID == student.ClassroomID
+                && c.DateDue != null
+                && DateTime.Compare(c.DateDue.Value, DateTime.Now) > 0).ToList();
+            assignments.AddRange(_context.Assignments
+                .Where(c => c.ClassroomID == student.ClassroomID
+                && c.DateDue == null).ToList());
+            // Format the string list
+            foreach (var assign in assignments)
+            {
+                results.Add(new string[] { assign.ID.ToString(), assign.Name });
+            }
+            // Return the list
+            return results;
+        }
+
+        /// <summary>
         /// Constructs and returns a student profile in string form.
         /// </summary>
         /// <param name="userId">The ID of the student to base the profile on.</param>
@@ -292,10 +320,10 @@ namespace Utitshala.Controllers
         }
 
         /// <summary>
-        /// Returns the student's record of lessons and assessments in a string.
+        /// Returns the student's record of lessons and assessments in a string list tuple.
         /// </summary>
         /// <param name="userId">The ID of the student to base the record on.</param>
-        /// <returns>A tuple of List<string> containing lessons and assessments, respectively.</string>.</returns>
+        /// <returns>A tuple of <List<string>,List<string>> containing lessons and assessments, respectively.</returns>
         public static Tuple<List<string>, List<string>> GetStudentRecord(string userId)
         {
             List<string> lessons = new List<string>();

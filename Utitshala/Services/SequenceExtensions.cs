@@ -198,9 +198,16 @@ namespace Utitshala.Services
                     List<string[]> resultsLessons = DatabaseController.GetLessons(userId);
                     // Construct a message and send
                     string toSendLessons = "Enter the number of the Lesson you want to start\n\n";
-                    foreach (var ent in resultsLessons)
+                    if (resultsLessons.Count() != 0)
                     {
-                        toSendLessons += ent[0] + ": " + ent[1] + "\n";
+                        foreach (var ent in resultsLessons)
+                        {
+                            toSendLessons += "ID: " + ent[0] + ": " + ent[1] + "\n";
+                        }
+                    }
+                    else
+                    {
+                        toSendLessons += "No Lessons available";
                     }
                     toSendLessons += "\n0: Back\n\n";
                     ChatEngine.messageClient.SendTextMessage(toSendLessons, sequence.GetVariable("currentChat"));
@@ -209,27 +216,41 @@ namespace Utitshala.Services
                     List<string[]> resultsAssessments = DatabaseController.GetAssessments(userId);
                     // Construct a message and send
                     string toSendAssessments = "Enter the number of the Assessment you want to start\n\n";
-                    foreach (var ent in resultsAssessments)
+                    if (resultsAssessments.Count() != 0)
                     {
-                        if (ent[2] != "") 
+                        foreach (var ent in resultsAssessments)
                         {
-                            toSendAssessments += ent[0] + ": " + ent[1] + ", Score: " + ent[2].Slice(0, -3) + "%" + "\n";
+                            if (ent[2] != "")
+                            {
+                                toSendAssessments += "ID: " + ent[0] + ": " + ent[1] + ", Score: " + ent[2].Slice(0, -3) + "%" + "\n";
+                            }
+                            else
+                            {
+                                toSendAssessments += "ID: " + ent[0] + ": " + ent[1] + ", not attempted" + "\n";
+                            }
                         }
-                        else
-                        {
-                            toSendAssessments += ent[0] + ": " + ent[1] + ", not attempted." + "\n";
-                        }
+                    }
+                    else
+                    {
+                        toSendAssessments += "No Assessments available";
                     }
                     toSendAssessments += "\n0: Back\n\n";
                     ChatEngine.messageClient.SendTextMessage(toSendAssessments, sequence.GetVariable("currentChat"));
                     break;
                 case "getassignments":
-                    List<string[]> resultsAssignments = DatabaseController.GetAssessments(userId);
+                    List<string[]> resultsAssignments = DatabaseController.GetAssignments(userId);
                     // Construct a message and send
                     string toSendAssignments = "Enter the number of the Assignment you want to start\n\n";
-                    foreach (var ent in resultsAssignments)
+                    if (resultsAssignments.Count != 0)
                     {
-                        toSendAssignments += ent[0] + ": " + ent[1] + "\n";
+                        foreach (var ent in resultsAssignments)
+                        {
+                            toSendAssignments += "ID: " + ent[0] + ": " + ent[1] + "\n";
+                        }
+                    }
+                    else
+                    {
+                        toSendAssignments += "No Assignments available";
                     }
                     toSendAssignments += "\n0: Back\n\n";
                     ChatEngine.messageClient.SendTextMessage(toSendAssignments, sequence.GetVariable("currentChat"));

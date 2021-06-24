@@ -264,6 +264,10 @@
     <Compile Include="Migrations\202106231731264_AssignmentInitial.Designer.cs">
       <DependentUpon>202106231731264_AssignmentInitial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106241413037_AssignmentName.cs" />
+    <Compile Include="Migrations\202106241413037_AssignmentName.Designer.cs">
+      <DependentUpon>202106241413037_AssignmentName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -422,6 +426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106231731264_AssignmentInitial.resx">
       <DependentUpon>202106231731264_AssignmentInitial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106241413037_AssignmentName.resx">
+      <DependentUpon>202106241413037_AssignmentName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

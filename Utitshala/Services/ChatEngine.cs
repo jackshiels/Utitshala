@@ -1,16 +1,13 @@
-﻿using System;
+﻿// System
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Threading;
-using Telegram.Bot;
-using Telegram.Bot.Args;
-using Telegram.Bot.Types;
-using Spin;
-using Spin.Attributes;
-using Spin.Utility;
-using static Utitshala.Services.Interfaces;
 using System.Text.RegularExpressions;
+// Chat-specific 
+using Telegram.Bot.Args;
+using Spin;
+using static Utitshala.Services.Interfaces;
 using Utitshala.Controllers;
 using Utitshala.Models;
 
