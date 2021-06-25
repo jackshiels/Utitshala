@@ -293,9 +293,25 @@ namespace Utitshala.Controllers
             Student student = _context.Students
                 .FirstOrDefault(c => c.ServiceUserID == userId);
             // Authenticate their access, return null if disallowed.
-            if (student.ClassroomID == assignment.ClassroomID)
+            if (assignment.Public || 
+                student.ClassroomID == assignment.ClassroomID)
             {
-                return assignment;
+                // Check if there is a due date, and if it has passed
+                if (assignment.DateDue != null)
+                {
+                    if (DateTime.Compare((DateTime)assignment.DateDue, DateTime.Now) > 0)
+                    {
+                        return assignment;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return assignment;
+                }
             }
             else
             {

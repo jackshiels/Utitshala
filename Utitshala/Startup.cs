@@ -31,6 +31,7 @@ namespace Utitshala
             ChatEngine.options = new List<string[]>();
             ChatEngine.inputRegister = new List<string[]>();
             ChatEngine.userStateRegister = new List<string[]>();
+            ChatEngine.uploadRegister = new List<string[]>();
 
             // Populate the state register with registered students
             List<Student> students = DatabaseController.GetAllStudents();

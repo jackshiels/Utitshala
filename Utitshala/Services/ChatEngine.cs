@@ -25,6 +25,7 @@ namespace Utitshala.Services
         // Holds in memory chat sequences
         public static List<string[]> options;
         public static List<string[]> inputRegister;
+        public static List<string[]> uploadRegister;
         public static List<string[]> userStateRegister;
         #endregion
 
@@ -46,6 +47,29 @@ namespace Utitshala.Services
             // The current chat and ID of this chat, tracked for functions
             sequence.SetVariable("currentUserId", userId);
             sequence.SetVariable("currentChat", e);
+            #endregion
+
+            #region UploadClause
+            // Check for an upload requirement in the upload register
+            if (uploadRegister.Where(c => c[0] == userId).Count() != 0)
+            {
+                string[] registerElement = uploadRegister.FirstOrDefault(c => c[0] == userId);
+                // Switch case based on the type
+                switch (registerElement[2])
+                {
+                    case "Text":
+
+                        break;
+                    case "Image":
+
+                        break;
+                    case "Audio":
+
+                        break;
+                }
+                // Remove the existing element
+                uploadRegister.Remove(registerElement);
+            }
             #endregion
 
             #region Select Dialogue File
@@ -270,7 +294,18 @@ namespace Utitshala.Services
                                 case "openassignment":
                                     // Get the assignment, if it exists and they have permission
                                     Assignment assignment = DatabaseController.GetAssignment(userId, Convert.ToInt32(input));
-
+                                    if (assignment != null)
+                                    {
+                                        // Add an item to the upload register
+                                        uploadRegister.Add(new string[] { userId, assignment.ID.ToString(), assignment.Type.ToString() });
+                                        // Set the true sequence output
+                                        sequence.SetNextLine(read[4]);
+                                    }
+                                    else
+                                    {
+                                        // Set the false sequence output
+                                        sequence.SetNextLine(read[2]);
+                                    }
                                     break;
                                 // Assessment inputs
                                 case "mcq":
