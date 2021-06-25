@@ -96,6 +96,15 @@ Not a valid Assignment. Please try again!
 +selectedassignment
 Enter your Assignment in the chat!
 +
+> upload text "uploadfailed" "uploadsuccessful"
+
++uploadfailed
+Incorrect upload, please try again
++> next selectedassignment
+
++uploadsuccessful
+Assignment uploaded successfully! Type start to go home
++
 
 # VIEW PROFILE
 

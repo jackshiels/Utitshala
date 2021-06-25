@@ -267,6 +267,11 @@ namespace Utitshala.Services
                                         sequence.SetNextLine(read[2]);
                                     }
                                     break;
+                                case "openassignment":
+                                    // Get the assignment, if it exists and they have permission
+                                    Assignment assignment = DatabaseController.GetAssignment(userId, Convert.ToInt32(input));
+
+                                    break;
                                 // Assessment inputs
                                 case "mcq":
                                     // Check if the input is valid

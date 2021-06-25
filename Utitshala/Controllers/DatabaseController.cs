@@ -255,7 +255,7 @@ namespace Utitshala.Controllers
         /// Gets a list of assignments available to a student.
         /// </summary>
         /// <param name="userId">The user to base this GET on.</param>
-        /// <returns>A list<string[]> of assignment values in { ID, Name } form.</string></returns>
+        /// <returns>A list<string[]> of assignment values in { ID, Name } form.</returns>
         public static List<string[]> GetAssignments(string userId)
         {
             List<string[]> results = new List<string[]>();
@@ -277,6 +277,30 @@ namespace Utitshala.Controllers
             }
             // Return the list
             return results;
+        }
+
+        /// <summary>
+        /// Returns a specific assignment, if that user has access.
+        /// </summary>
+        /// <param name="userId">The user to base this GET on.</param>
+        /// <param name="assignmentId">The ID of the assignment.</param>
+        /// <returns>The assignment if allowed, null if not.</returns>
+        public static Assignment GetAssignment(string userId, int assignmentId)
+        {
+            // Get the assignment and the student
+            Assignment assignment = _context.Assignments
+                .FirstOrDefault(c => c.ID == assignmentId);
+            Student student = _context.Students
+                .FirstOrDefault(c => c.ServiceUserID == userId);
+            // Authenticate their access, return null if disallowed.
+            if (student.ClassroomID == assignment.ClassroomID)
+            {
+                return assignment;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
