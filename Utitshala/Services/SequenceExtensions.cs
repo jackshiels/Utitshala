@@ -152,7 +152,7 @@ namespace Utitshala.Services
                     }
                     else
                     {
-                        messagerecord += "No Lessons completed yet.";
+                        messagerecord += "No Lessons completed yet.\n\n";
                     }
                     messagerecord += "Assessments completed:\n\n";
                     // Write assessments
@@ -165,7 +165,7 @@ namespace Utitshala.Services
                     }
                     else
                     {
-                        messagerecord += "No Assessments completed yet.";
+                        messagerecord += "No Assessments completed yet.\n\n";
                     }
                     messagerecord += "0: Back";
                     ChatEngine.messageClient.SendTextMessage(messagerecord, sequence.GetVariable("currentChat"));
@@ -222,7 +222,7 @@ namespace Utitshala.Services
                         {
                             if (ent[2] != "")
                             {
-                                toSendAssessments += "ID: " + ent[0] + ": " + ent[1] + ", Score: " + ent[2].Slice(0, -3) + "%" + "\n";
+                                toSendAssessments += "ID: " + ent[0] + ": " + ent[1] + ", Score: " + ent[2] + "%" + "\n";
                             }
                             else
                             {

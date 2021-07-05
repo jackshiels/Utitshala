@@ -1,0 +1,52 @@
+﻿# Example assessment
+> begin greeting
+
++greeting
+Quiz 1: Test Quiz
++
+> next question1
+
++question1
+Which of the following is an animal?
+1. Tiger
+2. Teapot
+3. Birthday
++
+> input mcq positivenumber 1 "question2" ""
+
++question2
+How many fingers are on a hand?
+1. 4
+2. 5
+3. 87
++
+> input mcq positivenumber 2 "question3" ""
+
++question3
+Where is Dallas located?
+1. San Francisco
+2. Great Britain
+3. Texas
++
+> input mcq positivenumber 3 "end" ""
+
++question4
+What is the name of the biggest city in the UK?
++
+> input wordcheck textspaced London "end" ""
+
++end
++
+> execute checkscore 60 "failed" "passed"
+
++failed
+Oh dear, you failed.
++> execute closesession "" "completed" ""
+
++passed
+Congratulations! You passed.
++> execute closesession "" "completed" ""
+
++completed
+Type start to go home.
++

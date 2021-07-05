@@ -240,7 +240,9 @@ namespace Utitshala.Controllers
             Classroom classroom = _context.Classrooms
                 .Include("Assessments")
                 .FirstOrDefault(c => c.ID == classroomId);
-            assessments.AddRange(classroom.Assessments);
+            List<Assessment> notWithinList = classroom.Assessments
+                .Where(c => !assessments.Any(y => y == c)).ToList();
+            assessments.AddRange(notWithinList);
             // Convert the lessons into string[] { ID, Name, Score (if exists) } and return
             List<string[]> assessmentStrings = new List<string[]>();
             foreach (var assessment in assessments)
@@ -377,6 +379,7 @@ namespace Utitshala.Controllers
             {
                 if (ses.Completed && ses.AssessmentID == null)
                 {
+                    // Handle nulls
                     lessons.Add(ses.LearningDesign.Name
                         + "\nCompleted: " + ses.DateTimeEnded.Value.ToShortDateString() 
                         + ", " + ses.DateTimeEnded.Value.ToShortTimeString());
@@ -462,14 +465,13 @@ namespace Utitshala.Controllers
                     {
                         score = (userScore
                         / session.Assessment.QuestionsCount) * 100;
-                        score = Decimal.Round(score, 1);
                         if (score >= passMark) // If passed
                         {
                             result = true;
                         }
                     }
                     // Save the score into the session
-                    session.Score = score;
+                    session.Score = Math.Round(score, 2);
                     _context.Entry(session).State = System.Data.Entity.EntityState.Modified;
                     _context.SaveChanges();
                 }
@@ -479,7 +481,7 @@ namespace Utitshala.Controllers
                 Console.WriteLine(ex.StackTrace);
             }
             // Return values as a <bool, decimal> tuple
-            return new Tuple<bool, decimal>(result, score);
+            return new Tuple<bool, decimal>(result, Math.Round(score, 2));
         }
         #endregion
 
