@@ -227,7 +227,8 @@ namespace Utitshala.Controllers
                         .LearningDesigns
                         .Include("Assessment")
                         .FirstOrDefault(c => c.ID == sesh.LearningDesignID);
-                    if (lesson != null && lesson.Assessment != null)
+                    if (lesson != null && lesson.Assessment != null
+                        && !assessments.Contains(lesson.Assessment))
                     {
                         assessments.Add(lesson.Assessment);
                     }
@@ -295,27 +296,34 @@ namespace Utitshala.Controllers
             Student student = _context.Students
                 .FirstOrDefault(c => c.ServiceUserID == userId);
             // Authenticate their access, return null if disallowed.
-            if (assignment.Public || 
-                student.ClassroomID == assignment.ClassroomID)
+            try
             {
-                // Check if there is a due date, and if it has passed
-                if (assignment.DateDue != null)
+                if (assignment.Public ||
+                student.ClassroomID == assignment.ClassroomID)
                 {
-                    if (DateTime.Compare((DateTime)assignment.DateDue, DateTime.Now) > 0)
+                    // Check if there is a due date, and if it has passed
+                    if (assignment.DateDue != null)
                     {
-                        return assignment;
+                        if (DateTime.Compare((DateTime)assignment.DateDue, DateTime.Now) > 0)
+                        {
+                            return assignment;
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                     else
                     {
-                        return null;
+                        return assignment;
                     }
                 }
                 else
                 {
-                    return assignment;
+                    return null;
                 }
             }
-            else
+            catch (Exception ex)
             {
                 return null;
             }

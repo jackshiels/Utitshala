@@ -119,7 +119,10 @@ namespace Utitshala.Services
 
             #region Sequence Utilities
             // Set options, if applicable
-            OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
+            if (options.Where(c => c[0] == userId).Count() != 0)
+            {
+                OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
+            }
 
             // Grab input if applicable
             InputSaver(sequence, e.Message.Text, e.Message.Chat.Id.ToString());
@@ -135,7 +138,7 @@ namespace Utitshala.Services
                 // Get the current line
                 currentLine = sequence.ExecuteCurrentLine().BuildString(true, false);
                 // Sleep so that any executed lines can complete their message
-                Thread.Sleep(100);
+                Thread.Sleep(500);
                 // Message the line based on media type
                 if (e.Message.Text != null)
                 {
@@ -152,26 +155,28 @@ namespace Utitshala.Services
         /// </summary>
         /// <param name="sequence">The sequence to act on.</param>
         /// <param name="chatId">The ID of the chat to check options for.</param>
+        /// <param name="messageText">The option input from the user.</param>
         public static void OptionInitiator(Sequence sequence, string userId, string messageText)
         {
-            // Check for an option choice before execution
-            if (options.Where(c => c[0] == userId).Count() != 0)
+            foreach (var opt in options.Where(c => c[0] == userId))
             {
-                foreach (var opt in options.Where(c => c[0] == userId))
+                // Check to see if the input message is the same as the option identifier
+                if (messageText == opt[1])
                 {
-                    // Check to see if the input message is the same as the option identifier
-                    if (messageText == opt[1])
-                    {
-                        // Set the next line and break
-                        sequence.SetNextLine(opt[2]);
-                        break;
-                    }
+                    // Set the next line and break
+                    sequence.SetNextLine(opt[2]);
+                    break;
                 }
-                // Clean the options from this list once used
-                foreach (var opt in options.Where(c => c[0] == userId).ToList())
+                else
                 {
-                    options.Remove(opt);
+                    // Repeat the previous line
+                    sequence.SetNextLine(opt[3]);
                 }
+            }
+            // Clean the options from this list once used
+            foreach (var opt in options.Where(c => c[0] == userId).ToList())
+            {
+                options.Remove(opt);
             }
         }
 
@@ -262,7 +267,7 @@ namespace Utitshala.Services
                                     else
                                     {
                                         // Set the false sequence output
-                                        sequence.SetNextLine(read[2]);
+                                        sequence.SetNextLine(read[3]);
                                     }
                                     break;
                                 case "openassessment":
@@ -288,7 +293,7 @@ namespace Utitshala.Services
                                     else
                                     {
                                         // Set the false sequence output
-                                        sequence.SetNextLine(read[2]);
+                                        sequence.SetNextLine(read[3]);
                                     }
                                     break;
                                 case "openassignment":
@@ -304,7 +309,7 @@ namespace Utitshala.Services
                                     else
                                     {
                                         // Set the false sequence output
-                                        sequence.SetNextLine(read[2]);
+                                        sequence.SetNextLine(read[3]);
                                     }
                                     break;
                                 // Assessment inputs

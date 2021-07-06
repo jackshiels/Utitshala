@@ -29,7 +29,7 @@ namespace Utitshala.Services
             var arg2 = sequence.Resolve(arguments[1]);
 
             // Add options to the options list
-            ChatEngine.options.Add(new string[] { sequence.GetVariable("currentUserId").ToString(), arg1.ToString(), arg2.ToString() });
+            ChatEngine.options.Add(new string[] { sequence.GetVariable("currentUserId").ToString(), arg1.ToString(), arg2.ToString(), sequence.CurrentLine.Value.Name });
         }
 
         /// <summary>

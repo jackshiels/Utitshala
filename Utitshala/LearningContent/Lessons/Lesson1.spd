@@ -27,7 +27,6 @@ Watch out...
 > next completed
 
 +completed
-Closing...
 +> execute closesession "" "completedend" ""
 
 +completedend
