@@ -278,6 +278,7 @@
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Classroom.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\JSONModels\ImageRequestJson.cs" />
     <Compile Include="Models\LearningDesign.cs" />
     <Compile Include="Models\LearningSequence.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

@@ -10,6 +10,17 @@ using Spin;
 using static Utitshala.Services.Interfaces;
 using Utitshala.Controllers;
 using Utitshala.Models;
+using System.Drawing;
+using Telegram.Bot.Requests;
+using Telegram.Bot.Types;
+using System.Net.Http;
+using System.Configuration;
+using System.Net;
+using System.IO;
+using System.Web.Script.Serialization;
+using Utitshala.Models.JSONModels;
+using Newtonsoft.Json;
+using static Utitshala.Models.JSONModels.ImageRequestJson;
 
 namespace Utitshala.Services
 {
@@ -58,13 +69,27 @@ namespace Utitshala.Services
                 switch (registerElement[2])
                 {
                     case "Text":
-
+                        
                         break;
                     case "Image":
-
+                        // Prepare to download the image file
+                        string url = String.Format(@"https://api.telegram.org/bot{0}/getFile?file_id={1}",
+                            ConfigurationManager.AppSettings.Get("telegramKey"), e.Message.Photo[3].FileId);
+                        string json = "";
+                        // Execute the request
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                        request.AutomaticDecompression = DecompressionMethods.GZip;
+                        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                        using (Stream stream = response.GetResponseStream())
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            json = reader.ReadToEnd();
+                        }
+                        // Deserialise 
+                        ImageResult fileSpecs = JsonConvert.DeserializeObject<ImageRequestJson>(json).result;
                         break;
                     case "Audio":
-
+                        
                         break;
                 }
                 // Remove the existing element
