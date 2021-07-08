@@ -28,6 +28,7 @@ namespace Utitshala
             // Create and start the Telegram bot client
             ChatEngine.messageClient = new TelegramMessageEngine(
                 new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));
+            ChatEngine.downloadClient = new TelegramDownloader();
             ChatEngine.options = new List<string[]>();
             ChatEngine.inputRegister = new List<string[]>();
             ChatEngine.userStateRegister = new List<string[]>();

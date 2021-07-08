@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using Telegram.Bot;
@@ -19,6 +20,14 @@ namespace Utitshala.Services
             void SendStickerMessage(string stickerUrl, object chat);
             void SendAudioMessage(string audioUrl, object chat);
             void SendVideoMessage(string videoUrl, string thumbnailUrl, object chat);
+        }
+
+        /// <summary>
+        /// An interface for individual message client download operations.
+        /// </summary>
+        public interface IDownloader
+        {
+            Image DownloadImage(object e);
         }
     }
 }

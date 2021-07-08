@@ -638,6 +638,48 @@ namespace Utitshala.Controllers
             }
             return result;
         }
+
+        /// <summary>
+        /// Saves a new student assignment upload, along with the GUID of
+        /// the file for retrieval, into a student's record.
+        /// </summary>
+        /// <param name="userId">The ID of the user to save an assignment for.</param>
+        /// <param name="fileName">The GUID of the file.</param>
+        /// <param name="fileSize">The size of the file in bytes.</param>
+        /// <param name="assignmentId">The ID of the assignment this upload is based on.</param>
+        /// <returns>A boolean representing success (true) or failure (false).</returns>
+        public static bool SaveStudentAssignment(string userId, string fileName, 
+            int fileSize, int assignmentId)
+        {
+            bool result = false;
+            try
+            {
+                // Get the student's record
+                StudentRecord record = _context.Students
+                    .Include("StudentRecord")
+                    .FirstOrDefault(c => c.ServiceUserID == userId)
+                    .StudentRecord;
+                // Create the studentassignment
+                StudentAssignment sa = new StudentAssignment()
+                {
+                    AssignmentID = assignmentId,
+                    UploadDate = DateTime.Now,
+                    MetaData = "",
+                    FileSize = fileSize,
+                    Value = fileName
+                };
+                // Insert the studentassignment into the student's record
+                record.StudentAssignments.Add(sa);
+                _context.Entry(record).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return result;
+        }
         #endregion
     }
 }

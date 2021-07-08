@@ -18,7 +18,6 @@ namespace Utitshala.Models
         public DateTime UploadDate { get; set; }
         public string Value { get; set; }
         public string MetaData { get; set; }
-        public AssignmentType Type { get; set; }
         [ForeignKey("Assignment")]
         public int? AssignmentID { get; set; }
         public int? FileSize { get; set; }

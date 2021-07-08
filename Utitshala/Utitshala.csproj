@@ -272,6 +272,10 @@
     <Compile Include="Migrations\202106251623196_StudentAssignments.Designer.cs">
       <DependentUpon>202106251623196_StudentAssignments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107081219362_RemoveAssignmentTypefromStudentAssignment.cs" />
+    <Compile Include="Migrations\202107081219362_RemoveAssignmentTypefromStudentAssignment.Designer.cs">
+      <DependentUpon>202107081219362_RemoveAssignmentTypefromStudentAssignment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -289,8 +293,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChatEngine.cs" />
     <Compile Include="Services\Extensions.cs" />
+    <Compile Include="Services\FileSystemManager.cs" />
     <Compile Include="Services\Interfaces.cs" />
     <Compile Include="Services\SequenceExtensions.cs" />
+    <Compile Include="Services\TelegramDownloader.cs" />
     <Compile Include="Services\TelegramMessageEngine.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -359,6 +365,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="StudentAssignments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -439,6 +446,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106251623196_StudentAssignments.resx">
       <DependentUpon>202106251623196_StudentAssignments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107081219362_RemoveAssignmentTypefromStudentAssignment.resx">
+      <DependentUpon>202107081219362_RemoveAssignmentTypefromStudentAssignment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
