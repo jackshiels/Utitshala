@@ -18,30 +18,71 @@ namespace Utitshala.Services
     {
         public bool SaveFile(object file, AssignmentType type, string userId, int assignmentId)
         {
+            // Check to see if a student folder exists with this ID
+            string directory = AppDomain.CurrentDomain.BaseDirectory + @"StudentAssignments\" + userId;
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
             switch (type)
             {
-                case AssignmentType.Image:
-                    Image image = (Image)file;
-                    string fileName = GUIDGenerator() + ".jpg";
+                case AssignmentType.Text:
+                    // Cast to a string
+                    string text = (string)file;
+                    string fileNameText = GUIDGenerator() + ".txt";
                     // Save the file to the user's folder
                     try
                     {
-                        // Check to see if a student folder exists with this ID
-                        string directory = AppDomain.CurrentDomain.BaseDirectory + @"StudentAssignments\" + userId;
-                        if (!Directory.Exists(directory))
-                        {
-                            Directory.CreateDirectory(directory);
-                        }
                         // Save to the folder
-                        string imageDirectory = directory + @"\" + fileName;
-                        image.Save(imageDirectory, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        string itextDirectory = directory + @"\" + fileNameText;
+                        File.WriteAllText(itextDirectory, text);
+                        // Create a database element recording the GUID and assignment
+                        DatabaseController.SaveStudentAssignment(userId, fileNameText, text.Count(), assignmentId);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.StackTrace);
                     }
-                    // Create a database element recording the GUID and assignment
-                    DatabaseController.SaveStudentAssignment(userId, fileName, 0, assignmentId);
+                    break;
+                case AssignmentType.Image:
+                    // Cast to an image
+                    Image image = (Image)file;
+                    string fileNameImage = GUIDGenerator() + ".jpg";
+                    // Save the file to the user's folder
+                    try
+                    {
+                        // Save to the folder
+                        string imageDirectory = directory + @"\" + fileNameImage;
+                        image.Save(imageDirectory, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        // Get the file's length
+                        long length = new System.IO.FileInfo(imageDirectory).Length;
+                        // Create a database element recording the GUID and assignment
+                        DatabaseController.SaveStudentAssignment(userId, fileNameImage, Convert.ToInt32(length), assignmentId);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.StackTrace);
+                    }
+                    break;
+                case AssignmentType.Audio:
+                    // Cast to a filestream
+                    Stream audioStream = (Stream)file;
+                    string fileNameAudio = GUIDGenerator() + ".ogg";
+                    // Save the file to the user's folder
+                    try
+                    {
+                        // Save to the folder
+                        string imageDirectory = directory + @"\" + fileNameAudio;
+                        var fileStream = new FileStream(imageDirectory, FileMode.Create, FileAccess.Write);
+                        audioStream.CopyTo(fileStream);
+                        audioStream.Dispose();
+                        // Create a database element recording the GUID and assignment
+                        DatabaseController.SaveStudentAssignment(userId, fileNameAudio, Convert.ToInt32(fileStream.Length), assignmentId);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.StackTrace);
+                    }
                     break;
             }
             return true;

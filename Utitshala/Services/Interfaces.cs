@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using Telegram.Bot;
@@ -28,6 +29,7 @@ namespace Utitshala.Services
         public interface IDownloader
         {
             Image DownloadImage(object e);
+            Stream DownloadVoiceNote(object e);
         }
     }
 }

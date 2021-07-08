@@ -61,5 +61,42 @@ namespace Utitshala.Services
                 return null;
             }
         }
+
+        public Stream DownloadVoiceNote(object e)
+        {
+            try
+            {
+                // Convert the chat to MessageEventArgs
+                MessageEventArgs chat = (MessageEventArgs)e;
+                // Get the Telegram photo URL
+                string url = String.Format(@"https://api.telegram.org/bot{0}/getFile?file_id={1}",
+                                ConfigurationManager.AppSettings.Get("telegramKey"), chat.Message.Voice.FileId);
+                // Get the request for this as json
+                string json = "";
+                // Execute the request
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.AutomaticDecompression = DecompressionMethods.GZip;
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    json = reader.ReadToEnd();
+                }
+                // Deserialise 
+                ImageResult fileSpecs = JsonConvert.DeserializeObject<ImageRequestJson>(json).result;
+                // Download the image via the url
+                string audioUrl = String.Format(@"https://api.telegram.org/file/bot{0}/{1}",
+                    ConfigurationManager.AppSettings.Get("telegramKey"), fileSpecs.file_path);
+                WebClient client = new WebClient();
+                Stream audioStream = client.OpenRead(audioUrl);
+                // Return the image
+                return audioStream;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                return null;
+            }
+        }
     }
 }

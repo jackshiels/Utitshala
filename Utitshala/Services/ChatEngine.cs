@@ -11,6 +11,7 @@ using static Utitshala.Services.Interfaces;
 using Utitshala.Controllers;
 using Utitshala.Models;
 using System.Drawing;
+using System.IO;
 
 namespace Utitshala.Services
 {
@@ -60,7 +61,13 @@ namespace Utitshala.Services
                 switch (registerElement[2])
                 {
                     case "Text":
-                        
+                        // Save the text into the user's personal directory
+                        if (e.Message.Text != null)
+                        {
+                            // Save the file using the manager
+                            new FileSystemManager().SaveFile(e.Message.Text, AssignmentType.Text,
+                                userId, Convert.ToInt32(registerElement[1]));
+                        }
                         break;
                     case "Image":
                         // Use the image downloader
@@ -74,7 +81,15 @@ namespace Utitshala.Services
                         }
                         break;
                     case "Audio":
-                        
+                        // Use the audio downloader
+                        Stream audioStream = downloadClient.DownloadVoiceNote(e);
+                        // Save the image into the user's personal directory
+                        if (audioStream != null)
+                        {
+                            // Save the file using the manager
+                            new FileSystemManager().SaveFile(audioStream, AssignmentType.Audio,
+                                userId, Convert.ToInt32(registerElement[1]));
+                        }
                         break;
                 }
                 // Remove the existing element
