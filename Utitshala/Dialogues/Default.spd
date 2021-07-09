@@ -41,17 +41,16 @@ Welcome back! Please choose an option:
 > opt 0 "about"
 
 +about
-Utitshala is a research project being developed by an Information Systems student at the University of Cape Town. The aim of Utitshala is to provide a low-data, low-cost Learning Management System for use in rural and underprivileged areas, while investigating the unique requirements of teachers and students in these locales. Utitshala is developed by Jack Shiels.
+Utitshala is a research project being developed within the Information Systems department at the University of Cape Town. The aim of Utitshala is to provide a low-data, low-cost Learning Management System for use in rural and underprivileged areas, while investigating the unique requirements of teachers and students in these locales. Utitshala is developed by Jack Shiels.
 
 0: Back
-
 +> opt 0 "mainmenu"
 
 # CHOOSE LESSON
 
 +getlessons
 +
-> sticker "CAACAgQAAxkBAAIE62DUe-26llDrQMpaPEoa2L-EAaG-AAJsBwACm9OhUpaLsiD1fIlOHwQ"
+> sticker "CAACAgQAAxkBAAIKG2DofEKwab6diJAFn8L8DMAoCDCvAAIdCQACNJpAU4FokJUwqL83IAQ"
 > execute getlessons "" "" ""
 > next chooselesson
 
@@ -71,7 +70,7 @@ Lesson loaded! Enter start to begin. To leave your lesson, type exit.
 
 +getassessments
 +
-> sticker "CAACAgQAAxkBAAIE62DUe-26llDrQMpaPEoa2L-EAaG-AAJsBwACm9OhUpaLsiD1fIlOHwQ"
+> sticker "CAACAgQAAxkBAAIKNGDogIvflDE4jjZmBXt-lTCZJXnXAAICCgACdgWoUuxcM3qWRxD6IAQ"
 > execute getassessments "" "" ""
 > next chooseassessment
 
@@ -91,7 +90,7 @@ Assessment loaded! Enter start to begin.
 
 +getassignments
 +
-> sticker "CAACAgQAAxkBAAIE62DUe-26llDrQMpaPEoa2L-EAaG-AAJsBwACm9OhUpaLsiD1fIlOHwQ"
+> sticker "CAACAgQAAxkBAAIKGGDofCsowAU5zJ_cUYLUKijts0QaAAKVDAACpDBJU11Ks6A8zhV9IAQ"
 > execute getassignments "" "" ""
 > next chooseassignment
 
@@ -119,6 +118,7 @@ Assignment uploaded successfully! Type start to go home
 
 +viewprofile
 +
+> sticker "CAACAgQAAxkBAAIKLWDof_VzlMqmphBrBopbPfwEC2EtAALECAAC9-dAU5D5HjnAuMQCIAQ"
 > execute viewprofile "" "" ""
 > next viewprofileoptions
 
