@@ -25,6 +25,7 @@ namespace Utitshala.Models
             AddCommand("wait", SequenceExtensions.WaitTimer);
             AddCommand("input", SequenceExtensions.ReceiveInput);
             AddCommand("execute", SequenceExtensions.ExecuteFunction);
+            AddCommand("upload", SequenceExtensions.Upload);
         }
     }
 }

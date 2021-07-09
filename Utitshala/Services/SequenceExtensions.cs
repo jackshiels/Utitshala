@@ -13,11 +13,11 @@ namespace Utitshala.Services
     {
         #region Embedded Sequence Functions
         /// <summary>
-        /// Handles text input options by logging choices in the
-        /// current options list.
+        /// Handles text input optionsRegister by logging choices in the
+        /// current optionsRegister list.
         /// </summary>
         /// <param name="sequence">The sequence this function is added to.</param>
-        /// <param name="arguments">The list of options and directions.</param>
+        /// <param name="arguments">The list of optionsRegister and directions.</param>
         [SequenceCommand("opt")]
         public static void OptionTraversal(Sequence sequence, object[] arguments)
         {
@@ -28,8 +28,8 @@ namespace Utitshala.Services
             var arg1 = sequence.Resolve(arguments[0]);
             var arg2 = sequence.Resolve(arguments[1]);
 
-            // Add options to the options list
-            ChatEngine.options.Add(new string[] { sequence.GetVariable("currentUserId").ToString(), arg1.ToString(), arg2.ToString(), sequence.CurrentLine.Value.Name });
+            // Add optionsRegister to the optionsRegister list
+            ChatEngine.optionsRegister.Add(new string[] { sequence.GetVariable("currentUserId").ToString(), arg1.ToString(), arg2.ToString(), sequence.CurrentLine.Value.Name });
         }
 
         /// <summary>
@@ -286,6 +286,39 @@ namespace Utitshala.Services
                         sequence.SetNextLine(arg3.ToString());
                     }
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Prepares the sequence to redirect after an upload, based on upload success or failure.
+        /// </summary>
+        /// <param name="sequence">The sequence this function is added to.</param>
+        /// <param name="arguments">The name of the function to execute.</param>
+        [SequenceCommand("upload")]
+        public static void Upload(Sequence sequence, object[] arguments)
+        {
+            // Register the function
+            ArgumentUtils.Count("upload", arguments, 2);
+
+            // Derive the arguments
+            var arg1 = sequence.Resolve(arguments[0]);
+            var arg2 = sequence.Resolve(arguments[1]);
+
+            // Act
+            try
+            {
+                // Add the arguments to the upload register element
+                string[] uploadRegisterElement = ChatEngine.uploadRegister
+                .FirstOrDefault(c => c[0] == sequence.GetVariable("currentUserId").ToString());
+                string[] sa1 = uploadRegisterElement.Append(arg1.ToString()).ToArray();
+                string[] sa2 = sa1.Append(arg2.ToString()).ToArray();
+                // Replace
+                ChatEngine.uploadRegister.Remove(uploadRegisterElement);
+                ChatEngine.uploadRegister.Add(sa2);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
             }
         }
         #endregion

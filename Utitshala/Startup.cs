@@ -29,7 +29,7 @@ namespace Utitshala
             ChatEngine.messageClient = new TelegramMessageEngine(
                 new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));
             ChatEngine.downloadClient = new TelegramDownloader();
-            ChatEngine.options = new List<string[]>();
+            ChatEngine.optionsRegister = new List<string[]>();
             ChatEngine.inputRegister = new List<string[]>();
             ChatEngine.userStateRegister = new List<string[]>();
             ChatEngine.uploadRegister = new List<string[]>();

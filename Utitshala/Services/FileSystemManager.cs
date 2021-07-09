@@ -55,7 +55,7 @@ namespace Utitshala.Services
                         string imageDirectory = directory + @"\" + fileNameImage;
                         image.Save(imageDirectory, System.Drawing.Imaging.ImageFormat.Jpeg);
                         // Get the file's length
-                        long length = new System.IO.FileInfo(imageDirectory).Length;
+                        long length = new FileInfo(imageDirectory).Length;
                         // Create a database element recording the GUID and assignment
                         DatabaseController.SaveStudentAssignment(userId, fileNameImage, Convert.ToInt32(length), assignmentId);
                     }

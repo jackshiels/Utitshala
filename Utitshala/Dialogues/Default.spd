@@ -95,7 +95,7 @@ Not a valid Assignment. Please try again!
 
 +selectedassignment
 Enter your Assignment in the chat!
-+
++> upload "uploadfailed" "uploadsuccessful"
 
 +uploadfailed
 Incorrect upload, please try again

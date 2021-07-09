@@ -25,8 +25,8 @@ namespace Utitshala.Services
          * be extended for other services (e.g., WhatsApp, FB Messenger, etc.) */
         public static IMessageClient messageClient;
         public static IDownloader downloadClient;
-        // Holds in memory chat sequences
-        public static List<string[]> options;
+        // Hold in memory chat sequence values
+        public static List<string[]> optionsRegister;
         public static List<string[]> inputRegister;
         public static List<string[]> uploadRegister;
         public static List<string[]> userStateRegister;
@@ -50,51 +50,6 @@ namespace Utitshala.Services
             // The current chat and ID of this chat, tracked for functions
             sequence.SetVariable("currentUserId", userId);
             sequence.SetVariable("currentChat", e);
-            #endregion
-
-            #region UploadClause
-            // Check for an upload requirement in the upload register
-            if (uploadRegister.Where(c => c[0] == userId).Count() != 0)
-            {
-                string[] registerElement = uploadRegister.FirstOrDefault(c => c[0] == userId);
-                // Switch case based on the type
-                switch (registerElement[2])
-                {
-                    case "Text":
-                        // Save the text into the user's personal directory
-                        if (e.Message.Text != null)
-                        {
-                            // Save the file using the manager
-                            new FileSystemManager().SaveFile(e.Message.Text, AssignmentType.Text,
-                                userId, Convert.ToInt32(registerElement[1]));
-                        }
-                        break;
-                    case "Image":
-                        // Use the image downloader
-                        Image imageResult = downloadClient.DownloadImage(e);
-                        // Save the image into the user's personal directory
-                        if (imageResult != null)
-                        {
-                            // Save the file using the manager
-                            new FileSystemManager().SaveFile(imageResult, AssignmentType.Image, 
-                                userId, Convert.ToInt32(registerElement[1]));
-                        }
-                        break;
-                    case "Audio":
-                        // Use the audio downloader
-                        Stream audioStream = downloadClient.DownloadVoiceNote(e);
-                        // Save the image into the user's personal directory
-                        if (audioStream != null)
-                        {
-                            // Save the file using the manager
-                            new FileSystemManager().SaveFile(audioStream, AssignmentType.Audio,
-                                userId, Convert.ToInt32(registerElement[1]));
-                        }
-                        break;
-                }
-                // Remove the existing element
-                uploadRegister.Remove(registerElement);
-            }
             #endregion
 
             #region Select Dialogue File
@@ -142,9 +97,79 @@ namespace Utitshala.Services
             sequence.LoadAndStartDocument(path);
             #endregion
 
+            #region UploadClause
+            // Check for an upload requirement in the upload register
+            if (uploadRegister.Where(c => c[0] == userId).Count() != 0)
+            {
+                string[] uploadRegisterElement = uploadRegister.FirstOrDefault(c => c[0] == userId);
+                // Switch case based on the type
+                switch (uploadRegisterElement[2])
+                {
+                    case "Text":
+                        // Save the text into the user's personal directory
+                        if (e.Message.Text != null)
+                        {
+                            // Save the file using the manager
+                            new FileSystemManager().SaveFile(e.Message.Text, AssignmentType.Text,
+                                userId, Convert.ToInt32(uploadRegisterElement[1]));
+                            // Success, so go to the successful output
+                            sequence.SetNextLine(uploadRegisterElement[4]);
+                            // Remove the existing element
+                            uploadRegister.Remove(uploadRegisterElement);
+                        }
+                        else
+                        {
+                            // Then it failed
+                            sequence.SetNextLine(uploadRegisterElement[3]);
+                        }
+                        break;
+                    case "Image":
+                        // Use the image downloader
+                        Image imageResult = downloadClient.DownloadImage(e);
+                        // Save the image into the user's personal directory
+                        if (imageResult != null)
+                        {
+                            // Save the file using the manager
+                            new FileSystemManager().SaveFile(imageResult, AssignmentType.Image,
+                                userId, Convert.ToInt32(uploadRegisterElement[1]));
+                            // Success, so go to the successful output
+                            sequence.SetNextLine(uploadRegisterElement[4]);
+                            // Remove the existing element
+                            uploadRegister.Remove(uploadRegisterElement);
+                        }
+                        else
+                        {
+                            // Then it failed
+                            sequence.SetNextLine(uploadRegisterElement[3]);
+                        }
+                        break;
+                    case "Audio":
+                        // Use the audio downloader
+                        Stream audioStream = downloadClient.DownloadVoiceNote(e);
+                        // Save the image into the user's personal directory
+                        if (audioStream != null)
+                        {
+                            // Save the file using the manager
+                            new FileSystemManager().SaveFile(audioStream, AssignmentType.Audio,
+                                userId, Convert.ToInt32(uploadRegisterElement[1]));
+                            // Success, so go to the successful output
+                            sequence.SetNextLine(uploadRegisterElement[4]);
+                            // Remove the existing element
+                            uploadRegister.Remove(uploadRegisterElement);
+                        }
+                        else
+                        {
+                            // Then it failed
+                            sequence.SetNextLine(uploadRegisterElement[3]);
+                        }
+                        break;
+                }
+            }
+            #endregion
+
             #region Sequence Utilities
-            // Set options, if applicable
-            if (options.Where(c => c[0] == userId).Count() != 0)
+            // Set optionsRegister, if applicable
+            if (optionsRegister.Where(c => c[0] == userId).Count() != 0)
             {
                 OptionInitiator(sequence, e.Message.Chat.Id.ToString(), e.Message.Text);
             }
@@ -164,12 +189,8 @@ namespace Utitshala.Services
                 currentLine = sequence.ExecuteCurrentLine().BuildString(true, false);
                 // Sleep so that any executed lines can complete their message
                 Thread.Sleep(500);
-                // Message the line based on media type
-                if (e.Message.Text != null)
-                {
-                    // Send the message
-                    messageClient.SendTextMessage(currentLine, e);
-                }
+                // Send the message (used to check for Text == null)
+                messageClient.SendTextMessage(currentLine, e);
             }
             #endregion
         }
@@ -179,11 +200,11 @@ namespace Utitshala.Services
         /// Sets the current option line for a specific chat ID.
         /// </summary>
         /// <param name="sequence">The sequence to act on.</param>
-        /// <param name="chatId">The ID of the chat to check options for.</param>
+        /// <param name="chatId">The ID of the chat to check optionsRegister for.</param>
         /// <param name="messageText">The option input from the user.</param>
         public static void OptionInitiator(Sequence sequence, string userId, string messageText)
         {
-            foreach (var opt in options.Where(c => c[0] == userId))
+            foreach (var opt in optionsRegister.Where(c => c[0] == userId))
             {
                 // Check to see if the input message is the same as the option identifier
                 if (messageText == opt[1])
@@ -198,10 +219,10 @@ namespace Utitshala.Services
                     sequence.SetNextLine(opt[3]);
                 }
             }
-            // Clean the options from this list once used
-            foreach (var opt in options.Where(c => c[0] == userId).ToList())
+            // Clean the optionsRegister from this list once used
+            foreach (var opt in optionsRegister.Where(c => c[0] == userId).ToList())
             {
-                options.Remove(opt);
+                optionsRegister.Remove(opt);
             }
         }
 

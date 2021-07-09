@@ -30,30 +30,38 @@ namespace Utitshala.Services
             {
                 // Convert the chat to MessageEventArgs
                 MessageEventArgs chat = (MessageEventArgs)e;
-                // Get the Telegram photo URL
-                string url = String.Format(@"https://api.telegram.org/bot{0}/getFile?file_id={1}",
-                                ConfigurationManager.AppSettings.Get("telegramKey"), chat.Message.Photo[3].FileId);
-                // Get the request for this as json
-                string json = "";
-                // Execute the request
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.AutomaticDecompression = DecompressionMethods.GZip;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
+                // Check to see if this is a photo upload
+                if (chat.Message.Photo != null)
                 {
-                    json = reader.ReadToEnd();
+                    // Get the Telegram photo URL
+                    string url = String.Format(@"https://api.telegram.org/bot{0}/getFile?file_id={1}",
+                                    ConfigurationManager.AppSettings.Get("telegramKey"), chat.Message.Photo[3].FileId);
+                    // Get the request for this as json
+                    string json = "";
+                    // Execute the request
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.AutomaticDecompression = DecompressionMethods.GZip;
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    using (Stream stream = response.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        json = reader.ReadToEnd();
+                    }
+                    // Deserialise 
+                    ImageResult fileSpecs = JsonConvert.DeserializeObject<ImageRequestJson>(json).result;
+                    // Download the image via the url
+                    string imageUrl = String.Format(@"https://api.telegram.org/file/bot{0}/{1}",
+                        ConfigurationManager.AppSettings.Get("telegramKey"), fileSpecs.file_path);
+                    WebClient client = new WebClient();
+                    Stream imageStream = client.OpenRead(imageUrl);
+                    Bitmap bitmap = new Bitmap(imageStream);
+                    // Return the image
+                    return bitmap;
                 }
-                // Deserialise 
-                ImageResult fileSpecs = JsonConvert.DeserializeObject<ImageRequestJson>(json).result;
-                // Download the image via the url
-                string imageUrl = String.Format(@"https://api.telegram.org/file/bot{0}/{1}",
-                    ConfigurationManager.AppSettings.Get("telegramKey"), fileSpecs.file_path);
-                WebClient client = new WebClient();
-                Stream imageStream = client.OpenRead(imageUrl);
-                Bitmap bitmap = new Bitmap(imageStream);
-                // Return the image
-                return bitmap;
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
@@ -62,35 +70,49 @@ namespace Utitshala.Services
             }
         }
 
+        /// <summary>
+        /// Downloads a voice note, based on the properties of a message sent containing such
+        /// a voice note.
+        /// </summary>
+        /// <param name="e">The object containing the user's image message.</param>
+        /// <returns>The voice note file, downloaded from Telegram's servers.</returns>
         public Stream DownloadVoiceNote(object e)
         {
             try
             {
                 // Convert the chat to MessageEventArgs
                 MessageEventArgs chat = (MessageEventArgs)e;
-                // Get the Telegram photo URL
-                string url = String.Format(@"https://api.telegram.org/bot{0}/getFile?file_id={1}",
-                                ConfigurationManager.AppSettings.Get("telegramKey"), chat.Message.Voice.FileId);
-                // Get the request for this as json
-                string json = "";
-                // Execute the request
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.AutomaticDecompression = DecompressionMethods.GZip;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
+                // Check to see if this is a voice note
+                if (chat.Message.Voice != null)
                 {
-                    json = reader.ReadToEnd();
+                    // Get the Telegram photo URL
+                    string url = String.Format(@"https://api.telegram.org/bot{0}/getFile?file_id={1}",
+                                    ConfigurationManager.AppSettings.Get("telegramKey"), chat.Message.Voice.FileId);
+                    // Get the request for this as json
+                    string json = "";
+                    // Execute the request
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.AutomaticDecompression = DecompressionMethods.GZip;
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    using (Stream stream = response.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        json = reader.ReadToEnd();
+                    }
+                    // Deserialise 
+                    ImageResult fileSpecs = JsonConvert.DeserializeObject<ImageRequestJson>(json).result;
+                    // Download the image via the url
+                    string audioUrl = String.Format(@"https://api.telegram.org/file/bot{0}/{1}",
+                        ConfigurationManager.AppSettings.Get("telegramKey"), fileSpecs.file_path);
+                    WebClient client = new WebClient();
+                    Stream audioStream = client.OpenRead(audioUrl);
+                    // Return the image
+                    return audioStream;
                 }
-                // Deserialise 
-                ImageResult fileSpecs = JsonConvert.DeserializeObject<ImageRequestJson>(json).result;
-                // Download the image via the url
-                string audioUrl = String.Format(@"https://api.telegram.org/file/bot{0}/{1}",
-                    ConfigurationManager.AppSettings.Get("telegramKey"), fileSpecs.file_path);
-                WebClient client = new WebClient();
-                Stream audioStream = client.OpenRead(audioUrl);
-                // Return the image
-                return audioStream;
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
