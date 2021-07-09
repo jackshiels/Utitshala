@@ -187,8 +187,6 @@ namespace Utitshala.Services
             {
                 // Get the current line
                 currentLine = sequence.ExecuteCurrentLine().BuildString(true, false);
-                // Sleep so that any executed lines can complete their message
-                Thread.Sleep(500);
                 // Send the message (used to check for Text == null)
                 messageClient.SendTextMessage(currentLine, e);
             }

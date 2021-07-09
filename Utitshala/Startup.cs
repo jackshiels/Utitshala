@@ -25,9 +25,7 @@ namespace Utitshala
             // Initiate the database
             DatabaseController._context = new ApplicationDbContext();
 
-            // Create and start the Telegram bot client
-            ChatEngine.messageClient = new TelegramMessageEngine(
-                new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));
+            // Initiate the state registers
             ChatEngine.downloadClient = new TelegramDownloader();
             ChatEngine.optionsRegister = new List<string[]>();
             ChatEngine.inputRegister = new List<string[]>();
@@ -35,11 +33,16 @@ namespace Utitshala
             ChatEngine.uploadRegister = new List<string[]>();
 
             // Populate the state register with registered students
+            // Might be prudent to create a maintenance routine that removes duplicate service ID entries here
             List<Student> students = DatabaseController.GetAllStudents();
             foreach(var student in students)
             {
                 ChatEngine.userStateRegister.Add(new string[] { student.ServiceUserID, "registered" });
             }
+
+            // Initiate the Telegram bot
+            ChatEngine.messageClient = new TelegramMessageEngine(
+                new TelegramBotClient(ConfigurationManager.AppSettings.Get("telegramKey")));
 
             // Mark sessions not completed as abandoned
             DatabaseController.UpdateAbandonedSessions();

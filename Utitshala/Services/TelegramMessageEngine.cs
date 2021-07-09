@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -40,6 +41,8 @@ namespace Utitshala.Services
             botClient.SendAudioAsync(
                 chatId: e.Message.Chat,
                 audioUrl);
+            // Sleep so messages are staggered
+            Thread.Sleep(500);
         }
 
         /// <summary>
@@ -58,6 +61,8 @@ namespace Utitshala.Services
                   photo: imageUrl,
                   caption: caption,
                   parseMode: ParseMode.Html);
+            // Sleep so messages are staggered
+            Thread.Sleep(500);
         }
 
         /// <summary>
@@ -73,6 +78,8 @@ namespace Utitshala.Services
             botClient.SendStickerAsync(
                   chatId: e.Message.Chat,
                   sticker: stickerUrl);
+            // Sleep so messages are staggered
+            Thread.Sleep(500);
         }
 
         /// <summary>
@@ -93,6 +100,8 @@ namespace Utitshala.Services
                   chatId: e.Message.Chat,
                   text: message);
             }
+            // Sleep so messages are staggered
+            Thread.Sleep(500);
         }
 
         /// <summary>
@@ -111,6 +120,8 @@ namespace Utitshala.Services
                    video: videoUrl,
                    thumb: thumbnailUrl,
                    supportsStreaming: true);
+            // Sleep so messages are staggered
+            Thread.Sleep(500);
         }
     }
 }
