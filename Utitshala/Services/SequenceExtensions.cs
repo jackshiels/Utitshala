@@ -202,7 +202,7 @@ namespace Utitshala.Services
                     {
                         foreach (var ent in resultsLessons)
                         {
-                            toSendLessons += "ID: " + ent[0] + ": " + ent[1] + "\n";
+                            toSendLessons += ent[0] + ": " + ent[1] + "\n";
                         }
                     }
                     else
@@ -222,11 +222,11 @@ namespace Utitshala.Services
                         {
                             if (ent[2] != "")
                             {
-                                toSendAssessments += "ID: " + ent[0] + ": " + ent[1] + ", Score: " + ent[2] + "%" + "\n";
+                                toSendAssessments += ent[0] + ": " + ent[1] + ", Score: " + ent[2] + "%" + "\n";
                             }
                             else
                             {
-                                toSendAssessments += "ID: " + ent[0] + ": " + ent[1] + ", not attempted" + "\n";
+                                toSendAssessments += ent[0] + ": " + ent[1] + ", not attempted" + "\n";
                             }
                         }
                     }
@@ -245,7 +245,7 @@ namespace Utitshala.Services
                     {
                         foreach (var ent in resultsAssignments)
                         {
-                            toSendAssignments += "ID: " + ent[0] + ": " + ent[1] + "\n";
+                            toSendAssignments += ent[0] + ": " + ent[1] + "\n";
                         }
                     }
                     else

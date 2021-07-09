@@ -30,12 +30,22 @@ Welcome back! Please choose an option:
 2. View my Assessments
 3. View my Assignments
 4. View my Profile
+
+0. About Utitshala
 +
 > sticker "CAACAgQAAxkBAAIEjmDTY7YD1yuERlY1hAEKau-pdpg9AAIFCAACrbqYUvbHEdz1D-y-HwQ"
 > opt 1 "getlessons"
 > opt 2 "getassessments"
 > opt 3 "getassignments"
 > opt 4 "viewprofile"
+> opt 0 "about"
+
++about
+Utitshala is a research project being developed by an Information Systems student at the University of Cape Town. The aim of Utitshala is to provide a low-data, low-cost Learning Management System for use in rural and underprivileged areas, while investigating the unique requirements of teachers and students in these locales. Utitshala is developed by Jack Shiels.
+
+0: Back
+
++> opt 0 "mainmenu"
 
 # CHOOSE LESSON
 
