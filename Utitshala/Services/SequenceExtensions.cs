@@ -245,7 +245,7 @@ namespace Utitshala.Services
                     {
                         foreach (var ent in resultsAssignments)
                         {
-                            toSendAssignments += ent[0] + ": " + ent[1] + "\n";
+                            toSendAssignments += ent[0] + ", " + ent[1] + ": " + ent[2] + "\n";
                         }
                     }
                     else

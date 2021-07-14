@@ -25,6 +25,7 @@ namespace Utitshala.Models
         public string Description { get; set; }
         public DateTime DateOpened { get; set; }
         public DateTime? DateDue { get; set; }
+        public int MaxUploads { get; set; }
         public AssignmentType Type { get; set; }
         public bool Public { get; set; }
         [ForeignKey("Classroom")]

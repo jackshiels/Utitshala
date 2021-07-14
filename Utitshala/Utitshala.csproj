@@ -276,6 +276,10 @@
     <Compile Include="Migrations\202107081219362_RemoveAssignmentTypefromStudentAssignment.Designer.cs">
       <DependentUpon>202107081219362_RemoveAssignmentTypefromStudentAssignment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107141448052_MaxAssignmentUploads.cs" />
+    <Compile Include="Migrations\202107141448052_MaxAssignmentUploads.Designer.cs">
+      <DependentUpon>202107141448052_MaxAssignmentUploads.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -450,6 +454,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107081219362_RemoveAssignmentTypefromStudentAssignment.resx">
       <DependentUpon>202107081219362_RemoveAssignmentTypefromStudentAssignment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107141448052_MaxAssignmentUploads.resx">
+      <DependentUpon>202107141448052_MaxAssignmentUploads.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

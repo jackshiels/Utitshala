@@ -276,7 +276,18 @@ namespace Utitshala.Controllers
             // Format the string list
             foreach (var assign in assignments)
             {
-                results.Add(new string[] { assign.ID.ToString(), assign.Name });
+                // Check to see if that assignment was uploaded already
+                List<StudentAssignment> sa = _context.StudentAssignments
+                    .Where(c => c.AssignmentID == assign.ID)
+                    .ToList();
+                if (sa != null)
+                {
+                    results.Add(new string[] { assign.ID.ToString(), assign.Name, sa.Count().ToString() + "/" + assign.MaxUploads.ToString() + " uploads used." });
+                }
+                else
+                {
+                    results.Add(new string[] { assign.ID.ToString(), assign.Name, "0/" + assign.MaxUploads.ToString() + " uploads used." });
+                }
             }
             // Return the list
             return results;
@@ -298,24 +309,35 @@ namespace Utitshala.Controllers
             // Authenticate their access, return null if disallowed.
             try
             {
+                // Check for the presence of a valid classroom, or public, assignment
                 if (assignment.Public ||
                 student.ClassroomID == assignment.ClassroomID)
                 {
-                    // Check if there is a due date, and if it has passed
-                    if (assignment.DateDue != null)
+                    // Check if they have run out of assignment uploads
+                    if (_context.StudentAssignments
+                        .Where(c => c.AssignmentID == assignment.ID).Count()
+                        < assignment.MaxUploads)
                     {
-                        if (DateTime.Compare((DateTime)assignment.DateDue, DateTime.Now) > 0)
+                        // Check if there is a due date, and if it has passed
+                        if (assignment.DateDue != null)
                         {
-                            return assignment;
+                            if (DateTime.Compare((DateTime)assignment.DateDue, DateTime.Now) > 0)
+                            {
+                                return assignment;
+                            }
+                            else
+                            {
+                                return null;
+                            }
                         }
                         else
                         {
-                            return null;
+                            return assignment;
                         }
                     }
                     else
                     {
-                        return assignment;
+                        return null;
                     }
                 }
                 else
@@ -325,6 +347,7 @@ namespace Utitshala.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.StackTrace);
                 return null;
             }
         }
