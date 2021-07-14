@@ -305,7 +305,6 @@ namespace Utitshala.Services
                                             Console.WriteLine(ex.StackTrace);
                                         }
                                         // Set the true sequence output
-                                        // Bot_OnMessage(null, null);
                                         sequence.SetNextLine(read[4]);
                                     }
                                     else
