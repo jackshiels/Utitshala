@@ -347,6 +347,8 @@ namespace Utitshala.Services
                                     {
                                         // Add an item to the upload register
                                         uploadRegister.Add(new string[] { userId, assignment.ID.ToString(), assignment.Type.ToString() });
+                                        // Send a message that returns the assignment description
+                                        messageClient.SendTextMessage(assignment.Description, sequence.GetVariable("currentChat"));
                                         // Set the true sequence output
                                         sequence.SetNextLine(read[4]);
                                     }
