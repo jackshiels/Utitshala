@@ -342,18 +342,20 @@ namespace Utitshala.Services
                                     break;
                                 case "openassignment":
                                     // Get the assignment, if it exists and they have permission
-                                    Assignment assignment = DatabaseController.GetAssignment(userId, Convert.ToInt32(input));
-                                    if (assignment != null)
+                                    Tuple<Assignment, string> assignment = DatabaseController.GetAssignment(userId, Convert.ToInt32(input));
+                                    if (assignment.Item1 != null)
                                     {
                                         // Add an item to the upload register
-                                        uploadRegister.Add(new string[] { userId, assignment.ID.ToString(), assignment.Type.ToString() });
+                                        uploadRegister.Add(new string[] { userId, assignment.Item1.ID.ToString(), assignment.Item1.Type.ToString() });
                                         // Send a message that returns the assignment description
-                                        messageClient.SendTextMessage(assignment.Description, sequence.GetVariable("currentChat"));
+                                        messageClient.SendTextMessage(assignment.Item1.Description, sequence.GetVariable("currentChat"));
                                         // Set the true sequence output
                                         sequence.SetNextLine(read[4]);
                                     }
                                     else
                                     {
+                                        // Send a message that returns the assignment problem
+                                        messageClient.SendTextMessage(assignment.Item2, sequence.GetVariable("currentChat"));
                                         // Set the false sequence output
                                         sequence.SetNextLine(read[3]);
                                     }

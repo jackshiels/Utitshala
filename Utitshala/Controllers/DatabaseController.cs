@@ -298,8 +298,9 @@ namespace Utitshala.Controllers
         /// </summary>
         /// <param name="userId">The user to base this GET on.</param>
         /// <param name="assignmentId">The ID of the assignment.</param>
-        /// <returns>The assignment if allowed, null if not.</returns>
-        public static Assignment GetAssignment(string userId, int assignmentId)
+        /// <returns>The assignment (if successful) and an error message (if applicable),
+        /// within a Tuple<Assignment, string>.</Assignment></returns>
+        public static Tuple<Assignment, string> GetAssignment(string userId, int assignmentId)
         {
             // Get the assignment and the student
             Assignment assignment = _context.Assignments
@@ -323,26 +324,26 @@ namespace Utitshala.Controllers
                         {
                             if (DateTime.Compare((DateTime)assignment.DateDue, DateTime.Now) > 0)
                             {
-                                return assignment;
+                                return new Tuple<Assignment, string>(assignment, "none");
                             }
                             else
                             {
-                                return null;
+                                return new Tuple<Assignment, string>(null, "Due date passed.");
                             }
                         }
                         else
                         {
-                            return assignment;
+                            return new Tuple<Assignment, string>(assignment, "none");
                         }
                     }
                     else
                     {
-                        return null;
+                        return new Tuple<Assignment, string>(null, "No uploads remaining.");
                     }
                 }
                 else
                 {
-                    return null;
+                    return new Tuple<Assignment, string>(null, "Invalid assignment selected.");
                 }
             }
             catch (Exception ex)

@@ -98,7 +98,7 @@ Assessment loaded! Enter start to begin.
 +> input openassignment positivenumber "failedtoselectassignment" "selectedassignment" "mainmenu"
 
 +failedtoselectassignment
-Not a valid Assignment. Please try again!
+Please try another assignment!
 +
 >next chooseassignment
 
