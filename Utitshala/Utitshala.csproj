@@ -314,6 +314,7 @@
     <Content Include="Content\Images\Backgrounds\DotBackgroundFull.jpg" />
     <Content Include="Content\Images\Backgrounds\FlagshipImage.jpg" />
     <Content Include="Content\Images\Backgrounds\FlagshipTransparent.png" />
+    <Content Include="Content\Images\Backgrounds\Placeholder.png" />
     <Content Include="Content\Images\UmiLearningDesignWeb.png" />
     <Content Include="Content\StickerIds.txt" />
     <Content Include="favicon.ico" />
