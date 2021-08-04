@@ -65,6 +65,21 @@ namespace Utitshala.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Name")]
+        [StringLength(100, ErrorMessage = "Name length must be 100 characters or less.")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Surname")]
+        [StringLength(100, ErrorMessage = "Surname length must be 100 characters or less.")]
+        public string Surname { get; set; }
+
+        [Required]
+        [Display(Name = "School Name")]
+        [StringLength(100, ErrorMessage = "School name length must be 100 characters or less.")]
+        public string SchoolName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

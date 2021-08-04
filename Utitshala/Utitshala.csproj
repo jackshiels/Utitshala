@@ -315,7 +315,14 @@
     <Content Include="Content\Images\Backgrounds\FlagshipImage.jpg" />
     <Content Include="Content\Images\Backgrounds\FlagshipTransparent.png" />
     <Content Include="Content\Images\Backgrounds\Placeholder.png" />
-    <Content Include="Content\Images\UmiLearningDesignWeb.png" />
+    <Content Include="Content\Images\Homepage\AfricanTeaching.jpg" />
+    <Content Include="Content\Images\Homepage\ClassroomManagement.jpg" />
+    <Content Include="Content\Images\Homepage\Cost.jpg" />
+    <Content Include="Content\Images\Homepage\LowData.jpg" />
+    <Content Include="Content\Images\Homepage\TelegramMessaging.jpg" />
+    <Content Include="Content\Images\Homepage\Templates.jpg" />
+    <Content Include="Content\Images\Umi\UmiAssignmentSmall.png" />
+    <Content Include="Content\Images\Umi\UmiLearningDesignWeb.png" />
     <Content Include="Content\StickerIds.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
