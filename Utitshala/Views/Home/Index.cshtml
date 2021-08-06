@@ -8,8 +8,8 @@
         </div>
     </div>
 </div>
-<img style="position: absolute; padding-top: 20px" src="~/Content/Images/Umi/UmiLearningDesignWeb.png" />
-<h1 class="visible-lg visible-md" style="float: right; padding-top: 200px; color: white; font-size: 48px;">Utitshala</h1>
+<img class="umilogo" src="~/Content/Images/Umi/UmiLearningDesignWeb.png" />
+<h1 class="visible-lg visible-md logotextshadow">Utitshala</h1>
 <div class="container" style="padding-top: 275px">
     <hr />
     <p class="lead">Utitshala is a low-data, Telegram-based Learning Management System (LMS) for rural African learners.</p>
@@ -45,7 +45,9 @@
 </div>
 <br />
 <div class="container" style="padding-left: 28px">
-    <input type="button" class="btn btn-success" value="Sign Up Now!" />
+    <a href="@Url.Action("Register", "Account")">
+        <input type="button" class="btn btn-success" value="Sign Up Now!" />
+    </a>
     <input type="button" style="margin-left: 10px" class="btn btn-default" value="Learn More" />
 </div>
 <br />
