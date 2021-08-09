@@ -33,6 +33,7 @@ namespace Utitshala.Models
         public DbSet<StudentAssignment> StudentAssignments { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<LearningDesign> LearningDesigns { get; set; }
+        public DbSet<School> Schools { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
