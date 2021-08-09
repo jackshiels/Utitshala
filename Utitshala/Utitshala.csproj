@@ -280,6 +280,10 @@
     <Compile Include="Migrations\202107141448052_MaxAssignmentUploads.Designer.cs">
       <DependentUpon>202107141448052_MaxAssignmentUploads.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108091714080_SchoolClassroomTeacherScaffolding.cs" />
+    <Compile Include="Migrations\202108091714080_SchoolClassroomTeacherScaffolding.Designer.cs">
+      <DependentUpon>202108091714080_SchoolClassroomTeacherScaffolding.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -290,6 +294,7 @@
     <Compile Include="Models\LearningDesign.cs" />
     <Compile Include="Models\LearningSequence.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\School.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\StudentAssignment.cs" />
@@ -471,6 +476,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107141448052_MaxAssignmentUploads.resx">
       <DependentUpon>202107141448052_MaxAssignmentUploads.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108091714080_SchoolClassroomTeacherScaffolding.resx">
+      <DependentUpon>202108091714080_SchoolClassroomTeacherScaffolding.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
