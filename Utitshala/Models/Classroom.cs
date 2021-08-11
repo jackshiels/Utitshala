@@ -16,6 +16,7 @@ namespace Utitshala.Models
         public int ID { get; set; }
         [ForeignKey("School")]
         public int? SchoolID { get; set; }
+        public string JoinCode { get; set; }
         public string Name { get; set; }
 
         // Virtuals

@@ -11,6 +11,7 @@
 </div>
 <img class="umilogo" src="~/Content/Images/Umi/UmiAssignmentWeb.png" />
 <h1 class="visible-lg visible-md logotext">Utitshala</h1>
+<h4 class="visible-xs visible-sm logotextmobile">Utitshala</h4>
 <div class="container register">
     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
@@ -34,9 +35,9 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.SchoolName, new { @class = "col-md-2 control-label", @style = "color: #22679b;" })
+            @Html.LabelFor(m => m.ClassroomName, new { @class = "col-md-2 control-label", @style = "color: #22679b;" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.SchoolName, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ClassroomName, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">

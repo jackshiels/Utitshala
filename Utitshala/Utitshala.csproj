@@ -178,6 +178,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ClassroomController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -284,6 +285,14 @@
     <Compile Include="Migrations\202108091714080_SchoolClassroomTeacherScaffolding.Designer.cs">
       <DependentUpon>202108091714080_SchoolClassroomTeacherScaffolding.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108111544289_ClassroomLimitTemp.cs" />
+    <Compile Include="Migrations\202108111544289_ClassroomLimitTemp.Designer.cs">
+      <DependentUpon>202108111544289_ClassroomLimitTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108111658105_ClassroomJoincode.cs" />
+    <Compile Include="Migrations\202108111658105_ClassroomJoincode.Designer.cs">
+      <DependentUpon>202108111658105_ClassroomJoincode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -304,6 +313,7 @@
     <Compile Include="Services\Extensions.cs" />
     <Compile Include="Services\FileSystemManager.cs" />
     <Compile Include="Services\Interfaces.cs" />
+    <Compile Include="Services\SecurityHash.cs" />
     <Compile Include="Services\SequenceExtensions.cs" />
     <Compile Include="Services\TelegramDownloader.cs" />
     <Compile Include="Services\TelegramMessageEngine.cs" />
@@ -326,7 +336,8 @@
     <Content Include="Content\Images\Homepage\LowData.jpg" />
     <Content Include="Content\Images\Homepage\TelegramMessaging.jpg" />
     <Content Include="Content\Images\Homepage\Templates.jpg" />
-    <Content Include="Content\Images\Umi\UmiAssignmentSmall.png" />
+    <Content Include="Content\Images\Umi\TeachingWeb.png" />
+    <Content Include="Content\Images\Umi\UmiAssignmentWeb.png" />
     <Content Include="Content\Images\Umi\UmiLearningDesignWeb.png" />
     <Content Include="Content\StickerIds.txt" />
     <Content Include="favicon.ico" />
@@ -386,6 +397,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Classroom\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -479,6 +491,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108091714080_SchoolClassroomTeacherScaffolding.resx">
       <DependentUpon>202108091714080_SchoolClassroomTeacherScaffolding.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108111544289_ClassroomLimitTemp.resx">
+      <DependentUpon>202108111544289_ClassroomLimitTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108111658105_ClassroomJoincode.resx">
+      <DependentUpon>202108111658105_ClassroomJoincode.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

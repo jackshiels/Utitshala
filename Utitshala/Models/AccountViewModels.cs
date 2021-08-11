@@ -75,9 +75,9 @@ namespace Utitshala.Models
         public string Surname { get; set; }
 
         [Required]
-        [Display(Name = "School Name")]
-        [StringLength(100, ErrorMessage = "School name length must be 100 characters or less.")]
-        public string SchoolName { get; set; }
+        [Display(Name = "Classroom Name")]
+        [StringLength(100, ErrorMessage = "Classroom name length must be 100 characters or less.")]
+        public string ClassroomName { get; set; }
 
         [Required]
         [EmailAddress]

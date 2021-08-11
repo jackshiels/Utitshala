@@ -1,0 +1,103 @@
+﻿@model Utitshala.Models.Classroom
+@{
+    ViewBag.Title = "My Classroom";
+}
+<div class="container visible-lg visible-md">
+    <div class="breakout">
+        <div class="imageinlinediv" style="text-align: center;">
+            <img height="200px" src="~/Content/Images/Backgrounds/FlagshipBackingGradient.jpg" />
+        </div>
+    </div>
+</div>
+<img class="umilogo" src="~/Content/Images/Umi/TeachingWeb.png" />
+<h1 class="visible-lg visible-md logotext">@Model.Name</h1>
+<h4 class="visible-xs visible-sm logotextmobile">@Model.Name</h4>
+<div class="container register">
+    <hr />
+    <h2 style="padding-left: 10px; color: crimson">My Classroom</h2>
+    <h4 style="padding-left: 10px; color: #22679b">To invite students to your classroom, give them the following Invite ID Number: </h4>
+    <h4 style="padding-left: 10px; color: crimson">@Model.JoinCode.ToString()</h4>
+    <hr />
+    <h2 style="padding-left: 10px; color: crimson">My Students</h2>
+    <h4 style="padding-left: 10px; color: #22679b">View or remove students from your class.</h4>
+    <br />
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <td style="color: #22679b">
+                    Name
+                </td>
+                <td style="color: #22679b">
+                    Date Joined
+                </td>
+                <td style="width: 8%; color: #22679b">
+                    Actions
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var student in Model.Students)
+            {
+                <tr>
+                    <td>
+                        @student.Name
+                    </td>
+                    <td>
+                        @student.DateJoined.ToShortDateString()
+                    </td>
+                    <td>
+                        <input class="btn btn-successsmall" value="Remove" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+    <h2 style="padding-left: 10px; color: crimson">My Lessons</h2>
+    <h4 style="padding-left: 10px; color: #22679b">View and edit your lessons for this classroom.</h4>
+    <br />
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <td style="color: #22679b">
+                    Name
+                </td>
+                <td style="color: #22679b">
+                    Date Created
+                </td>
+                <td class="visible-lg visible-md" style="color: #22679b">
+                    Has Quiz?
+                </td>
+                <td style="width: 8%; color: #22679b">
+                    Actions
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var lesson in Model.LearningDesigns)
+            {
+                <tr>
+                    <td>
+                        @lesson.Name
+                    </td>
+                    <td>
+                        @lesson.DateCreated.ToShortDateString()
+                    </td>
+                    <td class="visible-lg visible-md">
+                        @if (lesson.AssessmentID != null)
+                        {
+                            <input type="checkbox" checked onclick="return false;"/>
+                        }
+                        else
+                        {
+                            <input type="checkbox" onclick="return false;"/>
+                        }
+                    </td>
+                    <td>
+                        <input class="btn btn-successsmall" value="Edit" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

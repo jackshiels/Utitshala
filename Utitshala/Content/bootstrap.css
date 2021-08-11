@@ -107,13 +107,20 @@ body {
 }
 .umilogo {
     position: absolute;
-    padding-top: 20px;
+    padding-top: 10px;
 }
 .logotext {
     float: right;
     padding-top: 200px;
     color: crimson;
     font-size: 48px;
+}
+.logotextmobile {
+    float: left;
+    padding-top: 250px;
+    padding-left: 30px;
+    color: crimson;
+    font-size: 24px;
 }
 .logotextshadow {
     float: right;
@@ -207,10 +214,13 @@ figure {
   margin: 1em 40px;
 }
 hr {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-  height: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 1px;
+    border-width: 0;
+    color: grey;
+    background-color: #ddd;
 }
 pre {
   overflow: auto;
@@ -1400,7 +1410,7 @@ p {
   margin: 0 0 10px;
 }
 .lead {
-  color: white;
+  color: #22679b;
   margin-bottom: 20px;
   font-size: 16px;
   font-weight: 300;
@@ -3384,6 +3394,14 @@ fieldset[disabled] .btn-primary.focus {
   border-color: #501f2c;
   font-size: 18px;
   padding: 10px;
+}
+.btn-successsmall {
+    color: #fff;
+    background-color: #cc4d6e;
+    background: linear-gradient(0deg, rgba(204,77,110,0) 0%, rgba(204,77,110,1) 5%, rgba(255,143,74,1) 95%);
+    border-color: #501f2c;
+    width: 75px;
+    font-size: 12px;
 }
 .btn-success:focus,
 .btn-success.focus {

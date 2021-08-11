@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Utitshala.Models;
+using Utitshala.Services;
 
 namespace Utitshala.Controllers
 {
@@ -153,15 +154,16 @@ namespace Utitshala.Controllers
             if (ModelState.IsValid)
             {
                 // First register the school
-                School school = new School()
+                Classroom classroom = new Classroom()
                 {
-                    Name = model.Name
+                    Name = model.ClassroomName,
+                    JoinCode = new SecurityHash().Hasher()
                 };
                 // Add the school
-                _context.Schools.Add(school);
+                _context.Classrooms.Add(classroom);
                 await _context.SaveChangesAsync();
                 // Create the new user
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, SchoolID = school.ID };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, ClassroomID = classroom.ID };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
