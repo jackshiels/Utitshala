@@ -15,8 +15,8 @@
 <div class="container register">
     <hr />
     <h2 style="padding-left: 10px; color: crimson">My Classroom</h2>
-    <h4 style="padding-left: 10px; color: #22679b">To invite students to your classroom, give them the following Invite ID Number: </h4>
-    <h4 style="padding-left: 10px; color: crimson">@Model.JoinCode.ToString()</h4>
+    <h4 style="padding-left: 10px; color: #22679b">To invite students to your classroom, give them the following Join Code: </h4>
+    <h4 style="padding-left: 10px; color: orangered">@Model.JoinCode.ToString()</h4>
     <hr />
     <h2 style="padding-left: 10px; color: crimson">My Students</h2>
     <h4 style="padding-left: 10px; color: #22679b">View or remove students from your class.</h4>
@@ -36,7 +36,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var student in Model.Students)
+            @foreach (var student in Model.Students)
             {
                 <tr>
                     <td>
@@ -46,7 +46,7 @@
                         @student.DateJoined.ToShortDateString()
                     </td>
                     <td>
-                        <input class="btn btn-successsmall" value="Remove" />
+                        <input data-toggle="modal" data-target="#RemoveStudentModal" class="btn btn-successsmall" value="Remove" />
                     </td>
                 </tr>
             }
@@ -74,7 +74,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var lesson in Model.LearningDesigns)
+            @foreach (var lesson in Model.LearningDesigns)
             {
                 <tr>
                     <td>
@@ -86,11 +86,11 @@
                     <td class="visible-lg visible-md">
                         @if (lesson.AssessmentID != null)
                         {
-                            <input type="checkbox" checked onclick="return false;"/>
+                            <input type="checkbox" checked onclick="return false;" />
                         }
                         else
                         {
-                            <input type="checkbox" onclick="return false;"/>
+                            <input type="checkbox" onclick="return false;" />
                         }
                     </td>
                     <td>
@@ -100,4 +100,23 @@
             }
         </tbody>
     </table>
+</div>
+<!--Modals-->
+<div class="modal fade" id="RemoveStudentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="padding-left: 10px; color: crimson">Remove a Student</h2>
+            </div>
+            <div class="modal-body">
+                <h4 style="padding-left: 10px; color: #22679b">Are you sure you want to remove this student from @Model.Name?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="@Url.Action("RemoveStudent", "Classroom", new { studentId = 0 })">
+                    <input class="btn btn-success" style="width: 100px; margin-left: 10px" value="Remove" />
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

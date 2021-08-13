@@ -56,24 +56,29 @@ namespace Utitshala.Controllers
         /// Attempts to add a student to a classroom.
         /// </summary>
         /// <param name="userId">The student to add to a classroom.</param>
-        /// <param name="classId">The database ID of the classroom to add the student to.</param>
+        /// <param name="joinCode">The join code of the classroom to add the student to.</param>
         /// <returns>A bool indicating success (true) or failure (false).</returns>
-        public static bool RegisterWithClass(string userId, string classId)
+        public static bool RegisterWithClass(string userId, string joinCode)
         {
             bool success = false;
             try
             {
+                // Check that the class exists
+                Classroom classroom = _context.Classrooms
+                    .FirstOrDefault(c => c.JoinCode == joinCode);
                 // Convert the ID into an int
-                int classroomId = Convert.ToInt32(classId);
-                // Get the student
-                Student student = _context.Students
-                    .FirstOrDefault(c => c.ServiceUserID == userId);
-                // Modify the student record and save into the DB
-                student.ClassroomID = classroomId;
-                _context.Entry(student).State = System.Data.Entity.EntityState.Modified;
-                _context.SaveChanges();
-                // If made it this far, success
-                success = true;
+                if (classroom != null)
+                {
+                    // Get the student
+                    Student student = _context.Students
+                        .FirstOrDefault(c => c.ServiceUserID == userId);
+                    // Modify the student record and save into the DB
+                    student.ClassroomID = classroom.ID;
+                    _context.Entry(student).State = System.Data.Entity.EntityState.Modified;
+                    _context.SaveChanges();
+                    // If made it this far, success
+                    success = true;
+                }
             }
             catch (Exception ex)
             {

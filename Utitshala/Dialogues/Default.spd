@@ -8,7 +8,7 @@
 # CLASSROOM CHECK -----------------------------------------
 
 +noclasspresence
-You haven't joined a class yet. Please enter your class ID (your teacher will give you this):
+You haven't joined a class yet. Please enter your class Join Code (your teacher will give you the code):
 +
 > input classregister positivenumber "failedtojoin" "joinedsuccessfully" ""
 
