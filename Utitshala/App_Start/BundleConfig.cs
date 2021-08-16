@@ -25,6 +25,10 @@ namespace Utitshala
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css"));
+
+            // Custom scripts
+            bundles.Add(new ScriptBundle("~/bundles/myclassroom")
+                .Include("~/Scripts/MyClass.js"));
         }
     }
 }

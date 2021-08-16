@@ -46,7 +46,7 @@
                         @student.DateJoined.ToShortDateString()
                     </td>
                     <td>
-                        <input data-toggle="modal" data-target="#RemoveStudentModal" class="btn btn-successsmall" value="Remove" />
+                        <input onclick="RemoveStudent('@student.ID')" data-toggle="modal" data-target="#RemoveStudentModal" class="btn btn-successsmall" value="Remove" />
                     </td>
                 </tr>
             }
@@ -105,18 +105,24 @@
 <div class="modal fade" id="RemoveStudentModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 style="padding-left: 10px; color: crimson">Remove a Student</h2>
-            </div>
-            <div class="modal-body">
-                <h4 style="padding-left: 10px; color: #22679b">Are you sure you want to remove this student from @Model.Name?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a href="@Url.Action("RemoveStudent", "Classroom", new { studentId = 0 })">
-                    <input class="btn btn-success" style="width: 100px; margin-left: 10px" value="Remove" />
-                </a>
-            </div>
+            <form action="~/Controllers/Classroom/RemoveStudent" method="post">
+                <input id="removeStudentId" type="hidden" value="" />
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h2 style="padding-left: 10px; color: crimson">Remove a Student</h2>
+                </div>
+                <div class="modal-body">
+                    <h4 style="padding-left: 10px; color: #22679b">Are you sure you want to remove this student from @Model.Name?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-success" style="width: 100px; margin-left: 10px" value="Remove" />
+                </div>
+            </form>
         </div>
     </div>
 </div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/myclassroom")
+}

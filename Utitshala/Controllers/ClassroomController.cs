@@ -35,6 +35,8 @@ namespace Utitshala.Controllers
         /// </summary>
         /// <param name="studentId"></param>
         /// <returns>A redirect to the classroom index.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult RemoveStudent(int studentId)
         {
             try
