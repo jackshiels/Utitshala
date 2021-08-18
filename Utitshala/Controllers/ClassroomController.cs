@@ -5,13 +5,17 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Utitshala.Models;
+using Utitshala.Services;
 
 namespace Utitshala.Controllers
 {
     [Authorize]
     public class ClassroomController : Controller
     {
+        #region Properties
         private ApplicationDbContext _context;
+        #endregion
+
         /// <summary>
         /// Returns the teacher's classroom, with accompanying students and learning designs.
         /// </summary>
@@ -33,7 +37,7 @@ namespace Utitshala.Controllers
         /// <summary>
         /// Removes a student from a classroom.
         /// </summary>
-        /// <param name="studentId"></param>
+        /// <param name="studentId">The ID of the student to remove from a classroom.</param>
         /// <returns>A redirect to the classroom index.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]

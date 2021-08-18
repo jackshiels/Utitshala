@@ -1,0 +1,55 @@
+﻿@model List<Utitshala.Models.LearningDesign>
+@{
+    ViewBag.Title = "Index";
+}
+<div class="container visible-lg visible-md">
+    <div class="breakout">
+        <div class="imageinlinediv" style="text-align: center;">
+            <img height="200px" src="~/Content/Images/Backgrounds/FlagshipBackingGradient.jpg" />
+        </div>
+    </div>
+</div>
+<img class="umilogo" src="~/Content/Images/Umi/TeachingWeb.png" />
+<h1 class="visible-lg visible-md logotext">@ViewBag.ClassName</h1>
+<h4 class="visible-xs visible-sm logotextmobile">@ViewBag.ClassName</h4>
+<div class="container register">
+    <hr />
+    <h2 style="padding-left: 10px; color: crimson">My Learning Designs</h2>
+    <h4 style="padding-left: 10px; color: #22679b">Select a learning design to edit it:</h4>
+    <br />
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <td style="color: #22679b">
+                    Name
+                </td>
+                <td style="color: #22679b">
+                    Date Created
+                </td>
+                <td style="width: 8%; color: #22679b">
+                    Actions
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var learningDesign in Model)
+            {
+                <tr>
+                    <td>
+                        @learningDesign.Name
+                    </td>
+                    <td>
+                        @learningDesign.DateCreated.ToShortDateString()
+                    </td>
+                    <td>
+                        <input class="btn btn-successsmall" value="Edit" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+</div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+}
