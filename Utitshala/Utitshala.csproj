@@ -318,6 +318,8 @@
     <Compile Include="Services\SequenceExtensions.cs" />
     <Compile Include="Services\TelegramDownloader.cs" />
     <Compile Include="Services\TelegramMessageEngine.cs" />
+    <Compile Include="Services\VueAttribute.cs" />
+    <Compile Include="Services\VueParser.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\LearningDesignEditor.cs" />
   </ItemGroup>

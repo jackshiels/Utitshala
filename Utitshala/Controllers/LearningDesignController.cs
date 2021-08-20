@@ -7,6 +7,7 @@ using System.IO;
 using System.Web.Mvc;
 using Utitshala.Models;
 using Utitshala.ViewModels;
+using Utitshala.Services;
 
 namespace Utitshala.Controllers
 {
@@ -72,7 +73,10 @@ namespace Utitshala.Controllers
                         LearningDesign = learningDesign,
                         LearningDesignCode = System.IO.File.ReadAllText(fileLocation)
                     };
+                    // Parse the data into VueJS format
+                    model.VueData = new VueParser().ParseData(model);
                     // Send it to the view
+                    // https://dev.to/proticm/how-to-integrate-vue-with-asp-net-mvc---the-synergy-between-the-two-1hl9
                     return View(model);
                 }
             }
