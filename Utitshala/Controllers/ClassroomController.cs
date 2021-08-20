@@ -20,6 +20,7 @@ namespace Utitshala.Controllers
         /// Returns the teacher's classroom, with accompanying students and learning designs.
         /// </summary>
         /// <returns>The classroom view.</returns>
+        [HttpGet]
         public ActionResult Index()
         {
             // Set context

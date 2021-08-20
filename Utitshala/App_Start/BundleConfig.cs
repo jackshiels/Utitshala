@@ -29,6 +29,9 @@ namespace Utitshala
             // Custom scripts
             bundles.Add(new ScriptBundle("~/bundles/myclassroom")
                 .Include("~/Scripts/MyClass.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/learningdesigneditor")
+                .Include("~/Scripts/vue.js"));
         }
     }
 }

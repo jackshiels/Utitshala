@@ -1,6 +1,6 @@
 ﻿@model List<Utitshala.Models.LearningDesign>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "My Learning Designs";
 }
 <div class="container visible-lg visible-md">
     <div class="breakout">
@@ -10,8 +10,10 @@
     </div>
 </div>
 <img class="umilogo" src="~/Content/Images/Umi/TeachingWeb.png" />
-<h1 class="visible-lg visible-md logotext">@ViewBag.ClassName</h1>
-<h4 class="visible-xs visible-sm logotextmobile">@ViewBag.ClassName</h4>
+<a href="@Url.Action("Index", "Classroom")">
+    <h1 class="visible-lg visible-md logotext">@ViewBag.ClassName</h1>
+    <h4 class="visible-xs visible-sm logotextmobile">@ViewBag.ClassName</h4>
+</a>
 <div class="container register">
     <hr />
     <h2 style="padding-left: 10px; color: crimson">My Learning Designs</h2>
@@ -42,7 +44,9 @@
                         @learningDesign.DateCreated.ToShortDateString()
                     </td>
                     <td>
-                        <input class="btn btn-successsmall" value="Edit" />
+                        <a href="@Url.Action("Editor", "LearningDesign", new { learningDesignId = learningDesign.ID })">
+                            <input class="btn btn-successsmall" value="Edit" />
+                        </a>
                     </td>
                 </tr>
             }
