@@ -18,7 +18,12 @@
 <div class="container register">
     <hr />
     <div id="app">
-        {{ message }}
+        <h2 v-bind:title="messager" style="text-align: center">
+            Hover over me to do something cool!
+        </h2>
+        <h2 v-if="seen" style="text-align: center">
+            I may disappear if provoked >:(
+        </h2>
     </div>
     <br />
 </div>
