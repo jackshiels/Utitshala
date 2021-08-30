@@ -321,6 +321,7 @@
     <Compile Include="Services\Extensions.cs" />
     <Compile Include="Services\FileSystemManager.cs" />
     <Compile Include="Services\Interfaces.cs" />
+    <Compile Include="Services\LearningDesignTranslator.cs" />
     <Compile Include="Services\SecurityHash.cs" />
     <Compile Include="Services\SequenceExtensions.cs" />
     <Compile Include="Services\TelegramDownloader.cs" />
