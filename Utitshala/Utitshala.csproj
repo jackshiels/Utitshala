@@ -302,6 +302,13 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JSONModels\ImageRequestJson.cs" />
     <Compile Include="Models\LearningDesign.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElement.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementAudio.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementImage.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementOption.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementSticker.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementText.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementVideo.cs" />
     <Compile Include="Models\LearningSequence.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\School.cs" />

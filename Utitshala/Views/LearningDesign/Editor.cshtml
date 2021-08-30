@@ -18,14 +18,14 @@
 <div class="container register">
     <hr />
     <div id="app">
-        <h2 v-bind:title="messager" style="text-align: center">
-            Hover over me to do something cool!
-        </h2>
-        <h2 v-if="seen" style="text-align: center">
-            I may disappear if provoked >:(
-        </h2>
+        <ol>
+            <p v-for="ob in newText">
+                {{ ob.text }}
+            </p>
+        </ol>
+        <input type="button" v-on:click="addElement" value="Add a number" />
     </div>
-    <br />
+    <br />@*https://github.com/SortableJS/Vue.Draggable*@
 </div>
 @section Scripts{
     @Scripts.Render("~/bundles/jquery")

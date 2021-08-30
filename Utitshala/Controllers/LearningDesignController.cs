@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Utitshala.Models;
 using Utitshala.ViewModels;
 using Utitshala.Services;
+using static Utitshala.Services.Interfaces;
 
 namespace Utitshala.Controllers
 {
@@ -15,6 +16,7 @@ namespace Utitshala.Controllers
     {
         #region Properties
         private ApplicationDbContext _context;
+        private ILearningDesignTranslator _translator;
         #endregion
 
         /// <summary>
@@ -68,10 +70,11 @@ namespace Utitshala.Controllers
                     string fileLocation = AppDomain.CurrentDomain.BaseDirectory 
                         + @"LearningContent\Lessons\" 
                         + learningDesign.StorageURL;
+                    string learningDesignText = System.IO.File.ReadAllText(fileLocation);
                     LearningDesignEditor model = new LearningDesignEditor()
                     {
                         LearningDesign = learningDesign,
-                        LearningDesignCode = System.IO.File.ReadAllText(fileLocation)
+                        LearningDesignElements = _translator.TranslateFileToElements(learningDesignText)
                     };
                     // Parse the data into VueJS format
                     model.VueData = new VueParser().ParseData(model);

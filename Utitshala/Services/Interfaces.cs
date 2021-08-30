@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Utitshala.Models.LearningDesignElement;
 
 namespace Utitshala.Services
 {
@@ -30,6 +31,15 @@ namespace Utitshala.Services
         {
             Image DownloadImage(object e);
             Stream DownloadVoiceNote(object e);
+        }
+
+        /// <summary>
+        /// An interface for a class that translates elements to .spd, and vice versa.
+        /// </summary>
+        public interface ILearningDesignTranslator
+        {
+            List<LearningDesignElement> TranslateFileToElements(string learningDesignText);
+            string TranslateElementsToFile(List<LearningDesignElement> elements);
         }
     }
 }

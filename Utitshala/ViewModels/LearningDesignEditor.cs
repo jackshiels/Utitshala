@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Utitshala.Models;
+using Utitshala.Models.LearningDesignElement;
 using Utitshala.Services;
 
 namespace Utitshala.ViewModels
@@ -16,7 +17,7 @@ namespace Utitshala.ViewModels
         [VueData("LearningDesign")]
         public LearningDesign LearningDesign { get; set; }
         [VueData("LearningDesignCode")]
-        public string LearningDesignCode { get; set; }
+        public List<LearningDesignElement> LearningDesignElements { get; set; }
         public Dictionary<string, object> VueData { get; set; } = new Dictionary<string, object>();
     }
 }
