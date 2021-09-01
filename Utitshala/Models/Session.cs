@@ -14,10 +14,13 @@ namespace Utitshala.Models
     {
         [Key]
         public int ID { get; set; }
+
         [ForeignKey("LearningDesign")]
         public int? LearningDesignID { get; set; }
+
         [ForeignKey("Assessment")]
         public int? AssessmentID { get; set; }
+
         public DateTime? DateTimeStarted { get; set; }
         public DateTime? DateTimeEnded { get; set; }
         public decimal? Score { get; set; }
@@ -25,7 +28,7 @@ namespace Utitshala.Models
         public bool Abandoned { get; set; }
 
         // Virtuals
-        public Assessment Assessment { get; set; }
+        public virtual Assessment Assessment { get; set; }
         public virtual LearningDesign LearningDesign { get; set; }
     }
 }

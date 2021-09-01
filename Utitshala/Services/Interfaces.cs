@@ -38,7 +38,7 @@ namespace Utitshala.Services
         /// </summary>
         public interface ILearningDesignTranslator
         {
-            List<LearningDesignElement> TranslateFileToElements(string learningDesignText);
+            List<LearningDesignElement> TranslateFileToElements(string learningDesignFile);
             string TranslateElementsToFile(List<LearningDesignElement> elements);
         }
     }

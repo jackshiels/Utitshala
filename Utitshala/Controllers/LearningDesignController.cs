@@ -53,6 +53,7 @@ namespace Utitshala.Controllers
         public ActionResult Editor(int learningDesignId)
         {
             _context = new ApplicationDbContext();
+            _translator = new LearningDesignTranslator();
             // Get the current user and their classroom
             string userId = HttpContext.User.Identity.GetUserId();
             ApplicationUser user = _context.Users
