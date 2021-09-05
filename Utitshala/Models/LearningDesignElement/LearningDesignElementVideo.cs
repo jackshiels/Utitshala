@@ -8,8 +8,13 @@ namespace Utitshala.Models.LearningDesignElement
     /// <summary>
     /// The video element inherited class
     /// </summary>
-    public class LearningDesignElementVideo
+    public class LearningDesignElementVideo : LearningDesignElement
     {
         public string VideoUrl { get; set; }
+
+        public LearningDesignElementVideo()
+        {
+            LearningDesignElementType = LearningDesignElementType.Video;
+        }
     }
 }
