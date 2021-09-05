@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
+﻿
 namespace Utitshala.Models.LearningDesignElement
 {
     /// <summary>
@@ -11,5 +7,10 @@ namespace Utitshala.Models.LearningDesignElement
     public class LearningDesignElementText : LearningDesignElement
     {
         public string TextContent { get; set; }
+
+        public LearningDesignElementText()
+        {
+            LearningDesignElementType = LearningDesignElementType.Text;
+        }
     }
 }
