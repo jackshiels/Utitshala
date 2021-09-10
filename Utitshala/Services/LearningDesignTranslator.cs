@@ -34,7 +34,8 @@ namespace Utitshala.Services
             // Count helps to delineate the various elements in a sequence, split by use of the '+' character
             int parseCount = 0;
             // In memory holders for the various elements
-            LearningDesignElementText text = new LearningDesignElementText();
+            LearningDesignElement text = new LearningDesignElement();
+            LearningDesignElementImage image = new LearningDesignElementImage();
             LearningDesignElementSticker sticker = new LearningDesignElementSticker();
             LearningDesignElementAudio audio = new LearningDesignElementAudio();
             LearningDesignElementVideo video = new LearningDesignElementVideo();
@@ -54,23 +55,57 @@ namespace Utitshala.Services
                         if (parseCount == 2)
                         {
                             // Switch statement that determines how to interpret the element type
-                            switch (elementHolder[3].Split(' ')[1])
+                            switch (elementHolder[elementHolder.Count() - 1].Split(' ')[1])
                             {
                                 // Case of a pure text element
                                 case "next":
-                                    text = new LearningDesignElementText();
+                                    text = new LearningDesignElement();
                                     text.Name = elementHolder[0].Substring(1);
-                                    text.TextContent = elementHolder[1];
+                                    text.TextContent = GetTextContent(elementHolder);
                                     // Add to the sequence of elements
                                     elements.Add(text);
                                     break;
                                 // Case of sticker element
                                 case "sticker":
                                     sticker = new LearningDesignElementSticker();
+                                    sticker.LearningDesignElementType = LearningDesignElementType.Sticker;
                                     sticker.Name = elementHolder[0].Substring(1);
-                                    sticker.StickerUrl = elementHolder[3].Split(' ')[2];
+                                    // Type-specific values
+                                    sticker.StickerUrl = elementHolder[3].Split(' ')[2].Replace("\"", "");
+                                    sticker.TextContent = GetTextContent(elementHolder);
                                     // Add to the sequence of elements
                                     elements.Add(sticker);
+                                    break;
+                                // Case of an image element
+                                case "image":
+                                    image = new LearningDesignElementImage();
+                                    image.LearningDesignElementType = LearningDesignElementType.Image;
+                                    image.Name = elementHolder[0].Substring(1);
+                                    image.TextContent = GetTextContent(elementHolder);
+                                    // Type-specific values
+                                    image.ImageUrl = elementHolder[3].Split(' ')[2].Replace("\"", "");
+                                    image.Caption = elementHolder[3].Split(' ')[3].Replace("\"", "");
+                                    // Add to the sequence of elements
+                                    elements.Add(image);
+                                    break;
+                                // Case of an option element
+                                case "opt":
+                                    option = new LearningDesignElementOption();
+                                    option.LearningDesignElementType = LearningDesignElementType.Option;
+                                    option.Name = elementHolder[0].Substring(1);
+                                    // Create the textcontent data
+                                    option.TextContent = GetTextContent(elementHolder);
+                                    // Type-specific values
+                                    option.Options = new List<List<string>>();
+                                    foreach (var txt in elementHolder)
+                                    {
+                                        // If an option call
+                                        if (txt[0] == '>')
+                                        {
+                                            // Add the option to this element
+                                            option.Options.Add(new List<string>() { txt.Split(' ')[2], txt.Split(' ')[3].Replace("\"", "") });
+                                        }
+                                    }
                                     break;
                                 default:
                                     Console.WriteLine();
@@ -80,13 +115,13 @@ namespace Utitshala.Services
                             parseCount = 0;
                             elementHolder = new List<string>();
                         }
-                        else
-                        {
-                            // Else continue iterating until the end of the element
-                            parseCount++;
-                        }
                     }
                     elementHolder.Add(ch);
+                    // Catch if the next line is using the element delineator
+                    if (ch[0] == '+')
+                    {
+                        parseCount++;
+                    }
                 }
             }
             // End
@@ -103,5 +138,30 @@ namespace Utitshala.Services
         {
             throw new NotImplementedException();
         }
+
+        #region Utility Methods
+        /// <summary>
+        /// Returns a contiguous string of textcontent
+        /// from an element list string array.
+        /// </summary>
+        /// <param name="elements">The element list string array.</param>
+        /// <returns>A contiguous string of the textcontent.</returns>
+        public string GetTextContent(List<string> elements)
+        {
+            string textContent = "";
+            foreach (var txt in elements.Skip(1))
+            {
+                if (txt[0] != '+')
+                {
+                    textContent += txt + "\n";
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return textContent;
+        }
+        #endregion
     }
 }

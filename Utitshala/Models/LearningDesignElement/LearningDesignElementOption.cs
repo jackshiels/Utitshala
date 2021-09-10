@@ -8,8 +8,8 @@ namespace Utitshala.Models.LearningDesignElement
     /// <summary>
     /// The option element inherited class
     /// </summary>
-    public class LearningDesignElementOption
+    public class LearningDesignElementOption : LearningDesignElement
     {
-        public List<string> Options { get; set; }
+        public List<List<string>> Options { get; set; }
     }
 }

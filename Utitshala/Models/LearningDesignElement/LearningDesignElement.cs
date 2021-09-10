@@ -12,7 +12,7 @@ namespace Utitshala.Models.LearningDesignElement
     public class LearningDesignElement
     {
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string TextContent { get; set; }
         public LearningDesignElementType LearningDesignElementType { get; set; }
     }
 }
