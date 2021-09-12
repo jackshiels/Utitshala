@@ -27,7 +27,8 @@ Watch out...
 > next completed
 
 +completed
-+> execute closesession "" "completedend" ""
++
+> execute closesession "" "completedend" ""
 
 +completedend
 Congrats! You're finished! Enter hello to go home.

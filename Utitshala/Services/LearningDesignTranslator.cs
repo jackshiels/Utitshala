@@ -30,16 +30,17 @@ namespace Utitshala.Services
             string[] split = learningDesignFile.Split(new[] { "\r\n" }, StringSplitOptions.None);
             // Remove all empty elements and the first two elements (which contain the initialiser metadata)
             split = split.Where(c => c != "").Skip(2).ToArray();
+            split = split.Append("+").ToArray();
             // Parse the file into memory
             // Count helps to delineate the various elements in a sequence, split by use of the '+' character
             int parseCount = 0;
             // In memory holders for the various elements
             LearningDesignElement text = new LearningDesignElement();
-            LearningDesignElementImage image = new LearningDesignElementImage();
             LearningDesignElementSticker sticker = new LearningDesignElementSticker();
+            LearningDesignElementImage image = new LearningDesignElementImage();
+            LearningDesignElementOption option = new LearningDesignElementOption();
             LearningDesignElementAudio audio = new LearningDesignElementAudio();
             LearningDesignElementVideo video = new LearningDesignElementVideo();
-            LearningDesignElementOption option = new LearningDesignElementOption();
             // An in memory holder for the strings that will make up that element's data
             List<string> elementHolder = new List<string>();
             // Loop over the string data
@@ -49,67 +50,79 @@ namespace Utitshala.Services
                 if (ch[0] != '#')
                 {
                     // '+' symbol is the 'iterator' of these elements in string format
+                    // This is excluding the last element
                     if (ch[0] == '+')
                     {
                         // If reached 2 counts of '+', we have reached the end of the element
-                        if (parseCount == 2)
+                        if (parseCount >= 2)
                         {
                             // Switch statement that determines how to interpret the element type
-                            switch (elementHolder[elementHolder.Count() - 1].Split(' ')[1])
+                            // DEAL WITH THIS PART
+                            if (elementHolder.Where(c => c[0] == '>').Count() != 0)
                             {
-                                // Case of a pure text element
-                                case "next":
-                                    text = new LearningDesignElement();
-                                    text.Name = elementHolder[0].Substring(1);
-                                    text.TextContent = GetTextContent(elementHolder);
-                                    // Add to the sequence of elements
-                                    elements.Add(text);
-                                    break;
-                                // Case of sticker element
-                                case "sticker":
-                                    sticker = new LearningDesignElementSticker();
-                                    sticker.LearningDesignElementType = LearningDesignElementType.Sticker;
-                                    sticker.Name = elementHolder[0].Substring(1);
-                                    // Type-specific values
-                                    sticker.StickerUrl = elementHolder[3].Split(' ')[2].Replace("\"", "");
-                                    sticker.TextContent = GetTextContent(elementHolder);
-                                    // Add to the sequence of elements
-                                    elements.Add(sticker);
-                                    break;
-                                // Case of an image element
-                                case "image":
-                                    image = new LearningDesignElementImage();
-                                    image.LearningDesignElementType = LearningDesignElementType.Image;
-                                    image.Name = elementHolder[0].Substring(1);
-                                    image.TextContent = GetTextContent(elementHolder);
-                                    // Type-specific values
-                                    image.ImageUrl = elementHolder[3].Split(' ')[2].Replace("\"", "");
-                                    image.Caption = elementHolder[3].Split(' ')[3].Replace("\"", "");
-                                    // Add to the sequence of elements
-                                    elements.Add(image);
-                                    break;
-                                // Case of an option element
-                                case "opt":
-                                    option = new LearningDesignElementOption();
-                                    option.LearningDesignElementType = LearningDesignElementType.Option;
-                                    option.Name = elementHolder[0].Substring(1);
-                                    // Create the textcontent data
-                                    option.TextContent = GetTextContent(elementHolder);
-                                    // Type-specific values
-                                    option.Options = new List<List<string>>();
-                                    foreach (var txt in elementHolder)
-                                    {
-                                        // If an option call
-                                        if (txt[0] == '>')
+                                switch (elementHolder.Where(c => c[0] == '>').First().Split(' ')[1])
+                                {
+                                    // Case of a pure text element
+                                    case "next":
+                                        text = new LearningDesignElement();
+                                        text.Name = elementHolder[0].Substring(1);
+                                        text.TextContent = GetTextContent(elementHolder);
+                                        text.NextElement = elementHolder.Where(c => c[0] == '>').Last().Split(' ')[2];
+                                        // Add to the sequence of elements
+                                        elements.Add(text);
+                                        break;
+                                    // Case of sticker element
+                                    case "sticker":
+                                        sticker = new LearningDesignElementSticker();
+                                        sticker.LearningDesignElementType = LearningDesignElementType.Sticker;
+                                        sticker.Name = elementHolder[0].Substring(1);
+                                        sticker.NextElement = elementHolder.Where(c => c[0] == '>').Last().Split(' ')[2];
+                                        // Type-specific values
+                                        sticker.StickerUrl = elementHolder[3].Split(' ')[2].Replace("\"", "");
+                                        sticker.TextContent = GetTextContent(elementHolder);
+                                        // Add to the sequence of elements
+                                        elements.Add(sticker);
+                                        break;
+                                    // Case of an image element
+                                    case "image":
+                                        image = new LearningDesignElementImage();
+                                        image.LearningDesignElementType = LearningDesignElementType.Image;
+                                        image.Name = elementHolder[0].Substring(1);
+                                        image.TextContent = GetTextContent(elementHolder);
+                                        image.NextElement = elementHolder.Where(c => c[0] == '>').Last().Split(' ')[2];
+                                        // Type-specific values
+                                        image.ImageUrl = elementHolder[3].Split(' ')[2].Replace("\"", "");
+                                        image.Caption = elementHolder[3].Split(' ')[3].Replace("\"", "");
+                                        // Add to the sequence of elements
+                                        elements.Add(image);
+                                        break;
+                                    // Case of an option element
+                                    case "opt":
+                                        option = new LearningDesignElementOption();
+                                        option.LearningDesignElementType = LearningDesignElementType.Option;
+                                        option.Name = elementHolder[0].Substring(1);
+                                        // Create the textcontent data
+                                        option.TextContent = GetTextContent(elementHolder);
+                                        // Type-specific values
+                                        option.Options = new List<List<string>>();
+                                        foreach (var txt in elementHolder)
                                         {
-                                            // Add the option to this element
-                                            option.Options.Add(new List<string>() { txt.Split(' ')[2], txt.Split(' ')[3].Replace("\"", "") });
+                                            // If an option call
+                                            if (txt[0] == '>')
+                                            {
+                                                // Add the option to this element
+                                                option.Options.Add(new List<string>() { txt.Split(' ')[2], txt.Split(' ')[3].Replace("\"", "") });
+                                            }
                                         }
-                                    }
-                                    break;
-                                default:
-                                    Console.WriteLine();
-                                    break;
+                                        break;
+                                    // Case of an audio element
+                                    case "audio":
+
+                                        break;
+                                    default:
+                                        Console.WriteLine();
+                                        break;
+                                }
                             }
                             // Clear the elements
                             parseCount = 0;
