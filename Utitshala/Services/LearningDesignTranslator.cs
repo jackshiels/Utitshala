@@ -39,6 +39,7 @@ namespace Utitshala.Services
             LearningDesignElementSticker sticker = new LearningDesignElementSticker();
             LearningDesignElementImage image = new LearningDesignElementImage();
             LearningDesignElementOption option = new LearningDesignElementOption();
+            LearningDesignElementExecute execute = new LearningDesignElementExecute();
             LearningDesignElementAudio audio = new LearningDesignElementAudio();
             LearningDesignElementVideo video = new LearningDesignElementVideo();
             // An in memory holder for the strings that will make up that element's data
@@ -114,15 +115,33 @@ namespace Utitshala.Services
                                                 option.Options.Add(new List<string>() { txt.Split(' ')[2], txt.Split(' ')[3].Replace("\"", "") });
                                             }
                                         }
+                                        elements.Add(option);
                                         break;
-                                    // Case of an audio element
-                                    case "audio":
-
+                                    // Case of a close session execution element
+                                    case "execute":
+                                        execute = new LearningDesignElementExecute();
+                                        execute.LearningDesignElementType = LearningDesignElementType.Execute;
+                                        execute.Name = elementHolder[0].Substring(1);
+                                        // Create the textcontent data
+                                        execute.TextContent = GetTextContent(elementHolder);
+                                        // Type-specific values
+                                        execute.ExecutionName = elementHolder.Where(c => c[0] == '>').First().Split(' ')[2].Replace("\"", "");
+                                        elements.Add(execute);
                                         break;
                                     default:
                                         Console.WriteLine();
                                         break;
                                 }
+                            }
+                            else
+                            {
+                                // Is a lesson ending text element
+                                text = new LearningDesignElement();
+                                text.Name = elementHolder[0].Substring(1);
+                                text.TextContent = GetTextContent(elementHolder);
+                                // Add to the sequence of elements
+                                elements.Add(text);
+                                Console.WriteLine();
                             }
                             // Clear the elements
                             parseCount = 0;
