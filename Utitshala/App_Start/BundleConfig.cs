@@ -33,6 +33,8 @@ namespace Utitshala
             bundles.Add(new ScriptBundle("~/bundles/learningdesigneditor")
                 .Include("~/Scripts/vue.js")
                 .Include("~/Scripts/LearningDesignEditor.js"));
+
+            BundleTable.EnableOptimizations = false;
         }
     }
 }
