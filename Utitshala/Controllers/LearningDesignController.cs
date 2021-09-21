@@ -9,6 +9,8 @@ using Utitshala.Models;
 using Utitshala.ViewModels;
 using Utitshala.Services;
 using static Utitshala.Services.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Utitshala.Controllers
 {
@@ -69,7 +71,7 @@ namespace Utitshala.Controllers
                 {
                     // Construct the viewmodel
                     string fileLocation = AppDomain.CurrentDomain.BaseDirectory 
-                        + @"LearningContent\Lessons\" 
+                        + @"LearningContent\Lessons\"
                         + learningDesign.StorageURL;
                     string learningDesignText = System.IO.File.ReadAllText(fileLocation);
                     LearningDesignEditor model = new LearningDesignEditor()

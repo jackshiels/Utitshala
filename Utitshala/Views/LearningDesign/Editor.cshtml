@@ -1,5 +1,28 @@
-﻿@model Utitshala.ViewModels.LearningDesignEditor
+﻿@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/learningdesigneditor")
+}
+@model Utitshala.ViewModels.LearningDesignEditor
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Serialization;
+@{
+    // Serialises the data for use in Vue. With thanks to Milos Protic.
+    var serializationSettings = new JsonSerializerSettings()
+    {
+        ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+    };   
 
+    var data = 
+        Html.Raw(
+             HttpUtility.JavaScriptStringEncode(
+                JsonConvert.SerializeObject(
+                    Model.VueData, Formatting.None, serializationSettings
+                ), 
+             false)
+        );
+}
 @{
     ViewBag.Title = "Learning Design Editor";
 }
@@ -19,15 +42,30 @@
     <hr />
     <div id="app">
         <ol>
-            <p v-for="ob in newText">
-                {{ ob.text }}
-            </p>
+            <ul>
+                <li v-for="ob in newText">
+                    {{ ob.text }}
+                </li>
+            </ul>
         </ol>
         <input type="button" v-on:click="addElement" value="Add a number" />
     </div>
-    <br />@*https://github.com/SortableJS/Vue.Draggable*@
+    <div id="app2">
+        <ul>
+            <li v-for="it in items" v-bind:key="items.name">
+                {{ it }}
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript">
+        const app2 = new Vue({
+            el: '#app2',
+            data: {
+                items: [JSON.parse('@data').learningDesignCode]
+            }
+        });
+    </script>
+    <br />
+    @*https://github.com/SortableJS/Vue.Draggable*@
 </div>
-@section Scripts{
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/learningdesigneditor")
-}

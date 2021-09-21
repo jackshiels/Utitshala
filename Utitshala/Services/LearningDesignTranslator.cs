@@ -28,9 +28,10 @@ namespace Utitshala.Services
             List<LearningDesignElement> elements = new List<LearningDesignElement>();
             // Parse the file for elements
             string[] split = learningDesignFile.Split(new[] { "\r\n" }, StringSplitOptions.None);
-            // Remove all empty elements and the first two elements (which contain the initialiser metadata)
-            split = split.Where(c => c != "").Skip(2).ToArray();
-            split = split.Append("+").ToArray();
+            /* Remove all empty elements and the first two elements (which contain the initialiser metadata), 
+             * and a '+' for the iterator below to end successfully */
+            split = split.Where(c => c != "")
+                .Skip(2).Append("+").ToArray();
             // Parse the file into memory
             // Count helps to delineate the various elements in a sequence, split by use of the '+' character
             int parseCount = 0;
@@ -58,7 +59,6 @@ namespace Utitshala.Services
                         if (parseCount >= 2)
                         {
                             // Switch statement that determines how to interpret the element type
-                            // DEAL WITH THIS PART
                             if (elementHolder.Where(c => c[0] == '>').Count() != 0)
                             {
                                 switch (elementHolder.Where(c => c[0] == '>').First().Split(' ')[1])
