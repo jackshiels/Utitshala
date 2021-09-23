@@ -7,6 +7,7 @@ using System.Web;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Utitshala.Models.LearningDesignElement;
+using Utitshala.ViewModels;
 
 namespace Utitshala.Services
 {
@@ -39,7 +40,7 @@ namespace Utitshala.Services
         public interface ILearningDesignTranslator
         {
             List<LearningDesignElement> TranslateFileToElements(string learningDesignFile);
-            string TranslateElementsToFile(List<LearningDesignElement> elements);
+            string TranslateElementsToFile(LearningDesignEditor elements);
         }
     }
 }

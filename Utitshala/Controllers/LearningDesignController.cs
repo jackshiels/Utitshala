@@ -79,6 +79,7 @@ namespace Utitshala.Controllers
                         LearningDesign = learningDesign,
                         LearningDesignElements = _translator.TranslateFileToElements(learningDesignText)
                     };
+                    string result = _translator.TranslateElementsToFile(model);
                     // Parse the data into VueJS format
                     model.VueData = new VueParser().ParseData(model);
                     // Send it to the view

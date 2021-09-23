@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Utitshala.Models;
 using Utitshala.Models.LearningDesignElement;
+using Utitshala.ViewModels;
 using static Utitshala.Services.Interfaces;
 
 namespace Utitshala.Services
@@ -164,11 +165,67 @@ namespace Utitshala.Services
         /// Translates a list of learning design element model data into an
         /// .spd file.
         /// </summary>
-        /// <param name="elements">The list of learning design elements.</param>
+        /// <param name="model">The learning design and the list of learning design elements.</param>
         /// <returns>A .spd file string.</returns>
-        public string TranslateElementsToFile(List<LearningDesignElement> elements)
+        public string TranslateElementsToFile(LearningDesignEditor model)
         {
-            throw new NotImplementedException();
+            // Add the learning design title
+            string result = "# " + model.LearningDesign.Name + "\r\n";
+            // Add the call to begin on the first element
+            result += "> begin " + model.LearningDesignElements.First().Name + "\r\n\r\n";
+            // Begin adding the elements
+            foreach (var element in model.LearningDesignElements)
+            {
+                // add the spacing
+                switch (element.LearningDesignElementType)
+                {
+                    case LearningDesignElementType.Text:
+                        // Title
+                        result += "+ " + element.Name + "\r\n";
+                        result += element.TextContent;
+                        result += "+\r\n";
+                        // Element-specific data
+                        result += "> next " + element.NextElement;
+                        break;
+                    case LearningDesignElementType.Image:
+                        // Title
+                        result += "+ " + element.Name + "\r\n";
+                        result += element.TextContent;
+                        result += "+\r\n";
+                        // Element-specific data
+                        result += "> image " + "\"" 
+                            + (element as LearningDesignElementImage).ImageUrl + "\""
+                            + " \"" + (element as LearningDesignElementImage).Caption + "\""
+                            + "\r\n";
+                        result += "> next " + element.NextElement;
+                        break;
+                    case LearningDesignElementType.Option:
+                        // Title
+                        result += "+ " + element.Name + "\r\n";
+                        result += element.TextContent;
+                        result += "+\r\n";
+                        // Element-specific data
+                        foreach (var opt in (element as LearningDesignElementOption).Options)
+                        {
+                            result += "> opt " + opt[0] + " \"" + opt[1] + "\"\r\n";
+                        }
+                        break;
+                    case LearningDesignElementType.Sticker:
+                        // Title
+                        result += "+ " + element.Name + "\r\n";
+                        result += element.TextContent;
+                        result += "+\r\n";
+                        // Element-specific data
+                        result += "> sticker " + "\""
+                            + (element as LearningDesignElementSticker).StickerUrl + "\""
+                            + "\r\n";
+                        break;
+                    default:
+                        break;
+                }
+                result += "\r\n\r\n";
+            }
+            return result;
         }
 
         #region Utility Methods
