@@ -12,6 +12,12 @@ Here is a cool image:
 > image "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "abc123"
 > next lastoption
 
++sticker
+Here is a sticker
++
+> sticker "CAACAgQAAxkBAAIEjmDTY7YD1yuERlY1hAEKau-pdpg9AAIFCAACrbqYUvbHEdz1D-y-HwQ"
+> next lastoption
+
 +lastoption
 Choose yes to win
 1. Yes

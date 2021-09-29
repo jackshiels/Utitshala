@@ -219,6 +219,7 @@ namespace Utitshala.Services
                         result += "> sticker " + "\""
                             + (element as LearningDesignElementSticker).StickerUrl + "\""
                             + "\r\n";
+                        result += "> next " + element.NextElement;
                         break;
                     default:
                         break;
