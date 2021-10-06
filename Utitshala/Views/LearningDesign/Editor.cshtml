@@ -40,10 +40,13 @@
 </a>
 <div class="container register">
     <hr />
-    <div id="ldView">
-        <div v-for="ele in objectItems">
-            <p>{{ ele.name }}</p>
-        </div>
+    <div class="col-md-9" id="ldView">
+        <ul class="list-group" v-for="ele in objectItems">
+            <li class="list-group-item">{{ "Component Name: " + ele.name }}</li>
+        </ul>
+    </div>
+    <div class="col-md-3">
+        TBD: buttons
     </div>
     <br />
 </div>
