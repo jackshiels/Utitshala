@@ -260,6 +260,7 @@
     <Content Include="LearningContent\Lessons\Lesson1.spd" />
     <Content Include="LearningContent\Assessments\TestAssessment1.spd" />
     <Content Include="LearningContent\Assessments\TestAssessment2.spd" />
+    <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\Utitshala - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -276,6 +277,7 @@
     <Content Include="Scripts\MyClass.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
+    <Content Include="Scripts\vuedraggable.umd.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

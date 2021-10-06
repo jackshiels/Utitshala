@@ -11,7 +11,7 @@
     {
         ContractResolver = new CamelCasePropertyNamesContractResolver(),
         StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
     };   
 
     var data = 
@@ -40,32 +40,18 @@
 </a>
 <div class="container register">
     <hr />
-    <div id="app">
-        <ol>
-            <ul>
-                <li v-for="ob in newText">
-                    {{ ob.text }}
-                </li>
-            </ul>
-        </ol>
-        <input type="button" v-on:click="addElement" value="Add a number" />
+    <div id="ldView">
+        <div v-for="ele in objectItems">
+            <p>{{ ele.name }}</p>
+        </div>
     </div>
-    <div id="app2">
-        <ul>
-            <li v-for="it in items" v-bind:key="items.name">
-                {{ it }}
-            </li>
-        </ul>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script type="text/javascript">
-        const app2 = new Vue({
-            el: '#app2',
+    <br />
+</div>
+<script type="module">
+        const ldView = new Vue({
+        el: '#ldView',
             data: {
-                items: [JSON.parse('@data').learningDesignCode]
+                objectItems: JSON.parse('@data')["learningDesignCode"]
             }
         });
-    </script>
-    <br />
-    @*https://github.com/SortableJS/Vue.Draggable*@
-</div>
+</script>
