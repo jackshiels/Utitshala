@@ -9,7 +9,7 @@ Welcome to your new lesson!
 +image
 Here is a cool image:
 +
-> image "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "abc123"
+> image "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "abc123" "true"
 > next lastoption
 
 +sticker
@@ -29,7 +29,7 @@ Choose yes to win
 +complete
 Watch out...
 +
-> image "https://amsterdamduckstore.com/wp-content/uploads/2019/03/Al-Capo-Rubber-Duck-front-Amsterdam-Duck-Store-.jpg" "Stick 'em up!"
+> image "https://amsterdamduckstore.com/wp-content/uploads/2019/03/Al-Capo-Rubber-Duck-front-Amsterdam-Duck-Store-.jpg" "Stick 'em up!" "true"
 > next completed
 
 +completed

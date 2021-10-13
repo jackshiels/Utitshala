@@ -49,6 +49,12 @@
     <Reference Include="Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr4.Runtime.4.6.4\lib\net45\Antlr4.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Magick.NET-Q16-AnyCPU, Version=8.3.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET-Q16-AnyCPU.8.3.3\lib\net20\Magick.NET-Q16-AnyCPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET.Core, Version=8.3.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET.Core.8.3.3\lib\net20\Magick.NET.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Spin, Version=0.1.1.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\xbloom.Spin.0.1.1-beta7\lib\net45\Spin.dll</HintPath>
@@ -260,7 +266,6 @@
     <Content Include="LearningContent\Lessons\Lesson1.spd" />
     <Content Include="LearningContent\Assessments\TestAssessment1.spd" />
     <Content Include="LearningContent\Assessments\TestAssessment2.spd" />
-    <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\Utitshala - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -277,7 +282,6 @@
     <Content Include="Scripts\MyClass.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
-    <Content Include="Scripts\vuedraggable.umd.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -318,6 +322,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="DownloadedImages\" />
     <Folder Include="StudentAssignments\" />
   </ItemGroup>
   <ItemGroup>

@@ -26,6 +26,8 @@
 @{
     ViewBag.Title = "Learning Design Editor";
 }
+<!-- CDNJS :: Sortable (https://cdnjs.com/) -->
+<script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
 <div class="container visible-lg visible-md">
     <div class="breakout">
         <div class="imageinlinediv" style="text-align: center;">
@@ -46,15 +48,21 @@
         </ul>
     </div>
     <div class="col-md-3">
-        TBD: buttons
+        <p class="lead">
+            TBD: buttons
+        </p>
     </div>
     <br />
 </div>
+@*https://medium.com/corebuild-software/vue-js-and-net-mvc-b5cede228626*@
 <script type="module">
         const ldView = new Vue({
         el: '#ldView',
             data: {
                 objectItems: JSON.parse('@data')["learningDesignCode"]
+            },
+            components: {
+                draggable
             }
         });
 </script>

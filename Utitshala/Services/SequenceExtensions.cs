@@ -41,14 +41,15 @@ namespace Utitshala.Services
         public static void ImageMessageHandler(Sequence sequence, object[] arguments)
         {
             // Register the function
-            ArgumentUtils.Count("image", arguments, 2);
+            ArgumentUtils.Count("image", arguments, 3);
 
             // Derive the arguments
             var arg1 = sequence.Resolve(arguments[0]);
             var arg2 = sequence.Resolve(arguments[1]);
+            var arg3 = sequence.Resolve(arguments[2]);
 
             // Add the image URL to the send slot
-            ChatEngine.messageClient.SendImageMessage(arg1.ToString(), arg2.ToString(), sequence.GetVariable("currentChat"));
+            ChatEngine.messageClient.SendImageMessage(arg1.ToString(), arg2.ToString(), Convert.ToBoolean(arg3), sequence.GetVariable("currentChat"));
         }
 
         /// <summary>

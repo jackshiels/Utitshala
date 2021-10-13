@@ -1,0 +1,25 @@
+{
+  "name": "utitshala",
+  "version": "1.0.0",
+  "description": "starter json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackshiels/Utitshala.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "jack shiels",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jackshiels/Utitshala/issues"
+  },
+  "homepage": "https://github.com/jackshiels/Utitshala#readme",
+  "dependencies": {
+    "vuedraggable": "^2.24.3"
+  }
+}

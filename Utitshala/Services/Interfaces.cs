@@ -19,7 +19,7 @@ namespace Utitshala.Services
         public interface IMessageClient
         {
             void SendTextMessage(string message, object chat);
-            void SendImageMessage(string imageUrl, string caption, object chat);
+            void SendImageMessage(string imageUrl, string caption, bool compressed, object chat);
             void SendStickerMessage(string stickerUrl, object chat);
             void SendAudioMessage(string audioUrl, object chat);
             void SendVideoMessage(string videoUrl, string thumbnailUrl, object chat);
