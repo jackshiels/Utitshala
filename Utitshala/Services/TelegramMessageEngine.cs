@@ -75,29 +75,50 @@ namespace Utitshala.Services
                 {
                     // Create directory if it doesn't exist
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadedImages\");
-                    string path = AppDomain.CurrentDomain.BaseDirectory + @"DownloadedImages\" + e.Message.MessageId.ToString() + ".jpg";
+                    // Create the unique path to be used
+                    string path = AppDomain.CurrentDomain.BaseDirectory + @"DownloadedImages\" + e.Message.MessageId.ToString();
                     client.Headers.Add("User-Agent: Other");
                     client.DownloadFile(imageUrl, path);
                     // Open the file
                     FileStream image = System.IO.File.Open(path, FileMode.Open);
-                    // Compress the file
-                    // Change into an imagemagick object
-                    var compressedImage = new MagickImage(image);
-                    image.Close();
-                    // Resize to 50%
-                    var resize = new MagickGeometry(new Percentage(50), new Percentage(50));
-                    compressedImage.Resize(resize);
-                    // Write
-                    compressedImage.Write(path);
-                    // Compress
-                    image = System.IO.File.Open(path, FileMode.Open);
-                    var optimiser = new ImageOptimizer().Compress(image);
-                    // Send the image
-                    botClient.SendPhotoAsync(e.Message.Chat, new InputOnlineFile(image, "newupload1.jpg"), caption);
-                    Thread.Sleep(500);
-                    image.Close();
-                    // Delete the stored image
-                    System.IO.File.Delete(path);
+                    // Try change into an imagemagick object
+                    try
+                    {
+                        var resizedImage = new MagickImage(image);
+                        // Close the existing filestream
+                        image.Close();
+                        // Delete the stored image
+                        System.IO.File.Delete(path);
+                        // Resize to 50%
+                        var resize = new MagickGeometry(new Percentage(50), new Percentage(50));
+                        resizedImage.Resize(resize);
+                        // Write to path with .jpg
+                        resizedImage.Write(path + ".jpg");
+                        // Compress, starting with opening the file again
+                        image = System.IO.File.Open(path + ".jpg", FileMode.Open);
+                        // Create a new compressor and act
+                        new ImageOptimizer().Compress(image);
+                        // Convert to an image type stream
+                        var compressedImage = new MagickImage(image);
+                        // Close the old stream and write the new, compressed image stream
+                        image.Close();
+                        compressedImage.Write(path + ".jpg");
+                        // Distribute the image by opening and sending into bot
+                        image = System.IO.File.Open(path + ".jpg", FileMode.Open);
+                        botClient.SendPhotoAsync(e.Message.Chat, new InputOnlineFile(image, "newupload1.jpg"), caption);
+                        // Sleep so that it doesn't crash by trying to close filestream while sending the image
+                        Thread.Sleep(500);
+                        // Finally close
+                        image.Close();
+                        // Delete the stored image to save disk space
+                        System.IO.File.Delete(path + ".jpg");
+                    }
+                    catch (Exception ex)
+                    {
+                        // If crashed, send an error message
+                        botClient.SendTextMessageAsync(e.Message.Chat, "Error in learning content. Please contact your teacher");
+                        Console.WriteLine(ex.StackTrace);
+                    }
                 }
             }
             // Sleep so messages are staggered
