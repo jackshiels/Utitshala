@@ -59,7 +59,7 @@ namespace Utitshala.Services
         {
             // Convert the chat to MessageEventArgs
             MessageEventArgs e = (MessageEventArgs)chat;
-            // Send
+            // Send via url if false, or compress if true
             if (!compress)
             {
                 botClient.SendPhotoAsync(
@@ -84,32 +84,12 @@ namespace Utitshala.Services
                     // Try change into an imagemagick object
                     try
                     {
-                        var resizedImage = new MagickImage(image);
-                        // Close the existing filestream
-                        image.Close();
-                        // Delete the stored image
-                        System.IO.File.Delete(path);
-                        // Resize to 50%
-                        var resize = new MagickGeometry(new Percentage(50), new Percentage(50));
-                        resizedImage.Resize(resize);
-                        // Write to path with .jpg
-                        resizedImage.Write(path + ".jpg");
-                        // Compress, starting with opening the file again
-                        image = System.IO.File.Open(path + ".jpg", FileMode.Open);
-                        // Create a new compressor and act
-                        new ImageOptimizer().Compress(image);
-                        // Convert to an image type stream
-                        var compressedImage = new MagickImage(image);
-                        // Close the old stream and write the new, compressed image stream
-                        image.Close();
-                        compressedImage.Write(path + ".jpg");
-                        // Distribute the image by opening and sending into bot
-                        image = System.IO.File.Open(path + ".jpg", FileMode.Open);
-                        botClient.SendPhotoAsync(e.Message.Chat, new InputOnlineFile(image, "newupload1.jpg"), caption);
+                        FileStream compressedImage = new ImageHandler().CompressImage(image, path);
+                        botClient.SendPhotoAsync(e.Message.Chat, new InputOnlineFile(compressedImage, "newupload1.jpg"), caption);
                         // Sleep so that it doesn't crash by trying to close filestream while sending the image
                         Thread.Sleep(500);
                         // Finally close
-                        image.Close();
+                        compressedImage.Close();
                         // Delete the stored image to save disk space
                         System.IO.File.Delete(path + ".jpg");
                     }

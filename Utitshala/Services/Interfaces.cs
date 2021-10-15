@@ -42,5 +42,13 @@ namespace Utitshala.Services
             List<LearningDesignElement> TranslateFileToElements(string learningDesignFile);
             string TranslateElementsToFile(LearningDesignEditor elements);
         }
+
+        /// <summary>
+        /// An interface for a class that compresses images using the ImageMagick library.
+        /// </summary>
+        public interface IImageHandler
+        {
+            FileStream CompressImage(FileStream image, string filePath);
+        }
     }
 }
