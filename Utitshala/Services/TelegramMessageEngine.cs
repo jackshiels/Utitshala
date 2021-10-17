@@ -73,20 +73,21 @@ namespace Utitshala.Services
                 // Get the image from url
                 using (var client = new WebClient())
                 {
-                    // Create directory if it doesn't exist
-                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadedImages\");
-                    // Create the unique path to be used
-                    string path = AppDomain.CurrentDomain.BaseDirectory + @"DownloadedImages\" + e.Message.MessageId.ToString();
-                    client.Headers.Add("User-Agent: Other");
-                    client.DownloadFile(imageUrl, path);
-                    // Open the file
-                    FileStream image = System.IO.File.Open(path, FileMode.Open);
-                    // Try change into an imagemagick object
                     try
                     {
+                        // Create directory if it doesn't exist
+                        Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"DownloadedImages\");
+                        // Create the unique path to be used
+                        string path = AppDomain.CurrentDomain.BaseDirectory + @"DownloadedImages\" + e.Message.MessageId.ToString();
+                        client.Headers.Add("User-Agent: Other");
+                        client.DownloadFile(imageUrl, path);
+                        // Open the file
+                        FileStream image = System.IO.File.Open(path, FileMode.Open);
+                        // Try change into an imagemagick object
                         FileStream compressedImage = new ImageHandler().CompressImage(image, path);
-                        botClient.SendPhotoAsync(e.Message.Chat, new InputOnlineFile(compressedImage, "newupload1.jpg"), caption);
+                        botClient.SendPhotoAsync(e.Message.Chat, new InputOnlineFile(compressedImage, e.Message.Chat.Id.ToString() + ".jpg"), caption);
                         // Sleep so that it doesn't crash by trying to close filestream while sending the image
+                        // MAY CAUSE PROBLEMS IN THE FUTURE...
                         Thread.Sleep(500);
                         // Finally close
                         compressedImage.Close();

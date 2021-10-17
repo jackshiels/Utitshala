@@ -369,6 +369,15 @@ namespace Utitshala.Services
                                         score += 1;
                                         userStateRegister.FirstOrDefault(c => c[0] == userId)[5] = score.ToString();
                                     }
+                                    // Else, give the feedback (if it exists...)
+                                    else
+                                    {
+                                        if (read[5] != "")
+                                        {
+                                            // Send
+                                            messageClient.SendTextMessage(read[5], sequence.GetVariable("currentChat"));
+                                        }
+                                    }
                                     // Set the next line
                                     sequence.SetNextLine(read[4]);
                                     break;

@@ -12,7 +12,7 @@ Which of the following is an animal?
 2. Teapot
 3. Birthday
 +
-> input mcq positivenumber 1 "question2" ""
+> input mcq positivenumber 1 "question2" "Wrong answer! Think about this carefully..."
 
 +question2
 How many fingers are on a hand?
