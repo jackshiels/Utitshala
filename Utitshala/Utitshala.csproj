@@ -201,6 +201,8 @@
     <Compile Include="Models\Assessment.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Classroom.cs" />
+    <Compile Include="Models\Forum.cs" />
+    <Compile Include="Models\ForumMessage.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JSONModels\ImageRequestJson.cs" />
     <Compile Include="Models\LearningDesign.cs" />

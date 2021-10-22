@@ -16,6 +16,12 @@ Here is a cool image:
 Here is a sticker
 +
 > sticker "CAACAgQAAxkBAAIEjmDTY7YD1yuERlY1hAEKau-pdpg9AAIFCAACrbqYUvbHEdz1D-y-HwQ"
+> next forumtest
+
++forumtest
+This is a test forum. Discuss things!
++
+> forum "11/12/21"
 > next lastoption
 
 +lastoption
@@ -30,6 +36,7 @@ Choose yes to win
 Watch out...
 +
 > image "https://amsterdamduckstore.com/wp-content/uploads/2019/03/Al-Capo-Rubber-Duck-front-Amsterdam-Duck-Store-.jpg" "Stick 'em up!" "true"
+> printInput
 > next completed
 
 +completed

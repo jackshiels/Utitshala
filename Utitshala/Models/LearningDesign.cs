@@ -22,9 +22,12 @@ namespace Utitshala.Models
         public int? ClassroomID { get; set; }
         [ForeignKey("Assessment")]
         public int? AssessmentID { get; set; }
+        [ForeignKey("Forum")]
+        public int? ForumID { get; set; }
 
         // Virtual
         public virtual Classroom Classroom { get; set; }
         public virtual Assessment Assessment { get; set; }
+        public virtual Forum Forum { get; set; }
     }
 }

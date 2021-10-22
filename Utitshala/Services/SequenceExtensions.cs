@@ -322,6 +322,37 @@ namespace Utitshala.Services
                 Console.WriteLine(ex.StackTrace);
             }
         }
+
+        /// <summary>
+        /// Prepares the sequence to host a forum.
+        /// </summary>
+        /// <param name="sequence">The sequence this function is added to.</param>
+        /// <param name="arguments">The name of the function to execute.</param>
+        [SequenceCommand("forum")]
+        public static void Forum(Sequence sequence, object[] arguments)
+        {
+            // Register the function
+            ArgumentUtils.Count("upload", arguments, 1);
+
+            // Derive the arguments
+            string arg1 = sequence.Resolve(arguments[0]).ToString();
+
+            // Attempt to convert the date into a DateTime
+            DateTime endDate;
+            try
+            {
+                endDate = DateTime.Parse(arg1);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                // Otherwise, create a date in the far future
+                endDate = new DateTime(2099, 12, 31);
+            }
+
+            // Enact the behaviours
+            //
+        }
         #endregion
     }
 }
