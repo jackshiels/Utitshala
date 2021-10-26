@@ -14,11 +14,8 @@ namespace Utitshala.Models
     {
         [Key]
         public int ID { get; set; }
-        [ForeignKey("LearningDesign")]
-        public int LearningDesignID { get; set; }
-
-        // Virtuals
-        public virtual LearningDesign LearningDesign { get; set; }
+        [StringLength(100)]
+        public string Name { get; set; }
         public virtual List<ForumMessage> ForumMessages { get; set; }
     }
 }

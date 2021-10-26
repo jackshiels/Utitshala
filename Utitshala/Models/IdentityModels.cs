@@ -34,6 +34,8 @@ namespace Utitshala.Models
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<LearningDesign> LearningDesigns { get; set; }
         public DbSet<School> Schools { get; set; }
+        public DbSet<Forum> Forums { get; set; }
+        public DbSet<ForumMessage> ForumMessages { get; set; }
         public ApplicationDbContext()
             : base("AzureDevDB", throwIfV1Schema: false)
         {

@@ -57,7 +57,7 @@ namespace Utitshala.Services
             string path = "";
             string[] userState = userStateRegister.FirstOrDefault(c => c[0] == userId);
 
-            // Exit clause
+            // Exit clause (general)
             if (e.Message.Text != null && e.Message.Text.ToLower() == "exit")
             {
                 if (userState != null && userState[1] == "learning"
@@ -70,6 +70,13 @@ namespace Utitshala.Services
                     userStateRegister.Add(new string[] { userId, "registered" });
                     // Send a message to confirm
                     messageClient.SendTextMessage("Exiting...", e);
+                }
+                // If in a forum and exit is called, change back to learning
+                else if (userState != null && userState[1] == "forum")
+                {
+                    userStateRegister
+                        .FirstOrDefault(c => c[0] == sequence.GetVariable("currentUserId").ToString())
+                        [1] = "learning";
                 }
             }
 
@@ -190,6 +197,7 @@ namespace Utitshala.Services
                 // Send the message (used to check for Text == null)
                 messageClient.SendTextMessage(currentLine, e);
             }
+
             #endregion
         }
 

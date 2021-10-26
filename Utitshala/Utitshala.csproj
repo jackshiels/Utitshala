@@ -196,6 +196,22 @@
     <Compile Include="Migrations\202109211729279_AzureDb.Designer.cs">
       <DependentUpon>202109211729279_AzureDb.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110261716569_Forum.cs" />
+    <Compile Include="Migrations\202110261716569_Forum.Designer.cs">
+      <DependentUpon>202110261716569_Forum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110261751196_ForumMessageExtensions.cs" />
+    <Compile Include="Migrations\202110261751196_ForumMessageExtensions.Designer.cs">
+      <DependentUpon>202110261751196_ForumMessageExtensions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110261812512_forumfix1.cs" />
+    <Compile Include="Migrations\202110261812512_forumfix1.Designer.cs">
+      <DependentUpon>202110261812512_forumfix1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110261815425_forumfix2.cs" />
+    <Compile Include="Migrations\202110261815425_forumfix2.Designer.cs">
+      <DependentUpon>202110261815425_forumfix2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Assessment.cs" />
@@ -344,6 +360,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202109211729279_AzureDb.resx">
       <DependentUpon>202109211729279_AzureDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110261716569_Forum.resx">
+      <DependentUpon>202110261716569_Forum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110261751196_ForumMessageExtensions.resx">
+      <DependentUpon>202110261751196_ForumMessageExtensions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110261812512_forumfix1.resx">
+      <DependentUpon>202110261812512_forumfix1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110261815425_forumfix2.resx">
+      <DependentUpon>202110261815425_forumfix2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -14,6 +14,8 @@ namespace Utitshala.Models
     {
         [Key]
         public int ID { get; set; }
+        public string MessageContents { get; set; }
+        public DateTime MessageDate { get; set; }
         [ForeignKey("Forum")]
         public int ForumID { get; set; }
         [ForeignKey("Student")]
@@ -22,5 +24,15 @@ namespace Utitshala.Models
         // Virtuals
         public virtual Forum Forum { get; set; }
         public virtual Student Student { get; set; }
+
+        // Functions
+        /// <summary>
+        /// Returns the message with the date and time formatted as a suffix.
+        /// </summary>
+        /// <returns>A string of the formatted message.</returns>
+        public string GetMessage()
+        {
+            return MessageContents + "\n\nSent: " + MessageDate.ToShortDateString();
+        }
     }
 }

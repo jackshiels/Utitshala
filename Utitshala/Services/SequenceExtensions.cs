@@ -6,6 +6,7 @@ using Spin;
 using Spin.Attributes;
 using Spin.Utility;
 using Utitshala.Controllers;
+using Utitshala.Models;
 
 namespace Utitshala.Services
 {
@@ -350,8 +351,41 @@ namespace Utitshala.Services
                 endDate = new DateTime(2099, 12, 31);
             }
 
-            // Enact the behaviours
-            //
+            // Set the user state register 
+            ChatEngine.userStateRegister
+                .FirstOrDefault(c => c[0] == sequence.GetVariable("currentUserId").ToString())
+                [1] = "forum";
+
+            // Get the userstate in memory
+            string[] userState = ChatEngine.userStateRegister
+                .FirstOrDefault(c => c[0] == sequence.GetVariable("currentUserId").ToString());
+
+            // Send all the messages so far (if they exist)
+            ApplicationDbContext _context = new ApplicationDbContext();
+            LearningDesign learningDesign = _context.LearningDesigns
+                .Include("Forum")
+                .FirstOrDefault(c => c.StorageURL == userState[3]);
+            if (learningDesign.Forum != null)
+            {
+                // Get the messages and send them
+                foreach (var message in learningDesign.Forum.ForumMessages)
+                {
+                    ChatEngine.messageClient
+                        .SendTextMessage(message.GetMessage(), sequence.GetVariable("currentChat"));
+                }
+            }
+            // Else, create a new forum within the learning design
+            else
+            {
+                Forum newForum = new Forum()
+                {
+                    ForumMessages = new List<ForumMessage>()
+                };
+                // Set and save
+                learningDesign.Forum = newForum;
+                _context.Entry(learningDesign).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+            }
         }
         #endregion
     }
