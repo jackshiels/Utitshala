@@ -37,7 +37,7 @@ namespace Utitshala.Services
         /// Handles image messages.
         /// </summary>
         /// <param name="sequence">The sequence this function is added to.</param>
-        /// <param name="arguments">The image URL and caption.</param>
+        /// <param name="arguments">The image URL, caption, and compression boolean.</param>
         [SequenceCommand("image")]
         public static void ImageMessageHandler(Sequence sequence, object[] arguments)
         {
@@ -51,6 +51,29 @@ namespace Utitshala.Services
 
             // Add the image URL to the send slot
             ChatEngine.messageClient.SendImageMessage(arg1.ToString(), arg2.ToString(), Convert.ToBoolean(arg3), sequence.GetVariable("currentChat"));
+        }
+
+        /// <summary>
+        /// Handles presentation messages.
+        /// </summary>
+        /// <param name="sequence">The sequence this function is added to.</param>
+        /// <param name="arguments">The image URLs and the compression boolean.</param>
+        [SequenceCommand("presentation")]
+        public static void PresentationMessageHandler(Sequence sequence, object[] arguments)
+        {
+            // Register the function
+            ArgumentUtils.Count("image", arguments, 11);
+
+            // Derive the arguments
+            List<string> argumentList = new List<string>();
+            for (int i = 0; i < 10; i++)
+            {
+                argumentList.Add(sequence.Resolve(arguments[i]).ToString());
+            }
+            var compress = sequence.Resolve(arguments[10]);
+
+            // Add the album to the chat
+            ChatEngine.messageClient.SendAlbumMessage(argumentList.ToArray(), Convert.ToBoolean(compress), sequence.GetVariable("currentChat"));
         }
 
         /// <summary>

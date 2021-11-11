@@ -21,6 +21,7 @@ namespace Utitshala.Models
         {
             AddCommand("opt", SequenceExtensions.OptionTraversal);
             AddCommand("image", SequenceExtensions.ImageMessageHandler);
+            AddCommand("presentation", SequenceExtensions.PresentationMessageHandler);
             AddCommand("sticker", SequenceExtensions.StickerMessageHandler);
             AddCommand("wait", SequenceExtensions.WaitTimer);
             AddCommand("input", SequenceExtensions.ReceiveInput);

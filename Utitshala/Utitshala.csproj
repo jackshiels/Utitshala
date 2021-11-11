@@ -192,10 +192,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202109211729279_AzureDb.cs" />
-    <Compile Include="Migrations\202109211729279_AzureDb.Designer.cs">
-      <DependentUpon>202109211729279_AzureDb.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202110261716569_Forum.cs" />
     <Compile Include="Migrations\202110261716569_Forum.Designer.cs">
       <DependentUpon>202110261716569_Forum.cs</DependentUpon>
@@ -358,9 +354,6 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202109211729279_AzureDb.resx">
-      <DependentUpon>202109211729279_AzureDb.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110261716569_Forum.resx">
       <DependentUpon>202110261716569_Forum.cs</DependentUpon>
     </EmbeddedResource>

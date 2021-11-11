@@ -37,7 +37,7 @@ namespace Utitshala.Models
         public DbSet<Forum> Forums { get; set; }
         public DbSet<ForumMessage> ForumMessages { get; set; }
         public ApplicationDbContext()
-            : base("AzureDevDB", throwIfV1Schema: false)
+            : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 
