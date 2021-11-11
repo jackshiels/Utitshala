@@ -161,8 +161,7 @@ namespace Utitshala.Services
                         }
                         catch (Exception ex)
                         {
-                            // If crashed, send an error message
-                            botClient.SendTextMessageAsync(e.Message.Chat, "Error in learning content. Please contact your teacher");
+                            // If crashed, log an error message
                             Console.WriteLine(ex.StackTrace);
                         }
                     }
@@ -185,13 +184,21 @@ namespace Utitshala.Services
                     botClient.SendTextMessageAsync(e.Message.Chat, "Error in learning content. Please contact your teacher");
                     Console.WriteLine(ex.StackTrace);
                 }
-                // Close filstreams and delete
-                foreach (var image in compressedImages)
+                try
                 {
-                    // Finally close
-                    image.Close();
-                    // Delete the stored image to save disk space
-                    System.IO.File.Delete(image.Name);
+                    // Close filstreams and delete
+                    foreach (var image in compressedImages)
+                    {
+                        // Finally close
+                        image.Close();
+                        // Delete the stored image to save disk space
+                        System.IO.File.Delete(image.Name);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // If crashed, log an error message
+                    Console.WriteLine(ex.StackTrace);
                 }
             }
         }
