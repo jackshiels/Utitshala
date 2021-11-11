@@ -520,6 +520,18 @@ namespace Utitshala.Controllers
             // Return values as a <bool, decimal> tuple
             return new Tuple<bool, decimal>(result, Math.Round(score, 2));
         }
+
+        /// <summary>
+        /// Returns a learning design based on its storage location.
+        /// </summary>
+        /// <param name="storagePath">The path of the learning design.</param>
+        /// <returns>The learning design object, with forum attached.</returns>
+        public static LearningDesign GetLearningDesignByPath(string storagePath)
+        {
+            return _context.LearningDesigns
+                       .Include("Forum")
+                       .FirstOrDefault(c => c.StorageURL == storagePath);
+        }
         #endregion
 
         #region POST Methods
@@ -700,6 +712,48 @@ namespace Utitshala.Controllers
                 // Insert the studentassignment into the student's record
                 record.StudentAssignments.Add(sa);
                 _context.Entry(record).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Modifies a learning design in the database.
+        /// </summary>
+        /// <param name="learningDesign">The learning design to modify.</param>
+        /// <returns>A boolean representing success (true) or failure (false).</returns>
+        public static bool UpdateLearningDesign(LearningDesign learningDesign)
+        {
+            bool result = false;
+            try
+            {
+                _context.Entry(learningDesign).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Saves a forum message to the database.
+        /// </summary>
+        /// <param name="message">The forum message to save.</param>
+        /// <returns>A boolean representing success (true) or failure (false).</returns>
+        public static bool SaveForumMessage(ForumMessage message)
+        {
+            bool result = false;
+            try
+            {
+                _context.ForumMessages.Add(message);
                 _context.SaveChanges();
                 result = true;
             }

@@ -32,7 +32,7 @@ namespace Utitshala.Models
         /// <returns>A string of the formatted message.</returns>
         public string GetMessage()
         {
-            return MessageContents + "\n\nSent: " + MessageDate.ToShortDateString();
+            return "Sender: " + Student.Name + "\n\nSent: " + MessageDate.ToShortDateString() + ", " + MessageDate.ToShortTimeString() + "\n\n" + MessageContents;
         }
     }
 }

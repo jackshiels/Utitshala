@@ -75,7 +75,7 @@ namespace Utitshala.Services
                 else if (userState != null && userState[1] == "forum")
                 {
                     userStateRegister
-                        .FirstOrDefault(c => c[0] == sequence.GetVariable("currentUserId").ToString())
+                        .FirstOrDefault(c => c[0] == userId)
                         [1] = "learning";
                 }
             }
@@ -101,7 +101,21 @@ namespace Utitshala.Services
                         break;
                 }
             }
-            sequence.LoadAndStartDocument(path);
+            if (userState != null && userState[1] != "forum")
+            {
+                sequence.LoadAndStartDocument(path);
+                // Check for a reset of the next line after a forum
+                if (userState.Length > 5 
+                    && userState[5] != null 
+                    && userState[5] != "")
+                {
+                    // Set the next line, then wipe the next line in the user state
+                    sequence.SetNextLine(userState[5]);
+                    userStateRegister
+                        .FirstOrDefault(c => c[0] == userId)
+                        [5] = "";
+                }
+            }
             #endregion
 
             #region UploadClause
@@ -185,17 +199,66 @@ namespace Utitshala.Services
             InputSaver(sequence, e.Message.Text, e.Message.Chat.Id.ToString());
             #endregion
 
+            #region Forum Input
+            // Add input to a forum message
+            if (userState != null && userState[1] == "forum")
+            {
+                if (e.Message.Text != null)
+                {
+                    try
+                    {
+                        // Get the forum object
+                        string storageUrl = userState[3];
+                        LearningDesign learningDesign = DatabaseController.GetLearningDesignByPath(storageUrl);
+                        // Get the student
+                        Student student = DatabaseController.GetAllStudents()
+                            .FirstOrDefault(c => c.ServiceUserID == sequence.GetVariable("currentUserId").ToString());
+                        // Create a new forum message
+                        ForumMessage message = new ForumMessage()
+                        {
+                            MessageDate = DateTime.Now,
+                            MessageContents = e.Message.Text,
+                            StudentID = student.ID,
+                            ForumID = learningDesign.Forum.ID
+                        };
+                        // Save the forum message
+                        DatabaseController.SaveForumMessage(message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.StackTrace);
+                    }
+                }
+            }
+            #endregion
+
             #region Input Cycle
             // Set the line to send
             string currentLine;
 
             // Send the opening message
-            while (sequence.StartNextLine().HasValue)
+            while (sequence.StartNextLine().HasValue &&
+                userState != null && userState[1] != "forum")
             {
                 // Get the current line
                 currentLine = sequence.ExecuteCurrentLine().BuildString(true, false);
                 // Send the message (used to check for Text == null)
                 messageClient.SendTextMessage(currentLine, e);
+                // Store the next line
+                if (sequence.NextLine != null && userState[1] == "forum")
+                {
+                    string[] userStateUpdated = (string[])userState.Clone();
+                    if (userStateUpdated.Length != 6)
+                    {
+                        userStateUpdated = userStateUpdated.Append(sequence.NextLine.Value.Name).ToArray();
+                    }
+                    else
+                    {
+                        userStateUpdated[5] = sequence.NextLine.Value.Name;
+                    }
+                    userStateRegister.Remove(userState);
+                    userStateRegister.Add(userStateUpdated);
+                }
             }
 
             #endregion

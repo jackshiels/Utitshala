@@ -384,16 +384,16 @@ namespace Utitshala.Services
             string[] userState = ChatEngine.userStateRegister
                 .FirstOrDefault(c => c[0] == sequence.GetVariable("currentUserId").ToString());
             string storageUrl = userState[3];
-
             // Send all the messages so far (if they exist)
-            ApplicationDbContext _context = new ApplicationDbContext();
-            LearningDesign learningDesign = _context.LearningDesigns
-                .Include("Forum")
-                .FirstOrDefault(c => c.StorageURL == storageUrl);
+            LearningDesign learningDesign = DatabaseController.GetLearningDesignByPath(storageUrl);
+            // Send the notification
+            ChatEngine.messageClient
+                        .SendTextMessage("Add your comments by sending messages. Send 'exit' when you are done to continue with this lesson.", sequence.GetVariable("currentChat"));
+            // Select the forum object and send its messages
             if (learningDesign.Forum != null)
             {
                 // Get the messages and send them
-                foreach (var message in learningDesign.Forum.ForumMessages)
+                foreach (var message in learningDesign.Forum.ForumMessages.OrderBy(c => c.MessageDate))
                 {
                     ChatEngine.messageClient
                         .SendTextMessage(message.GetMessage(), sequence.GetVariable("currentChat"));
@@ -408,8 +408,7 @@ namespace Utitshala.Services
                 };
                 // Set and save
                 learningDesign.Forum = newForum;
-                _context.Entry(learningDesign).State = System.Data.Entity.EntityState.Modified;
-                _context.SaveChanges();
+                DatabaseController.UpdateLearningDesign(learningDesign);
                 // Then send the opening message
                 ChatEngine.messageClient
                         .SendTextMessage(arg2, sequence.GetVariable("currentChat"));
