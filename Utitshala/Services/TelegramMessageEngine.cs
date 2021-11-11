@@ -176,7 +176,7 @@ namespace Utitshala.Services
                 {
                     botClient.SendMediaGroupAsync(
                     inputMedia: images,
-                    chatId: e.Message.Chat);
+                    chatId: e.Message.Chat).Wait();
                 }
                 catch (Exception ex)
                 {

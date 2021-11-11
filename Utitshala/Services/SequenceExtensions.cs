@@ -356,10 +356,11 @@ namespace Utitshala.Services
         public static void Forum(Sequence sequence, object[] arguments)
         {
             // Register the function
-            ArgumentUtils.Count("upload", arguments, 1);
+            ArgumentUtils.Count("upload", arguments, 2);
 
             // Derive the arguments
             string arg1 = sequence.Resolve(arguments[0]).ToString();
+            string arg2 = sequence.Resolve(arguments[1]).ToString();
 
             // Attempt to convert the date into a DateTime
             DateTime endDate;
@@ -382,12 +383,13 @@ namespace Utitshala.Services
             // Get the userstate in memory
             string[] userState = ChatEngine.userStateRegister
                 .FirstOrDefault(c => c[0] == sequence.GetVariable("currentUserId").ToString());
+            string storageUrl = userState[3];
 
             // Send all the messages so far (if they exist)
             ApplicationDbContext _context = new ApplicationDbContext();
             LearningDesign learningDesign = _context.LearningDesigns
                 .Include("Forum")
-                .FirstOrDefault(c => c.StorageURL == userState[3]);
+                .FirstOrDefault(c => c.StorageURL == storageUrl);
             if (learningDesign.Forum != null)
             {
                 // Get the messages and send them
@@ -408,6 +410,9 @@ namespace Utitshala.Services
                 learningDesign.Forum = newForum;
                 _context.Entry(learningDesign).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
+                // Then send the opening message
+                ChatEngine.messageClient
+                        .SendTextMessage(arg2, sequence.GetVariable("currentChat"));
             }
         }
         #endregion

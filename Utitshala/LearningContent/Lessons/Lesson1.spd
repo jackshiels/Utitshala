@@ -10,7 +10,7 @@ Welcome to your new lesson!
 Here is a cool image:
 +
 > presentation "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg/1280px-Lichfield_Cathedral_Exterior_from_NE%2C_Staffordshire%2C_UK_-_Diliff.jpg" "" "" "" "" "" "true"
-> next lastoption
+> next sticker
 
 +sticker
 Here is a sticker
@@ -21,7 +21,7 @@ Here is a sticker
 +forumtest
 This is a test forum. Discuss things!
 +
-> forum "11/12/21"
+> forum "11/12/21" "You are first in line, start the discussion!"
 > next lastoption
 
 +lastoption

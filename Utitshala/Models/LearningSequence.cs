@@ -27,6 +27,7 @@ namespace Utitshala.Models
             AddCommand("input", SequenceExtensions.ReceiveInput);
             AddCommand("execute", SequenceExtensions.ExecuteFunction);
             AddCommand("upload", SequenceExtensions.Upload);
+            AddCommand("forum", SequenceExtensions.Forum);
         }
     }
 }
