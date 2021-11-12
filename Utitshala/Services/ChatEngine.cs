@@ -84,6 +84,7 @@ namespace Utitshala.Services
             if (userState == null)
             {
                 path = AppDomain.CurrentDomain.BaseDirectory + @"Dialogues\Register.spd";
+                userState = new string[2] { "", "" };
             }
             else
             {
@@ -101,7 +102,7 @@ namespace Utitshala.Services
                         break;
                 }
             }
-            if (userState != null && userState[1] != "forum")
+            if (userState[1] != "forum")
             {
                 sequence.LoadAndStartDocument(path);
                 // Check for a reset of the next line after a forum
@@ -219,8 +220,11 @@ namespace Utitshala.Services
                             MessageDate = DateTime.Now,
                             MessageContents = e.Message.Text,
                             StudentID = student.ID,
+                            Student = student,
                             ForumID = learningDesign.Forum.ID
                         };
+                        // Send it back
+                        messageClient.SendTextMessage(message.GetMessage(), e);
                         // Save the forum message
                         DatabaseController.SaveForumMessage(message);
                     }
@@ -237,8 +241,8 @@ namespace Utitshala.Services
             string currentLine;
 
             // Send the opening message
-            while (sequence.StartNextLine().HasValue &&
-                userState != null && userState[1] != "forum")
+            while (sequence.StartNextLine().HasValue
+                && userState[1] != "forum")
             {
                 // Get the current line
                 currentLine = sequence.ExecuteCurrentLine().BuildString(true, false);
@@ -324,6 +328,9 @@ namespace Utitshala.Services
                                 break;
                             case "textnonspaced":
                                 reg = new Regex(@"^[A-Za-z]+$");
+                                break;
+                            case "textandnumbers":
+                                reg = new Regex(@"^[A-Za-z0-9]+$");
                                 break;
                             case "anynumber":
                                 reg = new Regex(@"^([-+]?[0-9]+[-,])*[+-]?[0-9]+$");
