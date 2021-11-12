@@ -40,8 +40,10 @@ namespace Utitshala.Services
             LearningDesignElement text = new LearningDesignElement();
             LearningDesignElementSticker sticker = new LearningDesignElementSticker();
             LearningDesignElementImage image = new LearningDesignElementImage();
+            LearningDesignElementPresentation presentation = new LearningDesignElementPresentation();
             LearningDesignElementOption option = new LearningDesignElementOption();
             LearningDesignElementExecute execute = new LearningDesignElementExecute();
+            LearningDesignElementForum forum = new LearningDesignElementForum();
             LearningDesignElementAudio audio = new LearningDesignElementAudio();
             LearningDesignElementVideo video = new LearningDesignElementVideo();
             // An in memory holder for the strings that will make up that element's data
@@ -98,6 +100,31 @@ namespace Utitshala.Services
                                         // Add to the sequence of elements
                                         elements.Add(image);
                                         break;
+                                    // Case of a presentation element
+                                    case "presentation":
+                                        presentation = new LearningDesignElementPresentation();
+                                        presentation.LearningDesignElementType = LearningDesignElementType.Presentation;
+                                        presentation.Name = elementHolder[0].Substring(1);
+                                        presentation.TextContent = GetTextContent(elementHolder);
+                                        presentation.NextElement = elementHolder.Where(c => c[0] == '>').Last().Split(' ')[2];
+                                        // Type-specific values
+                                        presentation.ImageURLs = new string[10]
+                                        {
+                                            elementHolder[3].Split(' ')[2].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[3].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[4].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[5].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[6].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[7].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[8].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[9].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[10].Replace("\"", ""),
+                                            elementHolder[3].Split(' ')[11].Replace("\"", ""),
+                                        };
+                                        presentation.Compressed = Convert.ToBoolean(elementHolder[3].Split(' ')[12].Replace("\"", ""));
+                                        // Add to the sequence of elements
+                                        elements.Add(presentation);
+                                        break;
                                     // Case of an option element
                                     case "opt":
                                         option = new LearningDesignElementOption();
@@ -128,6 +155,17 @@ namespace Utitshala.Services
                                         // Type-specific values
                                         execute.ExecutionName = elementHolder.Where(c => c[0] == '>').First().Split(' ')[2].Replace("\"", "");
                                         elements.Add(execute);
+                                        break;
+                                    // Case of a forum element
+                                    case "forum":
+                                        forum = new LearningDesignElementForum();
+                                        forum.LearningDesignElementType = LearningDesignElementType.Forum;
+                                        forum.Name = elementHolder[0].Substring(1);
+                                        forum.TextContent = GetTextContent(elementHolder);
+                                        forum.NextElement = elementHolder.Where(c => c[0] == '>').Last().Split(' ')[2];
+                                        // Type-specific values
+                                        forum.EndDate = Convert.ToDateTime(elementHolder[3].Split(' ')[2].Replace("\"", ""));
+                                        forum.WelcomeMessage = elementHolder[3].Split('\"')[3];
                                         break;
                                     default:
                                         Console.WriteLine();

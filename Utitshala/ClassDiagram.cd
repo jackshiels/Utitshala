@@ -63,6 +63,7 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Forum" />
+      <Property Name="Student" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Utitshala.Models.LearningDesign">
@@ -72,8 +73,8 @@
       <FileName>Models\LearningDesign.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Assessment" />
       <Property Name="Classroom" />
+      <Property Name="Assessment" />
       <Property Name="Forum" />
     </ShowAsAssociation>
   </Class>
@@ -120,8 +121,8 @@
       <FileName>Models\Student.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Classroom" />
       <Property Name="StudentRecord" />
+      <Property Name="Classroom" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Utitshala.Models.StudentAssignment">

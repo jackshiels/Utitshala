@@ -221,8 +221,10 @@
     <Compile Include="Models\LearningDesignElement\LearningDesignElement.cs" />
     <Compile Include="Models\LearningDesignElement\LearningDesignElementAudio.cs" />
     <Compile Include="Models\LearningDesignElement\LearningDesignElementExecute.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementForum.cs" />
     <Compile Include="Models\LearningDesignElement\LearningDesignElementImage.cs" />
     <Compile Include="Models\LearningDesignElement\LearningDesignElementOption.cs" />
+    <Compile Include="Models\LearningDesignElement\LearningDesignElementPresentation.cs" />
     <Compile Include="Models\LearningDesignElement\LearningDesignElementSticker.cs" />
     <Compile Include="Models\LearningDesignElement\LearningDesignElementText.cs" />
     <Compile Include="Models\LearningDesignElement\LearningDesignElementVideo.cs" />

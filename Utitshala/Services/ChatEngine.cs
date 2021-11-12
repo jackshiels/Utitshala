@@ -120,7 +120,7 @@ namespace Utitshala.Services
             }
             #endregion
 
-            #region UploadClause
+            #region Upload Clause
             // Check for an upload requirement in the upload register
             if (uploadRegister.Where(c => c[0] == userId).Count() != 0)
             {
