@@ -1,6 +1,7 @@
 ﻿using Spin;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using Utitshala.Models;
@@ -96,7 +97,8 @@ namespace Utitshala.Services
                                         image.NextElement = elementHolder.Where(c => c[0] == '>').Last().Split(' ')[2];
                                         // Type-specific values
                                         image.ImageUrl = elementHolder[3].Split(' ')[2].Replace("\"", "");
-                                        image.Caption = elementHolder[3].Split(' ')[3].Replace("\"", "");
+                                        image.Caption = elementHolder[3].Split('\"')[3].Replace("\"", "");
+                                        image.Compressed = Convert.ToBoolean(elementHolder[3].Split('\"')[5].Replace("\"", ""));
                                         // Add to the sequence of elements
                                         elements.Add(image);
                                         break;
@@ -154,6 +156,9 @@ namespace Utitshala.Services
                                         execute.TextContent = GetTextContent(elementHolder);
                                         // Type-specific values
                                         execute.ExecutionName = elementHolder.Where(c => c[0] == '>').First().Split(' ')[2].Replace("\"", "");
+                                        execute.Argument1 = elementHolder[2].Split(' ')[3].Replace("\"", "");
+                                        execute.Argument2 = elementHolder[2].Split(' ')[4].Replace("\"", "");
+                                        execute.Argument3 = elementHolder[2].Split(' ')[5].Replace("\"", "");
                                         elements.Add(execute);
                                         break;
                                     // Case of a forum element
@@ -166,6 +171,7 @@ namespace Utitshala.Services
                                         // Type-specific values
                                         forum.EndDate = Convert.ToDateTime(elementHolder[3].Split(' ')[2].Replace("\"", ""));
                                         forum.WelcomeMessage = elementHolder[3].Split('\"')[3];
+                                        elements.Add(forum);
                                         break;
                                     default:
                                         Console.WriteLine();
@@ -237,6 +243,26 @@ namespace Utitshala.Services
                             + "\r\n";
                         result += "> next " + element.NextElement;
                         break;
+                    case LearningDesignElementType.Presentation:
+                        // Title
+                        result += "+ " + element.Name + "\r\n";
+                        result += element.TextContent;
+                        result += "+\r\n";
+                        // Element-specific data
+                        result += "> presentation" + " \"" + (element as LearningDesignElementPresentation).ImageURLs[0] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[1] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[2] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[3] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[4] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[5] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[6] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[7] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[8] + "\""
+                            + " \"" + (element as LearningDesignElementPresentation).ImageURLs[9] + "\""
+                            + " \"" + Convert.ToBoolean((element as LearningDesignElementPresentation).Compressed) + "\""
+                            + "\r\n";
+                        result += "> next " + element.NextElement;
+                        break;
                     case LearningDesignElementType.Option:
                         // Title
                         result += "+ " + element.Name + "\r\n";
@@ -245,7 +271,14 @@ namespace Utitshala.Services
                         // Element-specific data
                         foreach (var opt in (element as LearningDesignElementOption).Options)
                         {
-                            result += "> opt " + opt[0] + " \"" + opt[1] + "\"\r\n";
+                            if ((element as LearningDesignElementOption).Options.Last() != opt)
+                            {
+                                result += "> opt " + opt[0] + " \"" + opt[1] + "\"\r\n";
+                            }
+                            else
+                            {
+                                result += "> opt " + opt[0] + " \"" + opt[1] + "\"";
+                            }
                         }
                         break;
                     case LearningDesignElementType.Sticker:
@@ -256,6 +289,32 @@ namespace Utitshala.Services
                         // Element-specific data
                         result += "> sticker " + "\""
                             + (element as LearningDesignElementSticker).StickerUrl + "\""
+                            + "\r\n";
+                        result += "> next " + element.NextElement;
+                        break;
+                    case LearningDesignElementType.Execute:
+                        // Title
+                        result += "+ " + element.Name + "\r\n";
+                        result += element.TextContent;
+                        result += "+\r\n";
+                        // Element-specific data
+                        result += "> execute " + "\""
+                            + (element as LearningDesignElementExecute).ExecutionName + "\""
+                            + " \"" + (element as LearningDesignElementExecute).Argument1 + "\""
+                            + " \"" + (element as LearningDesignElementExecute).Argument2 + "\""
+                            + " \"" + (element as LearningDesignElementExecute).Argument3 + "\""
+                            + "\r\n";
+                        result += "> next " + element.NextElement;
+                        break;
+                    case LearningDesignElementType.Forum:
+                        // Title
+                        result += "+ " + element.Name + "\r\n";
+                        result += element.TextContent;
+                        result += "+\r\n";
+                        // Element-specific data
+                        result += "> forum " + "\""
+                            + (element as LearningDesignElementForum).EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) + "\""
+                            + " \"" + (element as LearningDesignElementForum).WelcomeMessage + "\""
                             + "\r\n";
                         result += "> next " + element.NextElement;
                         break;
