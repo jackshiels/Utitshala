@@ -19,7 +19,7 @@ The sequence commands in this language include:
 * upload: prepares to receive a file and save it into the app's internal directories.
 * forum: hosts a forum between learners, tracked asynchronously on a database table.
 
-Utitshala also includes an ASP.Net MVC site, with support for schools and classrooms that learners may join. A primitive learning design editor is present, but requires expansion. The entity class model is provided within this git in PNG format.
+Utitshala also includes an ASP.Net MVC site, with support for schools and classrooms that learners may join. A primitive learning design editor is present, but requires expansion. The entity class model is provided within this git in ClassDiagram.cd.
 
 ## Setup
 After cloning the repo, open the Package Manager Console and run the following commands:
