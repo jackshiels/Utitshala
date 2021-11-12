@@ -30,6 +30,7 @@ namespace Utitshala.Services
         public static List<string[]> inputRegister;
         public static List<string[]> uploadRegister;
         public static List<string[]> userStateRegister;
+        public static LearningSequence sequence;
         #endregion
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace Utitshala.Services
         {
             #region Construct Sequence
             // Initialise Spin
-            var sequence = new LearningSequence(new DictionaryBackend(), new FileDocumentLoader());
+            sequence = new LearningSequence(new DictionaryBackend(), new FileDocumentLoader());
             sequence.RegisterStandardLibrary();
 
             // Get user ID
